@@ -1,0 +1,93 @@
+.LeaveDetails {
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  min-width: 70vh;
+  min-height: 70vh;
+  z-index: 100;
+  background-color: #ffff;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.leavetitlecontainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 36px;
+}
+
+.leavetitlestatus {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 36px;
+  align-items: center;
+}
+
+.stat {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4982eb;
+}
+
+.leaveDtailsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 0px 36px;
+}
+
+.leavedetailsdate {
+  display: flex;
+  gap: 24px;
+  padding-left: 72px;
+}
+
+.leavedetailsdate > span {
+  width: 15vh;
+}
+
+.leaveDtailsContent > input {
+  min-height: 10vh;
+  max-height: 15vh;
+  padding: 8px;
+  border: 1px solid #a8a8a8;
+  border-radius: 5px;
+  background-color: #dbe8ff;
+}
+
+.bottomLeaveDetailsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bottomLeaveDetailsContainer > span {
+  color: #888888;
+}
+
+.bottomLeaveDetailsContainer > button {
+  color: #000;
+  background-color: #fd5252;
+  padding: 8px 24px;
+  border-radius: 5px;
+  border: none;
+}
+
+.bottomLeaveDetailsContainer > button:hover {
+  scale: 1.05;
+}
+
+.actioncontainer {
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 20vh;
+}
+
+.actionbutton {
+  font-weight: 300;
+  padding: 10px 20px;
+  width: 20vh;
+  border-radius: 5px;
+  border: none;
+}

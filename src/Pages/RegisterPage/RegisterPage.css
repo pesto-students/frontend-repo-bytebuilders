@@ -1,0 +1,74 @@
+.registerPage {
+  display: flex;
+  background-color: #e3edff;
+}
+
+.registerleft {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  background-color: #ffffff;
+  border-radius: 0px 20px 20px 0px;
+}
+.registerleft > form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.inputArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 36px;
+}
+
+.registerinput {
+  display: flex;
+  flex-direction: column;
+}
+
+.registerinput > input {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  width: 40vh;
+  padding: 10px 10px;
+}
+
+.registerbuttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  width: 100vh;
+}
+
+.registerbuttonContainer > button {
+  width: 156px;
+  height: 42px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+}
+
+.registerbuttonContainer > button:hover {
+  scale: 1.05;
+}
+
+.cancelbutton {
+  background-color: #eb4949;
+}
+
+.registerbutton {
+  background-color: #4982eb;
+}
+
+.registerline {
+  border-bottom: 1px solid black;
+  width: 70vh;
+}

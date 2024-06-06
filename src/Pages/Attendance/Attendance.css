@@ -1,0 +1,58 @@
+.attendanceContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  gap: 6vh;
+}
+.attendancetopbox {
+  display: flex;
+}
+
+.attendancedtimedateBox {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #000;
+  padding: 4px 12px;
+  border-radius: 5px;
+  gap: 2vh;
+}
+
+.attendancedtimedateBox > span:nth-child(1) {
+  color: #00000080;
+}
+
+.attendancedtimedateBox > span:nth-child(2) {
+  font-size: 48px;
+}
+
+.attendancecheckbox {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 12px;
+}
+.attendanvcecheck {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0px;
+}
+
+.attendancecheckbutton {
+  display: flex;
+  gap: 12px;
+}
+
+.attendancecheckbutton > button {
+  width: 15vh;
+  height: 4vh;
+  border-radius: 5px;
+  border: none;
+}
+
+.checkbullet {
+  padding: 8px 16px;
+  border-radius: 50px;
+}
+.attendancecheckbutton > button:hover {
+  scale: 1.05;
+}
