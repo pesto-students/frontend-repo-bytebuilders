@@ -1,11 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import Welcome from '../../components/welcome/Welcome';
 import WelcomeRight from '../../components/welcome/WelcomeRight/WelcomeRight';
-import apiRequest from '../../api/apiRequest';
-import { AuthContext } from '../../context/AuthContext';
-import { userdata } from '../../dummyData/dummyUser';
+import { loginUserAPI } from '../../api/loginregisterAPI';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../Redux/userSlice';
 export default function LoginPage() {
@@ -25,13 +23,14 @@ export default function LoginPage() {
     //console.log(email, password);
     //await updateUser(userdata);
     try {
-      const res = await apiRequest.post('login', {
-        email,
-        password,
-      });
-      //console.log(res.data.refreshToken);
-      localStorage.setItem('token', res.data.refreshToken);
+      const res = await loginUserAPI(email, password);
+      console.log(res);
+      console.log(res.data.refreshToken);
+      localStorage.setItem('token', res.data.accessToken);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+
       dispatch(loginUser(res.data.user));
+
       navigate('/dashboard');
     } catch (error) {}
   };

@@ -1,6 +1,7 @@
 .registerPage {
   display: flex;
   background-color: #e3edff;
+  overflow-y: scroll;
 }
 
 .registerleft {
@@ -71,4 +72,17 @@
 .registerline {
   border-bottom: 1px solid black;
   width: 70vh;
+}
+@media screen and (max-width: 1024px) {
+  .registerPage {
+    background-color: #ffff;
+  }
+}
+@media screen and (max-width: 738px) {
+  .inputArea {
+    flex-direction: column;
+  }
+  .registerleft {
+    width: 100%;
+  }
 }

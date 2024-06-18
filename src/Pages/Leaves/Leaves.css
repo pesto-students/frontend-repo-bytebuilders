@@ -75,15 +75,9 @@
   border: 1px solid #000;
   border-radius: 5px;
   overflow-y: scroll;
-  max-height: 50%;
 }
 
 .myleave > label {
   padding: 12px;
   font-weight: 600;
-}
-
-.leavestatus {
-  padding: 4px 12px;
-  border-radius: 10px;
 }

@@ -6,7 +6,8 @@
   align-items: center;
   gap: 20px;
   height: calc(100vh - 100px);
-  width: 20%;
+  width: 30vh;
+  overflow-y: scroll;
 }
 .detailContainer {
   display: flex;
@@ -36,8 +37,9 @@
 .sidebarcontent > a {
   display: flex;
   color: #ffff;
-  justify-content: center;
+
   align-items: center;
+  padding: 0vh 6vh;
   gap: 10px;
   width: 100%;
   height: 30px;
@@ -52,8 +54,10 @@
   background-color: #3e4245;
 }
 
-@media screen and (max-width: 738px) {
+@media screen and (max-width: 1024px) {
   .sidebar {
     display: none;
   }
+}
+@media screen and (max-width: 738px) {
 }

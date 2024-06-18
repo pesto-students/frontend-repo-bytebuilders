@@ -1,0 +1,52 @@
+.listtitle {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  width: 100%;
+  border: 1px solid #0000;
+  background-color: #00b2da;
+  color: #ffff;
+}
+
+.listtitle > input {
+  background-color: #00b2da;
+  border: none;
+}
+
+.listtitle:hover {
+  scale: 1.01;
+}
+.listtitle > span:last-child {
+  cursor: pointer;
+}
+.teamdetails {
+  border: 1px solid #0000;
+  padding: 12px;
+  width: 100%;
+}
+
+.managercontainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  align-items: center;
+}
+.teambuttonconatiner {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.teambuttonconatiner > button {
+  padding: 4px 12px;
+  border-radius: 5px;
+  border: none;
+}
+
+.teammembercontainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 12px;
+}

@@ -56,3 +56,8 @@
 .attendancecheckbutton > button:hover {
   scale: 1.05;
 }
+.attendanceList {
+  height: 50vh;
+  /* overflow-y: scroll; */
+  padding-bottom: 36px;
+}

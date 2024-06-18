@@ -1,0 +1,28 @@
+.holidayContainer {
+  display: flex;
+  gap: 36px;
+  flex-direction: column;
+  padding: 36px;
+}
+
+.holidayForm {
+  display: flex;
+  gap: 36px;
+}
+
+.holidayForm > input {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  width: 20vh;
+  padding: 10px 10px;
+}
+
+.holidayForm > button {
+  padding: 8px 12px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  background: #6399fd;
+  border-radius: 5px;
+  border: none;
+}

@@ -1,0 +1,9 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 36px;
+  font-family: 'Prompt';
+  font-style: normal;
+  width: 60%;
+}

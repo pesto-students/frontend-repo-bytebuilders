@@ -2,4 +2,25 @@
   border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
+  width: 80vh;
+  height: 30vh;
+}
+
+.leavetabletitledash {
+  display: flex;
+  justify-content: space-between;
+}
+.dashboardcontent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.dashteamleave {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: 50vh;
+  height: 30vh;
+  overflow-y: scroll;
 }

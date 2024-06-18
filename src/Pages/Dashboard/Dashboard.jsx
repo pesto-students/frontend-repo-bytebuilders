@@ -1,29 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 import Dashboardcontent from '../../components/DashboardContent/Dashboardcontent';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import ClockComponent from '../../components/ClockComponent/ClockComponent';
 
 export default function Dashboard() {
-  const data = useSelector((state: any) => state.user);
-  console.log(data);
+  const data = useSelector((state) => state.user);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
     <>
       <div className="dashboard">
         <div className="dashtitle">
           <div className="dashwelcome">
             <h1>DashBoard</h1>
-            <i>Hello, David....</i>
+            <i>Hello, {user.fullName}....</i>
           </div>
           <div className="dashtimedatestatus">
-            <div className="dashtimedate">
-              <div className="dashtime">
-                11:11 <span>AM</span>
-              </div>
-              <div className="dashdate">Sunday, 28 april</div>
-            </div>
-            <div className="dashstatus">
+            <ClockComponent />
+            {/* <div className="dashstatus">
               Status
               <div className="statusline"></div>
               <div className="statuscapsulecontainer">
@@ -43,7 +42,7 @@ export default function Dashboard() {
                   On Leave
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <Dashboardcontent />

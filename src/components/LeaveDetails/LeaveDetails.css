@@ -2,8 +2,7 @@
   position: absolute;
   top: 20%;
   left: 40%;
-  min-width: 70vh;
-  min-height: 70vh;
+  padding: 12px;
   z-index: 100;
   background-color: #ffff;
   border-radius: 10px;
@@ -24,16 +23,21 @@
   align-items: center;
 }
 
+.leavetitlestatus > a {
+  top: 10px;
+}
+
 .stat {
   font-size: 16px;
   font-weight: 600;
+  text-transform: capitalize;
   color: #4982eb;
 }
 
 .leaveDtailsContent {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 12px;
   padding: 0px 36px;
 }
 

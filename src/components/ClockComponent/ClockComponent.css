@@ -1,0 +1,20 @@
+.dashtimedate {
+  display: flex;
+  border: 2px solid black;
+  align-items: center;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 5px;
+}
+
+.dashtime {
+  font-size: 64px;
+}
+.dashtime > span {
+  font-size: 14px;
+  font-weight: bold;
+}
+.dashdate {
+  font-size: 14px;
+  font-weight: 300;
+}

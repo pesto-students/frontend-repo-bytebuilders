@@ -2,15 +2,41 @@ import React, { useEffect, useState } from 'react';
 import './AddLeave.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../../Dropdown/Dropdown';
-export default function AddLeave({ setAddLeaveStatus }) {
+import { addleave } from '../../../api/leaveapi';
+export default function AddLeave({
+  setAddLeaveStatus,
+  getLeaveHistory,
+}) {
   const [selectedOption, setSelectedOptions] = useState('');
+  const [error, setError] = useState('');
+
   const [formData, setFormData] = useState({
-    type: '',
-    startdate: '',
-    enddate: '',
-    reason: '',
+    leave_type: '',
+    start_date: '',
+    end_date: '',
+    leave_reason: '',
   });
   const [days, setDays] = useState(0);
+
+  const validate = () => {
+    if (!formData.leave_type) {
+      setError(' Leave Type is required');
+      return false;
+    }
+    if (!formData.start_date) {
+      setError('Start date required');
+      return false;
+    }
+    if (!formData.end_date) {
+      setError('End date required');
+      return false;
+    }
+    if (!formData.leave_reason) {
+      setError('Reason required');
+      return false;
+    }
+    return true;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,18 +46,28 @@ export default function AddLeave({ setAddLeaveStatus }) {
     });
   };
 
-  const sendFormData = (e) => {
+  const sendFormData = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setAddLeaveStatus(false);
+    try {
+      if (validate()) {
+        const token = localStorage.getItem('token');
+
+        await addleave(formData, token);
+        getLeaveHistory();
+        setAddLeaveStatus(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const options = ['Sick Leave', 'Earned Leave', 'causual Leave'];
+  const options = ['casual', 'medical', 'lop'];
 
   useEffect(() => {
-    const start = new Date(formData.startdate);
-    const end = new Date(formData.enddate);
-    const diffTime = Math.abs(end - start);
+    const start = new Date(formData.start_date);
+    const end = new Date(formData.end_date);
+    const diffTime = Math.abs(end - start) + 1;
     if (start > end) {
+      setError('Start date is greater than End Date');
       return;
     }
 
@@ -39,7 +75,8 @@ export default function AddLeave({ setAddLeaveStatus }) {
     if (noofdays) {
       setDays(noofdays);
     }
-  }, [formData.enddate]);
+  }, [formData.end_date]);
+
   return (
     <div className="addleavecontainer">
       <div className="topcontaineraddleave">
@@ -55,8 +92,8 @@ export default function AddLeave({ setAddLeaveStatus }) {
               <label htmlFor="leave type">Leave Type</label>
               <Dropdown
                 options={options}
-                name="type"
-                value={formData.type}
+                name="leave_type"
+                value={formData.leave_type}
                 handleChange={handleChange}
               />
             </div>
@@ -64,17 +101,17 @@ export default function AddLeave({ setAddLeaveStatus }) {
               <label htmlFor="startdate">Start Date</label>
               <input
                 type="date"
-                name="startdate"
-                value={formData.startdate}
+                name="start_date"
+                value={formData.start_date}
                 onChange={handleChange}
               />
             </div>
             <div className="addleaveinputbox">
-              <label htmlFor="enddate">End Date</label>
+              <label htmlFor="end_date">End Date</label>
               <input
                 type="date"
-                name="enddate"
-                value={formData.enddate}
+                name="end_date"
+                value={formData.end_date}
                 onChange={handleChange}
               />
             </div>
@@ -82,9 +119,9 @@ export default function AddLeave({ setAddLeaveStatus }) {
               <label htmlFor="Reason">Reason</label>
               <input
                 type="text"
-                name="reason"
+                name="leave_reason"
                 style={{ height: ' 9vh' }}
-                value={formData.reason}
+                value={formData.leave_reason}
                 onChange={handleChange}
               />
             </div>
@@ -95,11 +132,11 @@ export default function AddLeave({ setAddLeaveStatus }) {
               <b>Your Request Includes</b>
               <div className="addleavedaysstat">
                 <b>Start Date</b>
-                <span>{formData.startdate}</span>
+                <span>{formData.start_date}</span>
               </div>
               <div className="addleavedaysstat">
                 <b>End Date</b>
-                <span>{formData.enddate}</span>
+                <span>{formData.end_date}</span>
               </div>
               <div className="line"></div>
               <div className="addleavedaysstat">
@@ -113,6 +150,7 @@ export default function AddLeave({ setAddLeaveStatus }) {
           </div>
         </div>
       </form>
+      <span style={{ color: '#FD5252' }}>{error}</span>
     </div>
   );
 }

@@ -9,9 +9,7 @@ export default function Dropdown({
   return (
     <>
       <select name={name} value={value} onChange={handleChange}>
-        <option value="" disabled>
-          Select an Option
-        </option>
+        <option value="">Select an Option</option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}

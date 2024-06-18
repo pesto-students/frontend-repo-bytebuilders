@@ -1,0 +1,166 @@
+.employeeDetailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 36px;
+  font-family: 'Prompt';
+  font-style: normal;
+  height: calc(100vh - 100px);
+  overflow-y: scroll;
+}
+.employeenamedesig {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.employeenamedesig > span:nth-child(1) {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 150%;
+
+  color: #000000;
+}
+
+.employeenamedesig > span:nth-child(2) {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+
+  color: #898282;
+}
+
+.employeeDetails {
+  display: flex;
+  justify-content: space-between;
+}
+.employeeDetailsBoxes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+/* .personalDetails,
+.employmentDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+} */
+
+.inputdetails {
+  display: flex;
+  flex-direction: column;
+  background-color: #ebf2ff;
+  padding: 8px 12px;
+
+  gap: 4px;
+  border-radius: 12px;
+  width: 40vh;
+}
+
+.inputdetails > input {
+  background-color: #ebf2ff;
+  border: none;
+}
+
+.bottomContainer {
+  display: flex;
+  gap: 24px;
+}
+.bottomContainer > button {
+  background: #6399fd;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  padding: 12px 28px;
+  border: none;
+}
+
+.employeepermissioncontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 50%;
+}
+
+.permissionbox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.permissionbox > button {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+}
+
+.employeeDetailstitles {
+  font-weight: 300;
+}
+
+.employeeLeaveBox,
+.employePayrollBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.employeeLeaveBox > input,
+.employePayrollBox > input {
+  text-align: center;
+  padding: 12px;
+}
+
+@media screen and (max-width: 1024px) {
+  .employeedetailsContainer {
+    gap: 12px;
+    padding: 36px 0px;
+  }
+  .profile > h1 {
+    font-size: 24px;
+  }
+  .employeenamedesig > span:nth-child(1) {
+    font-size: 18px;
+  }
+  .employeenamedesig > span:nth-child(1) {
+    font-size: 16px;
+  }
+
+  .employeeDetails {
+    display: flex;
+    gap: 10vh;
+  }
+  .inputdetails {
+    font-size: 16px;
+    width: 30vh;
+  }
+}
+@media screen and (max-width: 738px) {
+  .employeedetailsContainer {
+    gap: 32px;
+  }
+  .profile > h1 {
+    font-size: 20px;
+  }
+  .employeenamedesig > span:nth-child(1) {
+    font-size: 16px;
+  }
+  .employeenamedesig > span:nth-child(1) {
+    font-size: 14px;
+  }
+
+  .employeeDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .inputdetails {
+    font-size: 12px;
+  }
+  .bottomContainer > button {
+    font-size: 14px;
+  }
+}

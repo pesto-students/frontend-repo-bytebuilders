@@ -1,11 +1,16 @@
-thead {
-  border: 1px solid black;
-  font-weight: 600;
-}
-
 .approvalStatus {
   padding: 10px;
   background-color: #30d14340;
   border-radius: 5px;
   color: #30d143;
+}
+
+.leverequestTableDashBoard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+tbody {
+  font-size: 16px;
 }

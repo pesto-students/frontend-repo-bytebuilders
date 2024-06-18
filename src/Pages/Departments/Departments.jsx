@@ -5,10 +5,11 @@ import {
   addDepartments,
   getAllDepartments,
 } from '../../api/departmentapi';
+import DepartmentDesignationTable from '../../components/DepartmentDesignation Table/DepartmentDesignationTable';
 export default function Departments() {
-  const [addStatus, setAddStatus] = useState(false);
   const [departmentList, setDepartmentList] = useState([]);
   const [department, setDepartment] = useState('');
+  const [addStatus, setAddStatus] = useState(false);
   const token = localStorage.getItem('token');
   const departments = async () => {
     const depart = await getAllDepartments(token);
@@ -24,6 +25,7 @@ export default function Departments() {
     const depart = await getAllDepartments(token);
 
     setDepartmentList(depart.data);
+    setDepartment('');
 
     setAddStatus(false);
   };
@@ -35,53 +37,15 @@ export default function Departments() {
     <div className="departments">
       <h1>Departments</h1>
 
-      {departmentList.length > 0 && (
-        <table id="customTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Organisation</th>
-              <th>Employees</th>
-              {/* <th></th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {departmentList.map((department) => (
-              <tr key={department._id}>
-                <td data-label="Name">{department.name}</td>
-                <td data-label="Created on">
-                  {department.organisationName}
-                </td>
-                <td data-label="Employees">
-                  {department.users.length}
-                </td>
-                {/* <td className="remove">
-                  <Link>Remove</Link>
-                </td> */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      <div className="adddept">
-        {addStatus ? (
-          <>
-            <input
-              type="text"
-              placeholder="Department name"
-              name="name"
-              onChange={(e) => setDepartment(e.target.value)}
-              value={department}
-            />
-            <button onClick={departmentadd}>Add Department</button>
-          </>
-        ) : (
-          <button onClick={() => setAddStatus(true)}>
-            Add Department
-          </button>
-        )}
-      </div>
+      <DepartmentDesignationTable
+        name={'Department'}
+        List={departmentList}
+        setValue={setDepartment}
+        addValue={departmentadd}
+        setAddStatus={setAddStatus}
+        addStatus={addStatus}
+        inValue={department}
+      />
     </div>
   );
 }

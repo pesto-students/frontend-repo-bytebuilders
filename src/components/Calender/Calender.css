@@ -1,0 +1,21 @@
+/* App.css */
+.custom-calendar {
+  width: 300px; /* Set your desired width */
+  height: 300px; /* Set your desired height */
+}
+
+.holiday-highlight {
+  background-color: red !important;
+  color: white !important;
+}
+
+.react-datepicker {
+  width: 100%;
+}
+
+.react-datepicker__day {
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: 2.5em;
+}

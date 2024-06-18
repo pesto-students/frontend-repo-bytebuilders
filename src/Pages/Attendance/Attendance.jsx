@@ -1,16 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Attendance.css';
+import {
+  getPunchDataAPI,
+  punchInAPI,
+  punchOutAPI,
+} from '../../api/attendenceapi';
+import HoverBox from '../../components/Attendance/HoverBox/HoverBox';
+import ClockComponent from '../../components/ClockComponent/ClockComponent';
+
 export default function Attendance() {
+  const token = localStorage.getItem('token');
   const [leaveStatus, setLeaveStatus] = useState(false);
-  const [checkIn, setCheckIn] = useState(false);
+
+  const [checkIn, setCheckIn] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [attendanceList, setAttendanceList] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    content: [],
+  });
+  const getAttendance = async () => {
+    const list = await getPunchDataAPI(token);
+
+    setAttendanceList(list);
+    if (list.length) {
+      const today = list[list.length - 1];
+
+      const checkstatus = Math.floor(today.punchTimes.length % 2)
+        ? setCheckIn(false)
+        : setCheckIn(true);
+      console.log('checkstatus', checkstatus);
+      console.log(Math.floor(today.punchTimes.length % 2));
+      if (today.isHoliday || today.isWeekend || today.isOnLeave) {
+        setLeaveStatus(true);
+      }
+    }
+  };
+  const handleMouseIn = (e, punchTimes) => {
+    const rect = e.target.getBoundingClientRect();
+    console.log(punchTimes);
+    setHoverInfo({
+      visible: punchTimes.length ? true : false,
+      x: rect.left,
+      y: rect.bottom,
+      content: punchTimes,
+    });
+  };
+  const statusOffice = (attendance) => {
+    const status = attendance.isHoliday
+      ? 'Holiday'
+      : attendance.isWeekend
+      ? 'Weekend'
+      : attendance.isOnLeave
+      ? 'Leave'
+      : attendance.punchTimes.length
+      ? 'Present'
+      : 'Absent';
+    return status;
+  };
+  const punchOutTime = (punchTimes) => {
+    return Math.floor(punchTimes.length % 2)
+      ? punchTimes[punchTimes.length - 2]
+      : punchTimes[punchTimes.length - 1];
+  };
+
+  const handleMouseOut = (e) => {
+    setHoverInfo({ ...hoverInfo, visible: false });
+  };
+
+  const handleCheckIn = async () => {
+    const res = await punchInAPI();
+    getAttendance();
+  };
+
+  const handleCheckOut = async () => {
+    const res = await punchOutAPI();
+
+    getAttendance();
+  };
+  useEffect(() => {
+    getAttendance();
+  }, []);
   return (
     <div className="attendanceContainer">
       <div className="attendancetopbox">
-        <div className="attendancedtimedateBox">
-          <span>Today</span>
-          <span>17:30 AM</span>
-          <span>Sunday, 28 April</span>
-        </div>
+        <ClockComponent />
         <div className="attendancecheckbox">
           <div className="attendacestatus">
             <span>Status</span>
@@ -38,7 +114,8 @@ export default function Attendance() {
           </div>
           <div className="attendancecheckbutton">
             <button
-              onClick={() => setCheckIn(false)}
+              disabled={isButtonDisabled}
+              onClick={handleCheckIn}
               style={
                 checkIn
                   ? { color: '#30D143', background: '#30d14340' }
@@ -48,7 +125,8 @@ export default function Attendance() {
               Check In
             </button>
             <button
-              onClick={() => setCheckIn(true)}
+              disabled={isButtonDisabled}
+              onClick={handleCheckOut}
               style={
                 checkIn
                   ? { color: '#A6A6A6', background: '#D8D8D8' }
@@ -60,8 +138,8 @@ export default function Attendance() {
           </div>
         </div>
       </div>
+      <b>My Attendance</b>
       <div className="attendanceList">
-        <b>My Attendance</b>
         <table className="attendancetable">
           <thead>
             <tr>
@@ -73,53 +151,40 @@ export default function Attendance() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Mon , 01 Jan 2024</td>
-              <td>
-                <div>Present</div>
-              </td>
-              <td>10:00</td>
-              <td>18:00</td>
-              <td>8hr</td>
-            </tr>
-            <tr>
-              <td>Mon , 01 Jan 2024</td>
-              <td>
-                <div>Present</div>
-              </td>
-              <td>10:00</td>
-              <td>18:00</td>
-              <td>8hr</td>
-            </tr>
-            <tr>
-              <td>Mon , 01 Jan 2024</td>
-              <td>
-                <div>Present</div>
-              </td>
-              <td>10:00</td>
-              <td>18:00</td>
-              <td>8hr</td>
-            </tr>
-            <tr>
-              <td>Mon , 01 Jan 2024</td>
-              <td>
-                <div>Present</div>
-              </td>
-              <td>10:00</td>
-              <td>18:00</td>
-              <td>8hr</td>
-            </tr>
-            <tr>
-              <td>Mon , 01 Jan 2024</td>
-              <td>
-                <div>Present</div>
-              </td>
-              <td>10:00</td>
-              <td>18:00</td>
-              <td>8hr</td>
-            </tr>
+            {attendanceList.map((attendance) => (
+              <tr
+                key={attendance.date}
+                style={
+                  attendance.isHoliday || attendance.isWeekend
+                    ? { background: '#2EC9FE40' }
+                    : {}
+                }
+              >
+                <td>{attendance.date}</td>
+                <td>
+                  <div>{statusOffice(attendance)}</div>
+                </td>
+                <td>{attendance.punchTimes[0]}</td>
+                <td>{punchOutTime(attendance.punchTimes)}</td>
+                <td
+                  onMouseEnter={(e) =>
+                    handleMouseIn(e, attendance.punchTimes)
+                  }
+                  onMouseLeave={(e) => handleMouseOut(e)}
+                >
+                  {attendance.netHourInOffice}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+        {hoverInfo.visible && (
+          <HoverBox
+            top={hoverInfo.y}
+            left={hoverInfo.x}
+            content={hoverInfo.content}
+          />
+        )}
       </div>
     </div>
   );

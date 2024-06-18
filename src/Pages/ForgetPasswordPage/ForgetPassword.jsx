@@ -2,9 +2,20 @@ import React, { useRef, useState } from 'react';
 import Welcome from '../../components/welcome/Welcome';
 import './ForgetPassword.css';
 import WelcomeRight from '../../components/welcome/WelcomeRight/WelcomeRight';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  confirmPassword,
+  setOTPAPI,
+} from '../../api/forgetpasswordAPI';
 export default function ForgetPassword() {
   const [otpInputs, setOtpInputs] = useState(['', '', '', '']);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    email: '',
+    newPassword: '',
+    otp: '',
+  });
   const [passStatus, setPassStatus] = useState(false);
   const inputRefs = useRef([]);
   const focusNextInput = (index) => {
@@ -20,9 +31,35 @@ export default function ForgetPassword() {
 
     focusNextInput(index);
   };
+  const handleOnchange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+  const handleOtp = async () => {
+    try {
+      console.log(data.email);
+      if (data.email) {
+        const res = await setOTPAPI(data.email);
+        setPassStatus(true);
+        setError('');
+      } else {
+        setError('Please Enter Mail');
+      }
+    } catch (error) {}
+  };
+  const handleConfirmPassword = async () => {
+    try {
+      console.log(otpInputs);
+      const otp = otpInputs.join('');
+      if (otp.length == 4 && data.email && data.password) {
+        setData({ ...data, otp });
+        const res = await confirmPassword(data);
 
-  const handleOtp = () => {
-    setPassStatus(true);
+        setError('');
+      } else {
+        setError('Please Fill All the Field');
+      }
+    } catch (error) {}
   };
 
   return (
@@ -34,6 +71,8 @@ export default function ForgetPassword() {
             className="fpinput"
             type="text"
             name="email"
+            value={data.email}
+            onChange={handleOnchange}
             placeholder="Enter your mail"
           />
           {
@@ -58,7 +97,9 @@ export default function ForgetPassword() {
             <input
               className="fpinput"
               type="password"
-              name="password"
+              name="newPassword"
+              value={data.newPassword}
+              onChange={handleOnchange}
               placeholder="Enter your Password"
             />
           )}
@@ -68,8 +109,14 @@ export default function ForgetPassword() {
             Send OTP
           </button>
         ) : (
-          <button className="fpbutton">Confirm Password</button>
+          <button
+            className="fpbutton"
+            onClick={handleConfirmPassword}
+          >
+            Confirm Password
+          </button>
         )}
+        {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
         <div className="loginline"></div>
         <span className="signupLink">
           Dont have Account? <Link to={'/register'}>Sign Up</Link>

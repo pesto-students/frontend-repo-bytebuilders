@@ -5,30 +5,39 @@ import LeaveDetails from '../../components/LeaveDetails/LeaveDetails';
 import AddLeave from '../../components/LeaveDetails/AddLeave/AddLeave';
 import { useSelector } from 'react-redux';
 import { getLeaveHistoryAPI } from '../../api/leaveapi';
+import LeaveStatus from '../../components/LeaveDetails/LeaveStatus/LeaveStatus';
+import { differenceInDays, format, parseISO } from 'date-fns';
 
 export default function Leaves() {
   const [leaveDetailsStatus, setLeaveDetailsStatus] = useState(false);
   const [addLeaveStatus, setAddLeaveStatus] = useState(false);
-  const [leaveListNew, setLeaveListNew] = useState([]);
-  const user = useSelector((state) => state.user);
+  const [leaveList, setLeaveList] = useState([]);
+  const [leaveDetails, setLeaveDetails] = useState({});
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const role = 'Employee';
   const getLeaveHistory = async () => {
-    const token = localStorage.getItem('token');
-    const res = await getLeaveHistoryAPI(token);
-    const leaveHistory = res.filter(
-      (leave) => leave.leaveStatus !== 'new'
-    );
-    const newLeave = res.filter(
-      (leave) => leave.leaveStatus === 'new'
-    );
-    console.log(newLeave);
-    setLeaveListNew(newLeave);
-    console.log(leaveListNew);
+    const res = await getLeaveHistoryAPI();
+    const updatedList = res.map((obj) => ({
+      ...obj,
+      start_date: format(parseISO(obj.start_date), 'yyyy-mm-dd'),
+      end_date: format(parseISO(obj.end_date), 'yyyy-mm-dd'),
+      apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
+      days: differenceInDays(obj.end_date, obj.start_date) + 1,
+    }));
+
+    setLeaveList(updatedList);
   };
+
+  const leaveAssign = (leave) => {
+    setLeaveDetails(leave);
+    setLeaveDetailsStatus(true);
+  };
+
   useEffect(() => {
     getLeaveHistory();
-  });
+  }, []);
   return (
     <div className="leavecontainer">
       <div className="leavenumcontainer">
@@ -53,8 +62,7 @@ export default function Leaves() {
         </div>
       </div>
       <div className="leavelist">
-        {leaveListNew}
-        {leaveListNew.length != 0 && (
+        {leaveList.length != 0 && (
           <div className="myleave">
             <label htmlFor="myleave"> My Leave</label>
             <div className="line"></div>
@@ -62,7 +70,8 @@ export default function Leaves() {
             <table style={{ border: 'none' }}>
               <thead>
                 <tr>
-                  <th>Duration</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
                   <th>Type</th>
                   <th>Days</th>
                   <th>Status</th>
@@ -70,204 +79,40 @@ export default function Leaves() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>May 1 - May 10 </td>
-                  <td>Causaul Leave</td>
-                  <td>10 </td>
-                  <td>
-                    <div
-                      className="leavestatus"
-                      style={{
-                        background: '#30d14340',
-                        color: '#30D143',
-                      }}
-                    >
-                      Approved
-                    </div>
-                  </td>
-                  <td>
-                    <Link onClick={() => setLeaveDetailsStatus(true)}>
-                      more
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>May 1 - May 10 </td>
-                  <td>Causaul Leave</td>
-                  <td>10 </td>
-                  <td>
-                    <div
-                      className="leavestatus"
-                      style={{
-                        background: '#30d14340',
-                        color: '#30D143',
-                      }}
-                    >
-                      Approved
-                    </div>
-                  </td>
-                  <td>
-                    <Link onClick={() => setLeaveDetailsStatus(true)}>
-                      more
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>May 1 - May 10 </td>
-                  <td>Causaul Leave</td>
-                  <td>10 </td>
-                  <td>
-                    <div
-                      className="leavestatus"
-                      style={{
-                        background: '#30d14340',
-                        color: '#30D143',
-                      }}
-                    >
-                      Approved
-                    </div>
-                  </td>
-                  <td>
-                    <Link onClick={() => setLeaveDetailsStatus(true)}>
-                      more
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>May 1 - May 10 </td>
-                  <td>Causaul Leave</td>
-                  <td>10 </td>
-                  <td>
-                    <div
-                      className="leavestatus"
-                      style={{
-                        background: '#30d14340',
-                        color: '#30D143',
-                      }}
-                    >
-                      Approved
-                    </div>
-                  </td>
-                  <td>
-                    <Link onClick={() => setLeaveDetailsStatus(true)}>
-                      more
-                    </Link>
-                  </td>
-                </tr>
+                {leaveList.map((leave) => (
+                  <tr key={leave.leaveId}>
+                    <td>{leave.start_date}</td>
+                    <td>{leave.end_date}</td>
+                    <td>{leave.leave_type}</td>
+                    <td>{leave.days}</td>
+                    <td>
+                      <LeaveStatus status={leave.leaveStatus} />
+                    </td>
+                    <td>
+                      <Link onClick={() => leaveAssign(leave)}>
+                        more
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         )}
-        <div className="myleave">
-          <label htmlFor="myleave"> Leave History</label>
-          <div className="line"></div>
-          <table style={{ border: 'none' }}>
-            <thead>
-              <tr>
-                <th>Duration</th>
-                <th>Type</th>
-                <th>Days</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>May 1 - May 10 </td>
-                <td>Causaul Leave</td>
-                <td>10 </td>
-                <td>
-                  <div
-                    className="leavestatus"
-                    style={{
-                      background: '#30d14340',
-                      color: '#30D143',
-                    }}
-                  >
-                    Approved
-                  </div>
-                </td>
-                <td>
-                  <Link onClick={() => setLeaveDetailsStatus(true)}>
-                    more
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>May 1 - May 10 </td>
-                <td>Causaul Leave</td>
-                <td>10 </td>
-                <td>
-                  <div
-                    className="leavestatus"
-                    style={{
-                      background: '#30d14340',
-                      color: '#30D143',
-                    }}
-                  >
-                    Approved
-                  </div>
-                </td>
-                <td>
-                  <Link onClick={() => setLeaveDetailsStatus(true)}>
-                    more
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>May 1 - May 10 </td>
-                <td>Causaul Leave</td>
-                <td>10 </td>
-                <td>
-                  <div
-                    className="leavestatus"
-                    style={{
-                      background: '#30d14340',
-                      color: '#30D143',
-                    }}
-                  >
-                    Approved
-                  </div>
-                </td>
-                <td>
-                  <Link onClick={() => setLeaveDetailsStatus(true)}>
-                    more
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>May 1 - May 10 </td>
-                <td>Causaul Leave</td>
-                <td>10 </td>
-                <td>
-                  <div
-                    className="leavestatus"
-                    style={{
-                      background: '#30d14340',
-                      color: '#30D143',
-                    }}
-                  >
-                    Approved
-                  </div>
-                </td>
-                <td>
-                  <Link onClick={() => setLeaveDetailsStatus(true)}>
-                    more
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
       {leaveDetailsStatus && (
         <LeaveDetails
           setLeaveDetailsStatus={setLeaveDetailsStatus}
+          getList={getLeaveHistory}
           role={role}
+          leaveDetails={leaveDetails}
         />
       )}
       {addLeaveStatus && (
-        <AddLeave setAddLeaveStatus={setAddLeaveStatus} />
+        <AddLeave
+          setAddLeaveStatus={setAddLeaveStatus}
+          getLeaveHistory={getLeaveHistory}
+        />
       )}
     </div>
   );

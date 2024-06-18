@@ -1,0 +1,35 @@
+import React, { useEffect, useState } from 'react';
+import './DashBoardCelebration.css';
+import Initials from '../Initials/Initials';
+import { getBirthdayEmployeeAPI } from '../../api/userAPI';
+export default function DashBoardCelebration() {
+  const [employeeeList, setEmployeeList] = useState([]);
+  const getEmployeeListCelebration = async () => {
+    const res = await getBirthdayEmployeeAPI();
+
+    setEmployeeList(res.data);
+  };
+  useEffect(() => {
+    if (!employeeeList.length) {
+      getEmployeeListCelebration();
+    }
+  }, []);
+  return (
+    <div className="onleveContainer">
+      {employeeeList.map((employee) => (
+        <div className="employeetab">
+          <span>
+            <Initials name={employee.fullName} />
+          </span>
+          <div className="nametab">
+            <span>{employee.fullName}</span>
+
+            <span>
+              {employee.designation} , {employee.department}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
