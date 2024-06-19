@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import Navbar from '../Navbar/Navbar';
 import SideBar from '../SideBar/SideBar';
@@ -8,20 +8,20 @@ import { current } from '@reduxjs/toolkit';
 import Loading from '../../Pages/Loading/Loading';
 
 export function Layout() {
-  // const loading = useSelector((state) => state.user.loading);
-  // console.log('loading', loading);
   const navdisabledcomponent = [
     'login',
     'register',
     'forgotPassword',
   ];
   const pathcomponent = window.location.href.split('/');
-  // const user = useSelector((state) => state.isAuthenticated);
-  const user = true;
-  useEffect(() => {});
+
+  let isAuthenticated = useSelector((state) => state.isAuthenticated);
+
   return (
     <div className="layout">
-      {
+      {isAuthenticated ? (
+        <RequireAuth />
+      ) : (
         <>
           {!navdisabledcomponent.some((item) =>
             pathcomponent[pathcomponent.length - 1].includes(item)
@@ -32,47 +32,42 @@ export function Layout() {
             <Outlet />
           </div>
         </>
-      }
+      )}
     </div>
   );
 }
 
-export function LayoutWithoutNavbar() {
-  //const loading = useSelector((state) => state.user.loading);
-  // console.log('loading', loading);
-  <div className="layout">
-    <div className="content">
-      {/* {loading ? <Loading /> : <Outlet />} */}
-      <Outlet />
-    </div>
-  </div>;
-}
+// export function LayoutWithoutNavbar() {
+//   //const loading = useSelector((state) => state.user.loading);
+//   // console.log('loading', loading);
+//   <div className="layout">
+//     <div className="content">
+//       <Outlet />
+//     </div>
+//   </div>;
+// }
 
 export function RequireAuth() {
   const loading = useSelector((state) => state.isLoading);
+  const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state) => state.isAuthenticated
   );
-  console.log('loading', loading);
-  const token = localStorage.getItem('token');
+  const user = useSelector((state) => state.user);
 
-  return !isAuthenticated ? (
-    <Navigate to={'/home'} />
-  ) : (
-    <>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
-      <div className="layout">
-        <div className="navbar">
-          <Navbar />
+  return (
+    user && (
+      <>
+        <div className="layout">
+          <div className="navbar">
+            <Navbar />
+          </div>
+          <div className="content">
+            <SideBar />
+            <Outlet />
+          </div>
         </div>
-        <div className="content">
-          <SideBar />
-          <Outlet />
-          {/* {loading ? <Loading /> : <Outlet />} */}
-        </div>
-      </div>
-    </>
+      </>
+    )
   );
 }

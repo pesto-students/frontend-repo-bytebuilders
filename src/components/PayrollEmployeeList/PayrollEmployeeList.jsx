@@ -2,30 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './PayrollEmployeeList.css';
 import EmployeeList from '../Employee/EmployeeListContainer/EmployeeList/EmployeeList';
 import { formatDate } from 'date-fns';
+import { months } from '../../Data/Permission';
 import { generatePayrollAPI } from '../../api/payrollapi';
 export default function PayrollEmployeeList({ employeeList }) {
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
   const [message, setMessage] = useState({
     message: '',
     status: false,
     stausCode: 400,
   });
   const generatePaySlip = async (id, yearmonth) => {
-    console.log('id', id);
-    console.log('yearmonth', yearmonth);
     let year = formatDate(new Date(), 'yyyy');
     let month = formatDate(new Date(), 'MM');
 
@@ -43,7 +28,6 @@ export default function PayrollEmployeeList({ employeeList }) {
 
     try {
       const res = await generatePayrollAPI(dateObj);
-      console.log(res);
 
       message.message = res.data.message;
       message.stausCode = 200;
@@ -54,16 +38,14 @@ export default function PayrollEmployeeList({ employeeList }) {
     }
   };
   useEffect(() => {
-    message.message = '';
-    message.status = false;
-    message.stausCode = 400;
+    setMessage({ message: '', status: false, stausCode: 400 });
   }, []);
   return (
     <div className="payrollEmployeeListContainer">
       {message.status && (
         <span
           style={
-            message.stausCode == 200
+            message.stausCode === 200
               ? { color: '#30D143' }
               : { color: '#FD5252' }
           }

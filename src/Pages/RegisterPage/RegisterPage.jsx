@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { adminPermission } from '../../Data/Permission';
 import { registerUserAPI } from '../../api/userAPI';
 export default function RegisterPage() {
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -19,7 +20,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     setFormData({
       ...formData,
       [name]: value,
@@ -28,10 +29,15 @@ export default function RegisterPage() {
   const handleSumbmit = async (e) => {
     e.preventDefault();
 
-    const reponse = { ...formData, ...adminPermission };
-    console.log(reponse);
-    const data = await registerUserAPI(reponse);
-    navigate('/login');
+    try {
+      const reponse = { ...formData, ...adminPermission };
+
+      const data = await registerUserAPI(reponse);
+      console.log('data', data);
+      navigate('/login');
+    } catch (error) {
+      setError('User is not registered please try again.....');
+    }
   };
 
   return (

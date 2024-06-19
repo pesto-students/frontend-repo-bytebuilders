@@ -1,40 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import './Holiday.css';
-import Calender from '../../components/Calender/Calender';
-import { getHolidayAPI } from '../../api/holidayapi';
+
+import { addHoliday, getHolidayAPI } from '../../api/holidayapi';
 import { format, parseISO } from 'date-fns';
+import { useSelector } from 'react-redux';
 
 export default function Holiday() {
   const [date, setDate] = useState('');
   const [name, setName] = useState('');
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
+  const [error, setError] = useState('');
   const [holidayList, setHolidayList] = useState([]);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (date && name) {
-      // onAdd({ id: Date.now(), date, name });
-      // setDate('');
-      // setName('');
-      console.log(date, name);
-    }
+    try {
+      if (date && name) {
+        const res = await addHoliday();
+
+        setError('');
+        getHolidays();
+      } else {
+        setError('Please fill all the fields...');
+      }
+    } catch (error) {}
   };
 
   const getHolidays = async () => {
-    const res = await getHolidayAPI();
+    try {
+      const res = await getHolidayAPI();
 
-    const holidays = res.map((obj) => ({
-      ...obj,
-      date: format(parseISO(obj.date), 'yyyy-mm-dd'),
-    }));
-    setHolidayList(holidays);
+      const holidays = res.map((obj) => ({
+        ...obj,
+        date: format(parseISO(obj.date), 'yyyy-mm-dd'),
+      }));
+      setHolidayList(holidays);
+    } catch (error) {}
   };
 
   useEffect(() => {
-    getHolidays();
+    if (!holidayList.length) {
+      getHolidays();
+    }
   }, []);
   return (
     <div className="holidayContainer">
       <h1>Holidays</h1>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       {user.canCreateHolidays && (
         <form className="holidayForm" onSubmit={handleSubmit}>
           <input
@@ -63,7 +74,7 @@ export default function Holiday() {
           </thead>
           <tbody>
             {holidayList.map((holiday) => (
-              <tr key={holiday.key}>
+              <tr key={holiday.date}>
                 <td> {holiday.date}</td>
                 <td> {holiday.name}</td>
               </tr>

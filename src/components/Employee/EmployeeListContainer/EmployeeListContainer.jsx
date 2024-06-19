@@ -12,21 +12,23 @@ export default function EmployeeListContainer({
   const [employeeList, setEmployeeList] = useState([]);
 
   const handleSetEmployeeList = async () => {
-    let newlist = [];
-    if (addFlag) {
-      const res = await employeeListAPI();
-      newlist = res.data.filter(
-        (employee) =>
-          !list.some((emp) => emp._id === employee._id) &&
-          !employee.isReportingManager
-      );
-    } else {
-      list.map((obj) => {
-        newlist.push(obj);
-      });
-    }
+    try {
+      let newlist = [];
+      if (addFlag) {
+        const res = await employeeListAPI();
+        newlist = res.data.filter(
+          (employee) =>
+            !list.some((emp) => emp._id === employee._id) &&
+            !employee.isReportingManager
+        );
+      } else {
+        list.map((obj) => {
+          newlist.push(obj);
+        });
+      }
 
-    setEmployeeList(newlist);
+      setEmployeeList(newlist);
+    } catch (error) {}
   };
 
   const handleCheck = (e, employeeId) => {
@@ -38,12 +40,12 @@ export default function EmployeeListContainer({
         selectedEmployeeIds.filter((id) => id !== employeeId)
       );
     }
-
-    console.log(selectedEmployeeIds);
   };
 
   useEffect(() => {
-    handleSetEmployeeList();
+    if (!employeeList.length) {
+      handleSetEmployeeList();
+    }
   }, []);
   return (
     <div className="employeelistContainer">

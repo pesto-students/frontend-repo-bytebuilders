@@ -43,6 +43,10 @@ function App() {
           path: '/',
           element: <HomePage />,
         },
+        {
+          path: '*',
+          element: <HomePage />,
+        },
       ],
     },
     {
@@ -71,6 +75,7 @@ function App() {
           path: '/',
           element: <Dashboard />,
         },
+
         {
           path: '/dashboard',
           element: <Dashboard />,
@@ -123,6 +128,10 @@ function App() {
           path: '/payroll',
           element: <Payroll />,
         },
+        {
+          path: '*',
+          element: <Dashboard />,
+        },
       ],
     },
   ]);
@@ -133,15 +142,19 @@ function App() {
   const getUser = async () => {
     try {
       const data = await getUserdataAPI();
+      console.log('data', data);
       dispatch(setUser(data));
     } catch (error) {
-      console.log(error.response.data.message);
-      if (error.response.data.message === 'Could not verify token') {
+      if (error.message === 'Network Error') {
+      } else if (
+        error.response.data.message === 'Could not verify token'
+      ) {
         dispatch(logoutUser());
       }
     }
   };
   useEffect(() => {
+    console.log('In Appjs', user, token);
     if (!user && token) {
       getUser();
       console.log('IngetUser');

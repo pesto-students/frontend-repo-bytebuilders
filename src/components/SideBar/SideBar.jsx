@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './SideBar.css';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 export default function SideBar() {
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log(user.isReportingManager);
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    console.log('SideBar', user);
+  }, []);
   return (
     <div className="sidebar">
       <div className="detailContainer">
@@ -36,7 +40,7 @@ export default function SideBar() {
         <Link to="/attendance">
           <img src="./attendance.svg" alt="" /> Attendance
         </Link>
-        <Link to={user.isReportingManager ? '/payroll' : '/payslips'}>
+        <Link to={user.isPayrollExecutive ? '/payroll' : '/payslips'}>
           <img src="./payslips.svg" alt="" />
           {user.isReportingManager ? 'Payroll' : 'Pay slips'}
         </Link>

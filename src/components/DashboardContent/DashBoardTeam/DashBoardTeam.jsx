@@ -5,9 +5,11 @@ export default function DashBoardTeam() {
   const [team, setTeam] = useState({});
 
   const handleTeamMemberList = async () => {
-    const res = await getMyTeam();
-    const list = res.teamDetails.map((team) => team);
-    setTeam(list[0]);
+    try {
+      const res = await getMyTeam();
+      const list = res.teamDetails.map((team) => team);
+      setTeam(list[0]);
+    } catch (error) {}
   };
   useEffect(() => {
     if (Object.keys(team).length === 0) {

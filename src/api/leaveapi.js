@@ -5,29 +5,22 @@ export const getLeaveHistoryAPI = async () => {
   return res.data;
 };
 
-export const addleave = async (data, token) => {
+export const addleave = async (data) => {
   const res = await apiRequest.post(
     'add-leave',
 
-    data,
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
+    data
   );
   return res;
 };
 
-export const processLeaveAPI = async (data, token) => {
-  const res = await apiRequest.post('process-leave', data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const processLeaveAPI = async (data) => {
+  const res = await apiRequest.post('process-leave', data);
   return res;
 };
 
-export const leaveRequestAPI = async (token) => {
-  const res = await apiRequest.get('leave-requests', {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const leaveRequestAPI = async () => {
+  const res = await apiRequest.get('leave-requests');
 
   return res;
 };

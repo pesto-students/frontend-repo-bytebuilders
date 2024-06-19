@@ -3,9 +3,10 @@ import './Organisation.css';
 import EmployeeCard from '../../components/Employee/EmployeeCard/EmployeeCard';
 import { employeeListAPI } from '../../api/userAPI';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 export default function Organisation() {
   const [employeeList, setEmployeeList] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleCardClick = (id) => {
@@ -13,18 +14,17 @@ export default function Organisation() {
   };
 
   const getAllEmployee = async () => {
-    const token = localStorage.getItem('token');
-    const res = await employeeListAPI(token);
+    try {
+      const res = await employeeListAPI();
 
-    const list = res.data.filter(
-      (obj) => obj.isEmployeeActive && user._id !== obj._id
-    );
-    setEmployeeList(list);
+      const list = res.data.filter(
+        (obj) => obj.isEmployeeActive && user._id !== obj._id
+      );
+      setEmployeeList(list);
+    } catch (error) {}
   };
 
   useEffect(() => {
-    console.log(employeeList.length);
-    console.log(employeeList);
     if (employeeList.length === 0) {
       getAllEmployee();
     }

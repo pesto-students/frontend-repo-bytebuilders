@@ -5,6 +5,7 @@ import { format, parseISO } from 'date-fns';
 import EmployeePermissionButton from '../EmployeePermisionButton/EmployeePermissionButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { employeeDeactivateAPI } from '../../../api/userAPI';
+import { useSelector } from 'react-redux';
 
 export default function EmployeeDetails({
   user,
@@ -13,8 +14,9 @@ export default function EmployeeDetails({
   handleClick,
   setUser,
 }) {
+  const storedUser = useSelector((state) => state.user);
   const [userFlag, setUserFlag] = useState(false);
-  const storeUser = JSON.parse(localStorage.getItem('user'));
+  const storeUser = useSelector((state) => state.user);
   const [managerFlag, setManagerFlag] = useState(true);
   const navigate = useNavigate();
   const handleToggle = (e) => {
@@ -27,19 +29,24 @@ export default function EmployeeDetails({
   };
 
   const deactivateEmployee = async () => {
-    const token = localStorage.getItem('token');
-    const res = await employeeDeactivateAPI(user._id, token);
-    console.log(res);
-    navigate('/organisation');
+    try {
+      const res = await employeeDeactivateAPI(user._id);
+      console.log(res);
+      navigate('/organisation');
+    } catch (error) {}
+  };
+
+  const resetPassword = async (id) => {
+    try {
+      await resetPassword(id);
+    } catch (error) {}
   };
   useEffect(() => {
     storeUser._id === user._id
       ? setUserFlag(false)
       : setUserFlag(true);
-    // storeUser._id === user.reportingManager
-    //   ? setManagerFlag(true)
-    //   : setManagerFlag(false);
   }, []);
+
   return (
     <div className="employeeDetailContainer">
       <div className="employeenamedesig">
@@ -156,76 +163,78 @@ export default function EmployeeDetails({
           {managerFlag && (
             <>
               <div className="line"></div>
-              <div className="employeeDetailsBoxes">
-                <span className="employeeDetailstitles">
-                  Pay Roll
-                </span>
-                <div className="employePayrollBox">
-                  <span>Salary</span>
+              {user.isPayrollExecutive && (
+                <div className="employeeDetailsBoxes">
+                  <span className="employeeDetailstitles">
+                    Pay Roll
+                  </span>
+                  <div className="employePayrollBox">
+                    <span>Salary</span>
 
-                  <input
-                    type="number"
-                    name="salary"
-                    value={user.salary}
-                    disabled={!editflag}
-                    onChange={handleChange}
-                    min={0}
-                    max={12}
-                  />
-                </div>
-                <div className="employePayrollBox">
-                  <span>Basic Salary</span>
+                    <input
+                      type="number"
+                      name="salary"
+                      value={user.salary}
+                      disabled={!editflag}
+                      onChange={handleChange}
+                      min={0}
+                      max={12}
+                    />
+                  </div>
+                  <div className="employePayrollBox">
+                    <span>Basic Salary</span>
 
-                  <input
-                    type="number"
-                    name="basicSalary"
-                    value={user.basicSalary}
-                    disabled={!editflag}
-                    onChange={handleChange}
-                    min={0}
-                    max={12}
-                  />
-                </div>
-                <div className="employePayrollBox">
-                  <span>HRA</span>
+                    <input
+                      type="number"
+                      name="basicSalary"
+                      value={user.basicSalary}
+                      disabled={!editflag}
+                      onChange={handleChange}
+                      min={0}
+                      max={12}
+                    />
+                  </div>
+                  <div className="employePayrollBox">
+                    <span>HRA</span>
 
-                  <input
-                    type="number"
-                    name="hra"
-                    value={user.hra}
-                    disabled={!editflag}
-                    onChange={handleChange}
-                    min={0}
-                    max={12}
-                  />
-                </div>
-                <div className="employePayrollBox">
-                  <span>PF</span>
+                    <input
+                      type="number"
+                      name="hra"
+                      value={user.hra}
+                      disabled={!editflag}
+                      onChange={handleChange}
+                      min={0}
+                      max={12}
+                    />
+                  </div>
+                  <div className="employePayrollBox">
+                    <span>PF</span>
 
-                  <input
-                    type="number"
-                    name="pf"
-                    value={user.pf}
-                    disabled={!editflag}
-                    onChange={handleChange}
-                    min={0}
-                    max={12}
-                  />
-                </div>
-                <div className="employePayrollBox">
-                  <span>Special Allowances</span>
+                    <input
+                      type="number"
+                      name="pf"
+                      value={user.pf}
+                      disabled={!editflag}
+                      onChange={handleChange}
+                      min={0}
+                      max={12}
+                    />
+                  </div>
+                  <div className="employePayrollBox">
+                    <span>Special Allowances</span>
 
-                  <input
-                    type="number"
-                    name="specialAllowances"
-                    value={user.specialAllowances}
-                    disabled={!editflag}
-                    onChange={handleChange}
-                    min={0}
-                    max={12}
-                  />
+                    <input
+                      type="number"
+                      name="specialAllowances"
+                      value={user.specialAllowances}
+                      disabled={!editflag}
+                      onChange={handleChange}
+                      min={0}
+                      max={12}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="line"></div>
               <div className="employeeDetailsBoxes">
                 <span className="employeeDetailstitles">
@@ -313,6 +322,15 @@ export default function EmployeeDetails({
                 handleToggle={handleToggle}
               />
             </div>
+            <div className="permissionbox">
+              <span>Can manage Payroll ?</span>
+              <EmployeePermissionButton
+                editflag={!editflag}
+                value={user.isPayrollExecutive}
+                name={'canCreateHolidays'}
+                handleToggle={handleToggle}
+              />
+            </div>
           </div>
         </>
       )}
@@ -331,6 +349,11 @@ export default function EmployeeDetails({
             >
               Deactivate
             </button>
+            {storedUser.isAdmin && (
+              <button onClick={() => resetPassword(user._id)}>
+                Reset Password
+              </button>
+            )}
             <button onClick={() => navigate('/organisation')}>
               Back
             </button>

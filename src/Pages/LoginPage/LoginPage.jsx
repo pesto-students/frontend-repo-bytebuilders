@@ -8,10 +8,11 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../Redux/userSlice';
 export default function LoginPage() {
   const [error, setError] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //const { updateUser } = useContext(AuthContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -20,19 +21,29 @@ export default function LoginPage() {
     const email = formData.get('email');
 
     const password = formData.get('password');
-    //console.log(email, password);
-    //await updateUser(userdata);
+
     try {
       const res = await loginUserAPI(email, password);
-      console.log(res);
-      console.log(res.data.refreshToken);
+
       localStorage.setItem('token', res.data.accessToken);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-
+      console.log('res', res.data);
       dispatch(loginUser(res.data.user));
-
+      setError('');
+      console.log('In Login');
       navigate('/dashboard');
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      // if (
+      //   error.response.message === 'Auth failed, Invalid credentials'
+      // ) {
+      //   setError('Invalid Credentials....');
+      // } else if (
+      //   error.response.message ===
+      //   'Auth failed, Wrong password, please try again'
+      // ) {
+      //   setError('Invalid Credentials....');
+      // }
+    }
   };
   return (
     <div className="loginpage">
@@ -57,6 +68,7 @@ export default function LoginPage() {
           <div className="loginbuttonContainer">
             <button className="loginbutton">Log in</button>
           </div>
+          {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
           <div className="loginline"></div>
           <span className="signupLink">
             Dont have Account? <Link to={'/register'}>Sign Up</Link>

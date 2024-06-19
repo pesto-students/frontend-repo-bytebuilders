@@ -1,16 +1,12 @@
 import apiRequest from './apiRequest';
 
-export const getUser = async (id, token) => {
-  const res = await apiRequest.get(`get-particular-employee/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const getUser = async (id) => {
+  const res = await apiRequest.get(`get-particular-employee/${id}`);
   return res.data;
 };
 
-export const updateUser = async (user, token) => {
-  const res = await apiRequest.put(`employees/${user._id}`, user, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const updateUser = async (user) => {
+  const res = await apiRequest.put(`employees/${user._id}`, user);
   return res;
 };
 
@@ -19,25 +15,13 @@ export const employeeListAPI = async () => {
   return res.data;
 };
 
-export const employeeDeactivateAPI = async (id, token) => {
-  const res = await apiRequest.post(
-    `employees-deactivate/${id}`,
-    {},
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+export const employeeDeactivateAPI = async (id) => {
+  const res = await apiRequest.post(`employees-deactivate/${id}`, {});
   return res.data;
 };
 
-export const addEmployee = async (data, token) => {
-  const res = await apiRequest.post(
-    `add-employee`,
-    { data },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+export const addEmployee = async (data) => {
+  const res = await apiRequest.post(`add-employee`, { data });
   return res.data;
 };
 

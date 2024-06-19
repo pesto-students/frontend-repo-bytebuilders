@@ -3,9 +3,9 @@ import './PaySlips.css';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import { months } from '../../Data/Permission';
 import { getPaySlipAPI } from '../../api/payrollapi';
-import PdfViewer from '../../components/Pdfviewer/Pdfviewer';
+import { useSelector } from 'react-redux';
 export default function PaySlips() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
   const [years, setYears] = useState([]);
   const [monthList, setMonthList] = useState([]);
   const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
@@ -30,15 +30,15 @@ export default function PaySlips() {
   const handleMonth = (e) => {
     const { name, value } = e.target;
     yearMonth.month = value;
-    console.log('yearMonth', yearMonth);
   };
   const handlePaySlip = async () => {
-    const res = await getPaySlipAPI({
-      year: yearMonth.year,
-      month: months.indexOf(yearMonth.month) + 1,
-    });
-    setPaySlipURL(res.data.payslipUrl);
-    console.log(paySlipURL);
+    try {
+      const res = await getPaySlipAPI({
+        year: yearMonth.year,
+        month: months.indexOf(yearMonth.month) + 1,
+      });
+      setPaySlipURL(res.data.payslipUrl);
+    } catch (error) {}
   };
   const getMonths = () => {
     const startYear = new Date(user.joiningDate).getFullYear();
@@ -49,7 +49,6 @@ export default function PaySlips() {
       const list = months.slice(startYearMonth, endYearMonth + 1);
 
       setMonthList(list);
-      console.log(monthList);
     }
   };
 
@@ -59,13 +58,15 @@ export default function PaySlips() {
   };
 
   useEffect(() => {
-    getYear();
+    if (!years.length) {
+      getYear();
+    }
   }, []);
   return (
     <div className="payslipContainer">
       <div className="payslipSelector">
         <span>
-          Year :{' '}
+          Year :
           <Dropdown
             options={years}
             name={'year'}
@@ -84,7 +85,7 @@ export default function PaySlips() {
           <button onClick={handlePaySlip}>Get Pay Slip</button>
         </span>
       </div>
-      {/* {paySlipURL && <PdfViewer pdfUrl={paySlipURL} />} */}
+
       {paySlipURL && (
         <div className="paySlipviewer">
           <a href={paySlipURL} onClick={handleClick}>

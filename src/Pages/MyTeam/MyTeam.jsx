@@ -4,30 +4,37 @@ import EmployeeCard from '../../components/Employee/EmployeeCard/EmployeeCard';
 import { createTeamAPI, getMyTeam } from '../../api/teamapi';
 import Myteams from '../../components/Team/Myteams/Myteams';
 import ListContainer from '../../components/ListContainer/TeamListContainer';
+import { useSelector } from 'react-redux';
 export default function MyTeam() {
   const [teams, setTeams] = useState([]);
   const [teamName, setTeamName] = useState('');
   const [teamFlag, setTeamFlag] = useState(false);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
   const getTeams = async () => {
-    const res = await getMyTeam();
-    setTeams(res.teamDetails);
+    try {
+      const res = await getMyTeam();
+      setTeams(res.teamDetails);
+    } catch (error) {}
   };
   const handleCLickAdd = async () => {
-    if (teamFlag && teamName.length) {
-      const res = await createTeamAPI(teamName);
+    try {
+      if (teamFlag && teamName.length) {
+        const res = await createTeamAPI(teamName);
 
-      setTeamFlag(false);
-      getTeams();
-    } else {
-      setTeamFlag(true);
-    }
+        setTeamFlag(false);
+        getTeams();
+      } else {
+        setTeamFlag(true);
+      }
+    } catch (error) {}
   };
   const handleChange = (e) => {
     setTeamName(e.target.value);
   };
   useEffect(() => {
-    getTeams();
+    if (!teams.length) {
+      getTeams();
+    }
   }, []);
   return (
     <div className="myteamContainer">
@@ -53,13 +60,19 @@ export default function MyTeam() {
         <Myteams team={team} user={user} />
       ))} */}
 
-      {teams.map((team) => (
-        <ListContainer
-          team={team}
-          getTeams={getTeams}
-          key={team.teamId}
-        />
-      ))}
+      {teams.length ? (
+        teams.map((team) => (
+          <ListContainer
+            team={team}
+            getTeams={getTeams}
+            key={team.teamId}
+          />
+        ))
+      ) : (
+        <span style={{ color: '#FF3F3F' }}>
+          Lets wait to alloacate to team...
+        </span>
+      )}
     </div>
   );
 }

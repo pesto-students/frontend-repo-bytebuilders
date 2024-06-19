@@ -10,33 +10,41 @@ export default function Designation() {
   const [designationList, setdesignationList] = useState([]);
   const [designation, setdesignation] = useState('');
   const [addStatus, setAddStatus] = useState(false);
-  const token = localStorage.getItem('token');
+  const [error, setError] = useState('');
   const designations = async () => {
-    const depart = await getAlldesignations(token);
+    try {
+      const depart = await getAlldesignations();
 
-    setdesignationList(depart.data);
+      setdesignationList(depart.data);
+    } catch (error) {}
   };
 
   const designationadd = async (e) => {
-    e.preventDefault();
+    if (designation) {
+      e.preventDefault();
 
-    const res = await addDesignations(designation, token);
+      const res = await addDesignations(designation);
 
-    const desig = await getAlldesignations(token);
+      const desig = await getAlldesignations();
 
-    setdesignationList(desig.data);
-    setdesignation('');
-
-    setAddStatus(false);
+      setdesignationList(desig.data);
+      setdesignation('');
+      setError('');
+      setAddStatus(false);
+    } else {
+      setError('Please Enter Designation Name....');
+    }
   };
 
   useEffect(() => {
-    designations();
+    if (!designationList.length) {
+      designations();
+    }
   }, []);
   return (
     <div className="designations">
       <h1>Designations</h1>
-
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       <DepartmentDesignationTable
         name={'Designation'}
         List={designationList}

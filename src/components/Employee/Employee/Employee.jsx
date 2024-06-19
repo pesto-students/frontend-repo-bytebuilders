@@ -8,11 +8,10 @@ export default function Employee() {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [editflag, setEditflag] = useState(false);
-  const token = localStorage.getItem('token');
 
   const editUser = async () => {
     try {
-      const userdata = await updateUser(user, token);
+      const userdata = await updateUser(user);
 
       const { password, ...updatedUser } = userdata;
     } catch (error) {
@@ -34,8 +33,7 @@ export default function Employee() {
   };
   const getEmployee = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await getUser(id, token);
+      const res = await getUser(id);
       setUser(res.data);
     } catch (error) {
       console.log(error);
@@ -43,7 +41,9 @@ export default function Employee() {
   };
 
   useEffect(() => {
-    getEmployee();
+    if (Object.keys(user).length === 0) {
+      getEmployee();
+    }
   }, []);
   return (
     <div className="employeeContainer">

@@ -5,9 +5,11 @@ import { getBirthdayEmployeeAPI } from '../../api/userAPI';
 export default function DashBoardCelebration() {
   const [employeeeList, setEmployeeList] = useState([]);
   const getEmployeeListCelebration = async () => {
-    const res = await getBirthdayEmployeeAPI();
+    try {
+      const res = await getBirthdayEmployeeAPI();
 
-    setEmployeeList(res.data);
+      setEmployeeList(res.data);
+    } catch (error) {}
   };
   useEffect(() => {
     if (!employeeeList.length) {

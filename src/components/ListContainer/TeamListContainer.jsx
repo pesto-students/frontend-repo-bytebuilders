@@ -37,70 +37,68 @@ export default function ListContainer({ team, getTeams }) {
       removeButtonFlag: !buttonFlag.removeButtonFlag,
       deleteButtonFlag: !buttonFlag.deleteButtonFlag,
     });
-    if (value == 'save') {
-      await updateTeamName(teamName, team.teamId);
+    try {
+      if (value == 'save') {
+        await updateTeamName(teamName, team.teamId);
 
-      getTeams();
-    }
+        getTeams();
+      }
+    } catch (error) {}
   };
   const handleAddMember = async () => {
-    if (selectedEmployeeIds.length) {
-      const res = await addMemberToTeamAPI(
-        selectedEmployeeIds,
-        team.teamId
-      );
-      const { data } = await getParticularTeam(team.teamId);
+    try {
+      if (selectedEmployeeIds.length) {
+        await addMemberToTeamAPI(selectedEmployeeIds, team.teamId);
+        const { data } = await getParticularTeam(team.teamId);
 
-      setTeamDetails(data);
-      setSelectedEmployeeIds([]);
-    }
+        setTeamDetails(data);
+        setSelectedEmployeeIds([]);
+      }
 
-    setButtonFlag({
-      editButtonFlag: !buttonFlag.editButtonFlag,
-      addMemberButtonFlag: true,
-      removeButtonFlag: !buttonFlag.removeButtonFlag,
-      deleteButtonFlag: !buttonFlag.deleteButtonFlag,
-    });
+      setButtonFlag({
+        editButtonFlag: !buttonFlag.editButtonFlag,
+        addMemberButtonFlag: true,
+        removeButtonFlag: !buttonFlag.removeButtonFlag,
+        deleteButtonFlag: !buttonFlag.deleteButtonFlag,
+      });
+    } catch (error) {}
   };
 
   const handleRemoveMember = async () => {
-    if (selectedEmployeeIds.length) {
-      const res = await removeMemberFromTeamAPI(
-        selectedEmployeeIds,
-        team.teamId
-      );
+    try {
+      if (selectedEmployeeIds.length) {
+        await removeMemberFromTeamAPI(
+          selectedEmployeeIds,
+          team.teamId
+        );
 
-      const { data } = await getParticularTeam(team.teamId);
-      console.log(data);
-      setTeamDetails(data);
-      setSelectedEmployeeIds([]);
-    } else {
-      teamDetails.teamMembers.map((member) =>
-        console.log('meid', member._id)
-      );
-      const teamMembersList = teamDetails.teamMembers.filter(
-        (member) =>
-          member._id !== teamDetails.teamReportingManager._id
-      );
-      setMembers(teamMembersList);
-      //console.log('Inremove', team.teamMembers);
-    }
-    setButtonFlag({
-      editButtonFlag: !buttonFlag.editButtonFlag,
-      addMemberButtonFlag: !buttonFlag.addMemberButtonFlag,
-      removeButtonFlag: true,
-      deleteButtonFlag: !buttonFlag.deleteButtonFlag,
-    });
+        const { data } = await getParticularTeam(team.teamId);
+        console.log(data);
+        setTeamDetails(data);
+        setSelectedEmployeeIds([]);
+      } else {
+        teamDetails.teamMembers.map((member) =>
+          console.log('meid', member._id)
+        );
+        const teamMembersList = teamDetails.teamMembers.filter(
+          (member) =>
+            member._id !== teamDetails.teamReportingManager._id
+        );
+        setMembers(teamMembersList);
+      }
+      setButtonFlag({
+        editButtonFlag: !buttonFlag.editButtonFlag,
+        addMemberButtonFlag: !buttonFlag.addMemberButtonFlag,
+        removeButtonFlag: true,
+        deleteButtonFlag: !buttonFlag.deleteButtonFlag,
+      });
+    } catch (error) {}
   };
   const handleDeleteButtom = async (id) => {
-    const res = await deleteTeamAPI(id);
-    getTeams();
-    // setButtonFlag({
-    //   editButtonFlag: !buttonFlag.editButtonFlag,
-    //   addMemberButtonFlag: !buttonFlag.addMemberButtonFlag,
-    //   removeButtonFlag: !buttonFlag.removeButtonFlag,
-    //   deleteButtonFlag: true,
-    // });
+    try {
+      await deleteTeamAPI(id);
+      getTeams();
+    } catch (error) {}
   };
   const handleChange = (e) => {
     setTeamName(e.target.value);

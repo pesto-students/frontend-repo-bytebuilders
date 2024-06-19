@@ -19,3 +19,8 @@ export const confirmPassword = async ({
   });
   return res;
 };
+
+export const resetPassword = async (id) => {
+  const res = await apiRequest.patch('update-password/{id}');
+  return res;
+};

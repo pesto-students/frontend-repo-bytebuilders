@@ -1,11 +1,12 @@
 .homepageContainer {
   display: flex;
   align-items: center;
+  height: cal(100vh - 100px);
 }
 
 .homepageText {
   background-color: #f5f5f5;
-  width: 110vh;
+
   border-radius: 10px;
   padding: 24px;
 }
@@ -36,4 +37,12 @@
   line-height: 150%;
 
   color: #000000;
+}
+
+@media screen and (max-width: 1024px) {
+  .homepageContainer {
+    flex-direction: column-reverse;
+  }
+}
+@media screen and (max-width: 738px) {
 }

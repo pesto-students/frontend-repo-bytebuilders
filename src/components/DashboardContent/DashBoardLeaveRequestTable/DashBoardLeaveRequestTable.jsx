@@ -22,7 +22,9 @@ export default function DashBoardLeaveRequestTable() {
     } catch (error) {}
   };
   useEffect(() => {
-    getLeave();
+    if (!leaveList.length) {
+      getLeave();
+    }
   }, []);
   return (
     <div className="leverequestTableDashBoard">

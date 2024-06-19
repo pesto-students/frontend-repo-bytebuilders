@@ -5,6 +5,7 @@ import Dropdown from '../../Dropdown/Dropdown';
 import { getAlldesignations } from '../../../api/designationapi';
 import { getAllDepartments } from '../../../api/departmentapi';
 import { employeeListAPI } from '../../../api/userAPI';
+import { useSelector } from 'react-redux';
 export default function AddEmployeeForm({
   handleSumbmit,
   formData,
@@ -14,37 +15,53 @@ export default function AddEmployeeForm({
   const [departments, setDepartment] = useState([]);
   const [designation, setDesignation] = useState([]);
   const [reportinManagerList, setReportingManagerList] = useState([]);
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
-  const setDepartmentList = async () => {
-    const { data } = await getAllDepartments(token);
-    const deptList = data
-      .filter((obj) => obj.organisationName === user.organisationName)
-      .map((department) => department.name);
 
-    setDepartment(deptList);
+  const user = useSelector((state) => state.user);
+  const setDepartmentList = async () => {
+    try {
+      const { data } = await getAllDepartments();
+      const deptList = data
+        .filter(
+          (obj) => obj.organisationName === user.organisationName
+        )
+        .map((department) => department.name);
+
+      setDepartment(deptList);
+    } catch (error) {}
   };
   const setDesignationList = async () => {
-    const { data } = await getAlldesignations(token);
-    const desgList = data
-      .filter((obj) => obj.organisationName === user.organisationName)
-      .map((designation) => designation.name);
+    try {
+      const { data } = await getAlldesignations();
+      const desgList = data
+        .filter(
+          (obj) => obj.organisationName === user.organisationName
+        )
+        .map((designation) => designation.name);
 
-    setDesignation(desgList);
+      setDesignation(desgList);
+    } catch (error) {}
   };
   const setReportingManager = async () => {
-    const { data } = await employeeListAPI();
+    try {
+      const { data } = await employeeListAPI();
 
-    const list = data
-      .filter((employee) => employee.isReportingManager)
-      .map((employee) => employee.fullName);
+      const list = data
+        .filter((employee) => employee.isReportingManager)
+        .map((employee) => employee.fullName);
 
-    setReportingManagerList(list);
+      setReportingManagerList(list);
+    } catch (error) {}
   };
   useEffect(() => {
-    setDepartmentList();
-    setDesignationList();
-    setReportingManager();
+    if (!departments.length) {
+      setDepartmentList();
+    }
+    if (!designation.length) {
+      setDesignationList();
+    }
+    if (!reportinManagerList.length) {
+      setReportingManager();
+    }
   }, []);
   return (
     <form onSubmit={handleSumbmit}>

@@ -8,6 +8,7 @@ export const adminPermission = {
   medicalLeaveDays: 8,
   lopLeaveDays: 2,
   isReportingManager: true,
+  isPayrollExecutive: true,
   basicSalary: 5000,
   hra: 1200,
   pf: 300,
@@ -31,7 +32,7 @@ export const addUserData = {
   isEmployeeActive: true,
   isOwner: false,
 
-  lopLeaveDays: 2,
+  lopLeaveDays: 0,
 
   canAddEmployees: false,
   canRemoveEmployees: false,
@@ -40,6 +41,7 @@ export const addUserData = {
   canCreateHolidays: false,
   canDeleteHolidays: false,
   canAcceptOrRejectLeaves: false,
+  isPayrollExecutive: false,
   canReadLeaves: false,
   canCreateLeaves: false,
   organisationName: '',

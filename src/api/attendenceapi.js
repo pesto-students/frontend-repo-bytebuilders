@@ -1,6 +1,6 @@
 import apiRequest from './apiRequest';
 
-export const getPunchDataAPI = async (token) => {
+export const getPunchDataAPI = async () => {
   const res = await apiRequest.get('punch-data');
   return res.data;
 };

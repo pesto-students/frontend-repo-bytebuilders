@@ -3,17 +3,18 @@ import './Profile.css';
 import { format, parseISO } from 'date-fns';
 import { getUser, updateUser } from '../../api/userAPI';
 import EmployeeDetails from '../../components/Employee/EmployeeDetails/EmployeeDetails';
+import { useSelector } from 'react-redux';
 
 export default function Profile() {
   const [editflag, setEditflag] = useState(false);
-  const token = localStorage.getItem('token');
+
   const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user'))
+    useSelector((state) => state.user)
   );
 
   const editUser = async () => {
     try {
-      const userdata = await updateUser(user, token);
+      const userdata = await updateUser(user);
 
       const { password, ...updatedUser } = userdata;
     } catch (error) {
@@ -34,11 +35,15 @@ export default function Profile() {
     });
   };
   const getUserDetails = async () => {
-    const res = await getUser(user._id, token);
-    setUser(res.data);
+    try {
+      const res = await getUser(user._id);
+      setUser(res.data);
+    } catch (error) {}
   };
   useEffect(() => {
-    getUserDetails();
+    if (Object.keys(user) === 0) {
+      getUserDetails();
+    }
   }, []);
 
   return (

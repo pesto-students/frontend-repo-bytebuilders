@@ -24,7 +24,7 @@ export default function AddEmployee() {
     specialAllowances: 0,
     currency: '',
   });
-  const token = localStorage.getItem('token');
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,10 +37,12 @@ export default function AddEmployee() {
   const handleSumbmit = async (e) => {
     e.preventDefault();
 
-    const response = { ...formData, ...addUserData };
-    //console.log(response);
-    const employee = await addEmployee(response, token);
-    navigate('/organisation');
+    try {
+      const response = { ...formData, ...addUserData };
+
+      const employee = await addEmployee(response);
+      navigate('/organisation');
+    } catch (error) {}
   };
   return (
     <div className="addemployeeContainer">

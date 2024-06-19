@@ -1,5 +1,6 @@
 import React from 'react';
 import './DepartmentDesignationTable.css';
+import { useSelector } from 'react-redux';
 export default function DepartmentDesignationTable({
   setValue,
   List,
@@ -9,6 +10,7 @@ export default function DepartmentDesignationTable({
   addStatus,
   inValue,
 }) {
+  const user = useSelector((state) => state.user);
   return (
     <>
       {List.length > 0 && (
@@ -32,24 +34,26 @@ export default function DepartmentDesignationTable({
         </table>
       )}
 
-      <div className="addbutton">
-        {addStatus ? (
-          <>
-            <input
-              type="text"
-              placeholder={`${name} name`}
-              name="name"
-              onChange={(e) => setValue(e.target.value)}
-              value={inValue}
-            />
-            <button onClick={addValue}>Add {name}</button>
-          </>
-        ) : (
-          <button onClick={() => setAddStatus(true)}>
-            Add {name}
-          </button>
-        )}
-      </div>
+      {user.isAdmin && (
+        <div className="addbutton">
+          {addStatus ? (
+            <>
+              <input
+                type="text"
+                placeholder={`${name} name`}
+                name="name"
+                onChange={(e) => setValue(e.target.value)}
+                value={inValue}
+              />
+              <button onClick={addValue}>Add {name}</button>
+            </>
+          ) : (
+            <button onClick={() => setAddStatus(true)}>
+              Add {name}
+            </button>
+          )}
+        </div>
+      )}
     </>
   );
 }

@@ -9,7 +9,6 @@ import HoverBox from '../../components/Attendance/HoverBox/HoverBox';
 import ClockComponent from '../../components/ClockComponent/ClockComponent';
 
 export default function Attendance() {
-  const token = localStorage.getItem('token');
   const [leaveStatus, setLeaveStatus] = useState(false);
 
   const [checkIn, setCheckIn] = useState(true);
@@ -22,21 +21,23 @@ export default function Attendance() {
     content: [],
   });
   const getAttendance = async () => {
-    const list = await getPunchDataAPI(token);
+    try {
+      const list = await getPunchDataAPI();
 
-    setAttendanceList(list);
-    if (list.length) {
-      const today = list[list.length - 1];
+      setAttendanceList(list);
+      if (list.length) {
+        const today = list[list.length - 1];
 
-      const checkstatus = Math.floor(today.punchTimes.length % 2)
-        ? setCheckIn(false)
-        : setCheckIn(true);
-      console.log('checkstatus', checkstatus);
-      console.log(Math.floor(today.punchTimes.length % 2));
-      if (today.isHoliday || today.isWeekend || today.isOnLeave) {
-        setLeaveStatus(true);
+        const checkstatus = Math.floor(today.punchTimes.length % 2)
+          ? setCheckIn(false)
+          : setCheckIn(true);
+        console.log('checkstatus', checkstatus);
+        console.log(Math.floor(today.punchTimes.length % 2));
+        if (today.isHoliday || today.isWeekend || today.isOnLeave) {
+          setLeaveStatus(true);
+        }
       }
-    }
+    } catch (error) {}
   };
   const handleMouseIn = (e, punchTimes) => {
     const rect = e.target.getBoundingClientRect();
@@ -71,17 +72,22 @@ export default function Attendance() {
   };
 
   const handleCheckIn = async () => {
-    const res = await punchInAPI();
-    getAttendance();
+    try {
+      const res = await punchInAPI();
+      getAttendance();
+    } catch (error) {}
   };
 
   const handleCheckOut = async () => {
-    const res = await punchOutAPI();
-
-    getAttendance();
+    try {
+      const res = await punchOutAPI();
+      getAttendance();
+    } catch (error) {}
   };
   useEffect(() => {
-    getAttendance();
+    if (!attendanceList.length) {
+      getAttendance();
+    }
   }, []);
   return (
     <div className="attendanceContainer">

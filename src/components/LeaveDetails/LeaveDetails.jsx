@@ -23,13 +23,14 @@ export default function LeaveDetails({
   });
 
   const processLeave = async (status) => {
-    const token = localStorage.getItem('token');
-    const data = { leave_id: leave.leaveId, action: status };
+    try {
+      const data = { leave_id: leave.leaveId, action: status };
 
-    const res = await processLeaveAPI(data, token);
+      const res = await processLeaveAPI(data);
 
-    getList();
-    setLeaveDetailsStatus(false);
+      getList();
+      setLeaveDetailsStatus(false);
+    } catch (error) {}
   };
 
   useEffect(() => {

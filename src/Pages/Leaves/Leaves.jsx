@@ -14,20 +14,22 @@ export default function Leaves() {
   const [leaveList, setLeaveList] = useState([]);
   const [leaveDetails, setLeaveDetails] = useState({});
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
 
   const role = 'Employee';
   const getLeaveHistory = async () => {
-    const res = await getLeaveHistoryAPI();
-    const updatedList = res.map((obj) => ({
-      ...obj,
-      start_date: format(parseISO(obj.start_date), 'yyyy-mm-dd'),
-      end_date: format(parseISO(obj.end_date), 'yyyy-mm-dd'),
-      apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
-      days: differenceInDays(obj.end_date, obj.start_date) + 1,
-    }));
+    try {
+      const res = await getLeaveHistoryAPI();
+      const updatedList = res.map((obj) => ({
+        ...obj,
+        start_date: format(parseISO(obj.start_date), 'yyyy-mm-dd'),
+        end_date: format(parseISO(obj.end_date), 'yyyy-mm-dd'),
+        apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
+        days: differenceInDays(obj.end_date, obj.start_date) + 1,
+      }));
 
-    setLeaveList(updatedList);
+      setLeaveList(updatedList);
+    } catch (error) {}
   };
 
   const leaveAssign = (leave) => {
@@ -36,7 +38,9 @@ export default function Leaves() {
   };
 
   useEffect(() => {
-    getLeaveHistory();
+    if (!leaveList.length) {
+      getLeaveHistory();
+    }
   }, []);
   return (
     <div className="leavecontainer">

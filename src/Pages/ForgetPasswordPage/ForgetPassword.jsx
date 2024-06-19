@@ -45,7 +45,11 @@ export default function ForgetPassword() {
       } else {
         setError('Please Enter Mail');
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.message === 'Failed to send OTP') {
+        setError('Please try again....');
+      }
+    }
   };
   const handleConfirmPassword = async () => {
     try {
@@ -56,10 +60,17 @@ export default function ForgetPassword() {
         const res = await confirmPassword(data);
 
         setError('');
+        navigate('/login');
       } else {
         setError('Please Fill All the Field');
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.message === 'Invalid OTP') {
+        setError('Please use correct Otp...');
+      } else if (error.response.message === 'Failed to confirm OTP') {
+        setError('Failed to confirm OTP please try again....');
+      }
+    }
   };
 
   return (

@@ -50,15 +50,11 @@ export default function AddLeave({
     e.preventDefault();
     try {
       if (validate()) {
-        const token = localStorage.getItem('token');
-
-        await addleave(formData, token);
+        await addleave(formData);
         getLeaveHistory();
         setAddLeaveStatus(false);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const options = ['casual', 'medical', 'lop'];
 
