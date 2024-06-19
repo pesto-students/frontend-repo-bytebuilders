@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montaga&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+body {
+  /* font-family: 'Lato', sans-serif; */
+  font-family: 'Prompt';
+  font-style: normal;
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.line {
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+table {
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 20px;
+  border-collapse: collapse;
+}
+td,
+th {
+  left: 0px;
+  padding-left: 12px;
+  padding: 4px 0px;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  width: 30vh;
+}
+tr:last-child > td {
+  border-bottom: none;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th {
+  font-weight: 300;
+}
+tbody {
+  overflow-y: scroll;
+}
+tr {
+  height: 5vh;
+  gap: 36px;
+  padding: 5px;
+  border: none;
+}
+
+td > a {
+  color: #4982eb;
+}
+
+button:hover {
+  scale: 1.05;
+}

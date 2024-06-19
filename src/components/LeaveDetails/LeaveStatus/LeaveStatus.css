@@ -1,0 +1,7 @@
+.leavestatus {
+  display: flex;
+  padding: 4px 12px;
+  gap: 24px;
+  border-radius: 10px;
+  text-transform: capitalize;
+}

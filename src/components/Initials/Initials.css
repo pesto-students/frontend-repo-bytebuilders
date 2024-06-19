@@ -1,0 +1,13 @@
+.initialCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #0000;
+  border-radius: 50%;
+  width: 6vh;
+  height: 6vh;
+  font-size: 16px;
+
+  color: #00000080;
+  text-transform: capitalize;
+}

@@ -1,0 +1,27 @@
+.dashleaverequestable {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: 90vh;
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+.leavetabletitledash {
+  display: flex;
+  justify-content: space-between;
+}
+.dashboardcontent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.dashteamleave {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: 70vh;
+  height: 50vh;
+  overflow-y: scroll;
+}

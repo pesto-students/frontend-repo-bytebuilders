@@ -1,0 +1,104 @@
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  height: 100px;
+  border-bottom: 1px solid #000000;
+  /* box-shadow: 0px 6px 5.2px rgba(0, 0, 0, 0.25); */
+}
+
+.leftbox {
+  display: flex;
+  gap: 20px;
+  font-family: 'Montserrat Alternates';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+}
+
+.leftbox > a:hover {
+  scale: 1.02;
+  color: #4982eb;
+}
+
+.navbarprofile {
+  background-color: #6399fd80;
+  width: 15vh;
+  border-radius: 20vh;
+}
+.navbarprofile > img {
+  border-radius: 100%;
+  border: 1px solid #000;
+  height: 7vh;
+}
+.mobileMenu {
+  position: absolute;
+  background-color: #4982eb;
+  right: -50%;
+
+  width: 50%;
+  color: white;
+  top: 0;
+  transition: all 1s ease;
+
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+.menuIcon {
+  display: none;
+}
+.menuIcon img {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+.active {
+  right: 0;
+  height: 60vh;
+}
+
+.navbarloginLogout {
+  display: flex;
+  gap: 24px;
+
+  font-family: 'Montserrat Alternates';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+
+  color: #000000;
+}
+.circle {
+  border: 1px solid black;
+}
+@media screen and (max-width: 1366px) {
+}
+
+@media screen and (max-width: 1024px) {
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+  }
+  .menuIcon {
+    display: block;
+  }
+  .leftbox {
+    display: flex;
+    flex-direction: column;
+    background-color: #4982eb;
+  }
+  .navbarprofile {
+    background-color: #ffff;
+  }
+  .active {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 738px) {
+}

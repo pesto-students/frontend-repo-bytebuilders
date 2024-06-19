@@ -1,0 +1,12 @@
+.myactions {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 36px;
+}
+
+.myactionlist {
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 12px;
+}

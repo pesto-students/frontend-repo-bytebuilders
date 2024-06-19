@@ -1,0 +1,12 @@
+.payrollContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  gap: 36px;
+  width: 80%;
+}
+
+.payrollSelector {
+  display: flex;
+  gap: 24px;
+}

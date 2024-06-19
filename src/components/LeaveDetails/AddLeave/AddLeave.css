@@ -1,0 +1,79 @@
+.addleavecontainer {
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 90vh;
+  height: 70vh;
+  z-index: 100;
+  padding: 12px;
+  background-color: #ffff;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.topcontaineraddleave {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addleavecontent {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 5vh;
+}
+
+.addleaveleft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2vh;
+}
+
+.addleaveinputbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5vh;
+}
+
+.addleaveinputbox > input {
+  width: 40vh;
+  height: 5vh;
+  border-radius: 5px;
+  padding: 0px 10px;
+}
+
+.addleavereason {
+  height: 8vh;
+}
+
+.addleaveright {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40vh;
+}
+
+.addleavedays {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  background-color: #b7d0ff80;
+  border-radius: 5px;
+  padding: 12px;
+}
+
+.addleavedaysstat {
+  display: flex;
+  justify-content: space-between;
+}
+.addleavedaysstat > span {
+  color: #6399fd;
+}
+
+.addleavebuttons > button {
+  padding: 8px 16px;
+  background-color: #6399fd;
+  border: none;
+  border-radius: 5px;
+}

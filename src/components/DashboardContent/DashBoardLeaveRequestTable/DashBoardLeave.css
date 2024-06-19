@@ -1,0 +1,16 @@
+.approvalStatus {
+  padding: 10px;
+  background-color: #30d14340;
+  border-radius: 5px;
+  color: #30d143;
+}
+
+.leverequestTableDashBoard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.leverequestTableDashBoard > table {
+  font-size: 12px;
+}

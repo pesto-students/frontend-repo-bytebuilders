@@ -1,0 +1,30 @@
+.organisation {
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  gap: 36px;
+  width: 80%;
+}
+
+.organisationList {
+  display: inherit;
+  flex-wrap: wrap;
+  padding: 24px;
+  gap: 24px;
+
+  overflow-y: scroll;
+}
+
+.addEmployeeButtonContainer {
+  display: flex;
+  justify-content: end;
+}
+.addEmployeeButtonContainer > button {
+  background: #6399fd;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  padding: 12px 28px;
+  border: none;
+}

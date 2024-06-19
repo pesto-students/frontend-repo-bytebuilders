@@ -1,0 +1,72 @@
+.loginpage {
+  display: flex;
+  background-color: #e3edff;
+  height: 100vh;
+  font-family: 'Prompt';
+  font-style: normal;
+}
+
+.loginleft {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+
+  background-color: #ffffff;
+  border-radius: 0px 20px 20px 0px;
+}
+
+.loginleft > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+
+.logininput {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logininput > input {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  width: 40vh;
+  padding: 10px 10px;
+}
+
+.loginleft > form > a {
+  font-weight: 300;
+  font-size: 2.2vh;
+  color: #4982eb;
+}
+
+.loginbutton {
+  padding: 14px 30px;
+  background: #4982eb;
+  border-radius: 25px;
+  color: #fff500;
+  cursor: pointer;
+  border: none;
+}
+
+.loginbutton:hover {
+  scale: 1.05;
+}
+
+.signupLink > a {
+  font-weight: bold;
+}
+
+.loginline {
+  border-bottom: 1px solid black;
+  width: 70vh;
+}

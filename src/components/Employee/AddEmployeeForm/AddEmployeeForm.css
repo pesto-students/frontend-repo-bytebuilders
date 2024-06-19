@@ -1,0 +1,46 @@
+.addinputarea {
+  display: flex;
+  justify-content: space-between;
+
+  padding-bottom: 36px;
+}
+.addemployeeinput {
+  display: flex;
+  flex-direction: column;
+}
+.addemployeeinput > input {
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  width: 40vh;
+  padding: 10px 10px;
+}
+.addemployeeinput > label {
+  display: flex;
+  gap: 24px;
+}
+
+.EmployeeDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.addbuttonContainer {
+  display: flex;
+  gap: 24px;
+}
+.addbuttonContainer > button {
+  padding: 12px 24px;
+  border-radius: 50px;
+  background-color: #6399fd;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.employeeData {
+  display: flex;
+  padding-bottom: 36px;
+  justify-content: space-between;
+}

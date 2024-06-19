@@ -1,0 +1,48 @@
+.homepageContainer {
+  display: flex;
+  align-items: center;
+  height: cal(100vh - 100px);
+}
+
+.homepageText {
+  background-color: #f5f5f5;
+
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.homepagetitelText {
+  font-family: 'Poiret One';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 150%;
+  color: #000000;
+}
+
+.homepagetitlemiddle {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 100;
+  font-size: 48px;
+  line-height: 150%;
+  color: #4982eb;
+}
+
+.homepageText > p {
+  font-family: 'Montaga';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 150%;
+
+  color: #000000;
+}
+
+@media screen and (max-width: 1024px) {
+  .homepageContainer {
+    flex-direction: column-reverse;
+  }
+}
+@media screen and (max-width: 738px) {
+}

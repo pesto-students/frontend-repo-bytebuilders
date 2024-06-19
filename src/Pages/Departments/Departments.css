@@ -1,0 +1,17 @@
+.departments {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 80%;
+}
+
+.departments > table {
+  border: black solid 1px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.remove {
+  color: #f83535;
+}

@@ -1,0 +1,31 @@
+.payslipContainer {
+  display: flex;
+  flex-direction: column;
+}
+.payslipSelector {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  width: 100%;
+}
+
+.payslipSelector > span > button {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #6399fd;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  border: none;
+}
+
+.paySlipviewer {
+  display: flex;
+  padding-top: 10%;
+
+  align-items: center;
+  color: #6399fd;
+  font-size: 16px;
+  font-weight: 400;
+}
