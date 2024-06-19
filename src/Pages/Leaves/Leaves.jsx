@@ -13,6 +13,10 @@ export default function Leaves() {
   const [addLeaveStatus, setAddLeaveStatus] = useState(false);
   const [leaveList, setLeaveList] = useState([]);
   const [leaveDetails, setLeaveDetails] = useState({});
+  const [responseStatus, setResponseStatus] = useState({
+    status: 'OK',
+    message: '',
+  });
 
   const user = useSelector((state) => state.user);
 
@@ -35,6 +39,14 @@ export default function Leaves() {
   const leaveAssign = (leave) => {
     setLeaveDetails(leave);
     setLeaveDetailsStatus(true);
+  };
+  const setMessageStatus = () => {
+    setTimeout(() => {
+      setMessageStatus({
+        status: 'OK',
+        message: '',
+      });
+    }, 3000);
   };
 
   useEffect(() => {
@@ -65,7 +77,19 @@ export default function Leaves() {
           </button>
         </div>
       </div>
+
       <div className="leavelist">
+        {responseStatus.message && (
+          <p
+            style={
+              responseStatus.status === 'OK'
+                ? { color: '#30D143' }
+                : { color: '#ED715F' }
+            }
+          >
+            {responseStatus.message}
+          </p>
+        )}
         {leaveList.length != 0 && (
           <div className="myleave">
             <label htmlFor="myleave"> My Leave</label>
@@ -109,6 +133,9 @@ export default function Leaves() {
           setLeaveDetailsStatus={setLeaveDetailsStatus}
           getList={getLeaveHistory}
           role={role}
+          responseStatus={responseStatus}
+          setResponseStatus={setResponseStatus}
+          setMessageStatus={setMessageStatus}
           leaveDetails={leaveDetails}
         />
       )}

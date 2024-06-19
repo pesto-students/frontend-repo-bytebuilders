@@ -27,7 +27,7 @@ export const userdata = {
   canAcceptOrRejectLeaves: true,
   canReadLeaves: true,
   canCreateLeaves: true,
-  organisationName: 'HRease',
+: 'HRease',
   department: '',
   designation: '',
 };

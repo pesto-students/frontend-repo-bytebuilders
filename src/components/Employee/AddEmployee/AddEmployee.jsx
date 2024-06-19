@@ -10,11 +10,14 @@ export default function AddEmployee() {
     fullName: '',
     email: '',
     password: '1234567',
+    isReportingManager: false,
+    reportingManager: '',
+    designation: '',
     employeeIdentificationCode: '',
     joiningDate: '',
     dateOfBirth: '',
     phone: '',
-    organisationName: '',
+    isPayrollExecutive: false,
     medicalLeaveDays: 0,
     casualLeaveDays: 0,
     salary: 0,
@@ -28,11 +31,23 @@ export default function AddEmployee() {
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('In handle change');
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (
+      name === 'isReportingManager' ||
+      name === 'isPayrollExecutive'
+    ) {
+      const checked = e.target.checked;
+
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      console.log(name);
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
   const handleSumbmit = async (e) => {
     e.preventDefault();

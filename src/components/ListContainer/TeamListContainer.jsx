@@ -10,6 +10,8 @@ import {
 } from '../../api/teamapi';
 
 import EmployeeListContainer from '../Employee/EmployeeListContainer/EmployeeListContainer';
+import { employeeListAPI } from '../../api/userAPI';
+import { useSelector } from 'react-redux';
 export default function ListContainer({ team, getTeams }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [editEnable, setEditEnable] = useState(false);
@@ -19,6 +21,7 @@ export default function ListContainer({ team, getTeams }) {
     removeButtonFlag: true,
     deleteButtonFlag: true,
   });
+  const user = useSelector((state) => state.user);
   const [teamName, setTeamName] = useState('');
   const [members, setMembers] = useState([]);
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
@@ -119,53 +122,55 @@ export default function ListContainer({ team, getTeams }) {
       </div>
       {isExpanded && (
         <div className="teamdetails">
-          <div className="teambuttonconatiner">
-            {buttonFlag.editButtonFlag && (
-              <button
-                onClick={(e) => handleEditClick(e)}
-                value={editEnable ? 'save' : 'edit'}
-                style={{
-                  background: '#2EC9FE40',
-                  color: '#2EC9FE',
-                }}
-              >
-                {editEnable ? 'Save' : 'Edit Name'}
-              </button>
-            )}
-            {buttonFlag.addMemberButtonFlag && (
-              <button
-                onClick={handleAddMember}
-                style={{
-                  background: '#2EC9FE40',
-                  color: '#2EC9FE',
-                }}
-              >
-                Add Member
-              </button>
-            )}
-            {buttonFlag.removeButtonFlag && (
-              <button
-                onClick={handleRemoveMember}
-                style={{
-                  background: '#EE404C40',
-                  color: '#EE404C',
-                }}
-              >
-                Remove Member
-              </button>
-            )}
-            {buttonFlag.deleteButtonFlag && (
-              <button
-                onClick={() => handleDeleteButtom(team.teamId)}
-                style={{
-                  background: '#EE404C40',
-                  color: '#EE404C',
-                }}
-              >
-                Delete Team
-              </button>
-            )}
-          </div>
+          {(user.isAdmin || user.isReportingManager) && (
+            <div className="teambuttonconatiner">
+              {buttonFlag.editButtonFlag && (
+                <button
+                  onClick={(e) => handleEditClick(e)}
+                  value={editEnable ? 'save' : 'edit'}
+                  style={{
+                    background: '#2EC9FE40',
+                    color: '#2EC9FE',
+                  }}
+                >
+                  {editEnable ? 'Save' : 'Edit Name'}
+                </button>
+              )}
+              {buttonFlag.addMemberButtonFlag && (
+                <button
+                  onClick={handleAddMember}
+                  style={{
+                    background: '#2EC9FE40',
+                    color: '#2EC9FE',
+                  }}
+                >
+                  Add Member
+                </button>
+              )}
+              {buttonFlag.removeButtonFlag && (
+                <button
+                  onClick={handleRemoveMember}
+                  style={{
+                    background: '#EE404C40',
+                    color: '#EE404C',
+                  }}
+                >
+                  Remove Member
+                </button>
+              )}
+              {buttonFlag.deleteButtonFlag && (
+                <button
+                  onClick={() => handleDeleteButtom(team.teamId)}
+                  style={{
+                    background: '#EE404C40',
+                    color: '#EE404C',
+                  }}
+                >
+                  Delete Team
+                </button>
+              )}
+            </div>
+          )}
           {buttonFlag.addMemberButtonFlag &&
           buttonFlag.deleteButtonFlag ? (
             <>

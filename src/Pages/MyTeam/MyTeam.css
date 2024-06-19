@@ -4,6 +4,7 @@
   gap: 16px;
   padding: 36px;
   width: 80%;
+  height: calc(100vh - 100px);
   overflow-y: scroll;
 }
 

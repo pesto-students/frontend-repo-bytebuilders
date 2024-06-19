@@ -128,7 +128,7 @@ export default function Attendance() {
                   : { color: '#A6A6A6', background: '#D8D8D8' }
               }
             >
-              Check In
+              Punch In
             </button>
             <button
               disabled={isButtonDisabled}
@@ -139,7 +139,7 @@ export default function Attendance() {
                   : { color: '#FF3F3F', background: '#FF3F3F40' }
               }
             >
-              Check Out
+              Punch Out
             </button>
           </div>
         </div>

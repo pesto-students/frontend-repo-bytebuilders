@@ -17,9 +17,7 @@ export default function Organisation() {
     try {
       const res = await employeeListAPI();
 
-      const list = res.data.filter(
-        (obj) => obj.isEmployeeActive && user._id !== obj._id
-      );
+      const list = res.data.filter((obj) => obj.isEmployeeActive);
       setEmployeeList(list);
     } catch (error) {}
   };

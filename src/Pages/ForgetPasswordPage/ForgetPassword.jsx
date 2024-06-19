@@ -53,26 +53,45 @@ export default function ForgetPassword() {
   };
   const handleConfirmPassword = async () => {
     try {
-      console.log(otpInputs);
-      const otp = otpInputs.join('');
-      if (otp.length == 4 && data.email && data.password) {
+      const otp = otpInputs.join(''); // Combine OTP inputs into a single string
+
+      // Check if OTP, email, and password are provided
+      if (otp !== '' && data.email !== '' && data.password !== '') {
+        // Update data object with OTP
+        data.otp = otp;
         setData({ ...data, otp });
+
+        // Call the confirmPassword function with the updated data
         const res = await confirmPassword(data);
 
+        // Clear any previous error messages
         setError('');
+
+        // Navigate to the login page on success
         navigate('/login');
       } else {
-        setError('Please Fill All the Field');
+        // Set error if any field is missing
+        setError('Please fill all the fields');
       }
     } catch (error) {
-      if (error.response.message === 'Invalid OTP') {
-        setError('Please use correct Otp...');
-      } else if (error.response.message === 'Failed to confirm OTP') {
-        setError('Failed to confirm OTP please try again....');
+      console.log(error);
+
+      // Check if the error has a response property
+      if (error.response) {
+        const message = error.response.message;
+        if (message === 'Invalid OTP') {
+          setError('Please use correct OTP.');
+        } else if (message === 'Failed to confirm OTP') {
+          setError('Failed to confirm OTP, please try again.');
+        } else {
+          setError('Something went wrong, please try again.');
+        }
+      } else {
+        // Set a generic error message for unexpected errors
+        setError('Something went wrong, please try again.');
       }
     }
   };
-
   return (
     <div className="forgetpassword">
       <div className="fpleft">

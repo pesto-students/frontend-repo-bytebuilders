@@ -22,7 +22,6 @@ export const adminPermission = {
   canAcceptOrRejectLeaves: true,
   canReadLeaves: true,
   canCreateLeaves: true,
-  organisationName: 'HRease',
   department: '',
   designation: '',
 };
@@ -31,7 +30,7 @@ export const addUserData = {
   isAdmin: false,
   isEmployeeActive: true,
   isOwner: false,
-
+  password: 'ajhshsahjs',
   lopLeaveDays: 0,
 
   canAddEmployees: false,
@@ -41,10 +40,11 @@ export const addUserData = {
   canCreateHolidays: false,
   canDeleteHolidays: false,
   canAcceptOrRejectLeaves: false,
-  isPayrollExecutive: false,
+
   canReadLeaves: false,
   canCreateLeaves: false,
-  organisationName: '',
+
+  currency: 'INR',
 };
 
 export const months = [

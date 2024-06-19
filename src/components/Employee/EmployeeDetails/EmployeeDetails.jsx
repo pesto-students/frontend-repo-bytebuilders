@@ -177,8 +177,6 @@ export default function EmployeeDetails({
                       value={user.salary}
                       disabled={!editflag}
                       onChange={handleChange}
-                      min={0}
-                      max={12}
                     />
                   </div>
                   <div className="employePayrollBox">
@@ -190,8 +188,6 @@ export default function EmployeeDetails({
                       value={user.basicSalary}
                       disabled={!editflag}
                       onChange={handleChange}
-                      min={0}
-                      max={12}
                     />
                   </div>
                   <div className="employePayrollBox">
@@ -203,8 +199,6 @@ export default function EmployeeDetails({
                       value={user.hra}
                       disabled={!editflag}
                       onChange={handleChange}
-                      min={0}
-                      max={12}
                     />
                   </div>
                   <div className="employePayrollBox">
@@ -216,8 +210,6 @@ export default function EmployeeDetails({
                       value={user.pf}
                       disabled={!editflag}
                       onChange={handleChange}
-                      min={0}
-                      max={12}
                     />
                   </div>
                   <div className="employePayrollBox">
@@ -229,8 +221,6 @@ export default function EmployeeDetails({
                       value={user.specialAllowances}
                       disabled={!editflag}
                       onChange={handleChange}
-                      min={0}
-                      max={12}
                     />
                   </div>
                 </div>
@@ -327,7 +317,7 @@ export default function EmployeeDetails({
               <EmployeePermissionButton
                 editflag={!editflag}
                 value={user.isPayrollExecutive}
-                name={'canCreateHolidays'}
+                name={'isPayrollExecutive'}
                 handleToggle={handleToggle}
               />
             </div>
@@ -335,11 +325,12 @@ export default function EmployeeDetails({
         </>
       )}
       <div className="bottomContainer">
-        <button onClick={handleClick}>
-          {editflag ? 'Save' : 'Edit'} Info
-        </button>
         {userFlag && (
           <>
+            <button onClick={handleClick}>
+              {editflag ? 'Save' : 'Edit'} Info
+            </button>
+
             <button
               onClick={deactivateEmployee}
               style={{

@@ -11,7 +11,8 @@ export default function Employee() {
 
   const editUser = async () => {
     try {
-      const userdata = await updateUser(user);
+      const data = { ...user, password: 'gwqguwgq12' };
+      const userdata = await updateUser(data);
 
       const { password, ...updatedUser } = userdata;
     } catch (error) {

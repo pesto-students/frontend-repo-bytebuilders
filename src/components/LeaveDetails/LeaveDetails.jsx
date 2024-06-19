@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './LeaveDetails.css';
 import { Link } from 'react-router-dom';
 import LeaveStatus from './LeaveStatus/LeaveStatus';
-import { format, parseISO } from 'date-fns';
+
 import { processLeaveAPI } from '../../api/leaveapi';
 export default function LeaveDetails({
   setLeaveDetailsStatus,
   role,
   leaveDetails,
   getList,
+  setResponseStatus = null,
+  responseStatus = null,
+  setMessageStatus = null,
 }) {
   const [leave, setLeave] = useState({
     leave_type: '',
@@ -27,10 +30,21 @@ export default function LeaveDetails({
       const data = { leave_id: leave.leaveId, action: status };
 
       const res = await processLeaveAPI(data);
+      setResponseStatus({
+        status: 'OK',
+        message: `Action Has been ${status}ed successfully.`,
+      });
 
       getList();
+      setMessageStatus();
       setLeaveDetailsStatus(false);
-    } catch (error) {}
+    } catch (error) {
+      setResponseStatus({
+        status: 'NOT OK',
+        message: `We are Facing issue to process Request.`,
+      });
+      setMessageStatus();
+    }
   };
 
   useEffect(() => {

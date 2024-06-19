@@ -28,6 +28,7 @@ import Payroll from './Pages/Payroll/Payroll.jsx';
 import { getUserdataAPI } from './api/userAPI.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, setUser } from './Redux/userSlice.js';
+import PaySlips from './Pages/PaySlips/PaySlips.jsx';
 
 function App() {
   const router = createBrowserRouter([
@@ -127,6 +128,10 @@ function App() {
         {
           path: '/payroll',
           element: <Payroll />,
+        },
+        {
+          path: '/payslips',
+          element: <PaySlips />,
         },
         {
           path: '*',

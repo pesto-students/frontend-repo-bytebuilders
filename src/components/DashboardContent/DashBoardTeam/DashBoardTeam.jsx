@@ -18,7 +18,7 @@ export default function DashBoardTeam() {
   }, []);
   return (
     <div className="TeamTableDashBoard">
-      {Object.keys(team).length !== 0 ? (
+      {team && Object.keys(team).length !== 0 ? (
         <>
           <table style={{ border: 'none' }}>
             <thead>

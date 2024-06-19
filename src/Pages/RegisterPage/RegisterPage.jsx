@@ -13,6 +13,7 @@ export default function RegisterPage() {
     password: '',
     employeeIdentificationCode: '',
     joiningDate: '',
+    organisationName: '',
     dateOfBirth: '',
     phone: '',
     organisationName: '',

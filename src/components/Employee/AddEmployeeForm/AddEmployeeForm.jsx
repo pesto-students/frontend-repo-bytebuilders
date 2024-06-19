@@ -146,7 +146,7 @@ export default function AddEmployeeForm({
               name="designation"
               options={designation}
               value={formData.designation}
-              onChange={handleChange}
+              handleChange={handleChange}
             />
           </div>
           <div className="addemployeeinput">
@@ -156,8 +156,32 @@ export default function AddEmployeeForm({
               name="reportingManager"
               options={reportinManagerList}
               value={formData.reportingManager}
-              onChange={handleChange}
+              handleChange={handleChange}
             />
+          </div>
+          <div className="addemployeeinput">
+            <label>
+              <input
+                type="checkbox"
+                value={formData.isReportingManager}
+                checked={formData.isReportingManager}
+                name="isReportingManager"
+                onChange={handleChange}
+              />
+              Reporting Manager
+            </label>
+          </div>
+          <div className="addemployeeinput">
+            <label>
+              <input
+                type="checkbox"
+                value={formData.isPayrollExecutive}
+                checked={formData.isPayrollExecutive}
+                name="isPayrollExecutive"
+                onChange={handleChange}
+              />
+              Payroll Executive
+            </label>
           </div>
         </div>
       </div>
@@ -198,8 +222,6 @@ export default function AddEmployeeForm({
               name="salary"
               value={formData.salary}
               onChange={handleChange}
-              min={0}
-              max={12}
             />
           </div>
           <div className="addemployeeinput">
@@ -210,8 +232,6 @@ export default function AddEmployeeForm({
               name="basicSalary"
               value={formData.basicSalary}
               onChange={handleChange}
-              min={0}
-              max={12}
             />
           </div>
           <div className="addemployeeinput">
@@ -222,8 +242,6 @@ export default function AddEmployeeForm({
               name="hra"
               value={formData.hra}
               onChange={handleChange}
-              min={0}
-              max={12}
             />
           </div>
           <div className="addemployeeinput">
@@ -234,8 +252,6 @@ export default function AddEmployeeForm({
               name="pf"
               value={formData.pf}
               onChange={handleChange}
-              min={0}
-              max={12}
             />
           </div>
           <div className="addemployeeinput">
@@ -245,18 +261,6 @@ export default function AddEmployeeForm({
               type="number"
               name="specialAllowances"
               value={formData.specialAllowances}
-              onChange={handleChange}
-              min={0}
-              max={12}
-            />
-          </div>
-          <div className="addemployeeinput">
-            <label>Currency</label>
-
-            <input
-              type="text"
-              name="currency"
-              value={formData.currency}
               onChange={handleChange}
             />
           </div>

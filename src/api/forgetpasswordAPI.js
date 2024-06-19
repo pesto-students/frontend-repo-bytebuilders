@@ -12,6 +12,7 @@ export const confirmPassword = async ({
   newPassword,
   otp,
 }) => {
+  console.log('IN Confirm Password', email, newPassword, otp);
   const res = await apiRequest.post('confirm-otp', {
     email,
     newPassword,

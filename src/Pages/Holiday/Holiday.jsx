@@ -15,14 +15,18 @@ export default function Holiday() {
     e.preventDefault();
     try {
       if (date && name) {
-        const res = await addHoliday();
+        const res = await addHoliday(date, name);
 
         setError('');
+        setDate('');
+        setName('');
         getHolidays();
       } else {
         setError('Please fill all the fields...');
       }
-    } catch (error) {}
+    } catch (error) {
+      setError('Something Went Wrong...');
+    }
   };
 
   const getHolidays = async () => {
@@ -34,7 +38,9 @@ export default function Holiday() {
         date: format(parseISO(obj.date), 'yyyy-mm-dd'),
       }));
       setHolidayList(holidays);
-    } catch (error) {}
+    } catch (error) {
+      setError('Something Went Wrong...');
+    }
   };
 
   useEffect(() => {

@@ -57,6 +57,7 @@ td,
 th {
   left: 0px;
   padding-left: 12px;
+  padding: 4px 0px;
   border-bottom: 1px solid #000;
   text-align: center;
   width: 30vh;

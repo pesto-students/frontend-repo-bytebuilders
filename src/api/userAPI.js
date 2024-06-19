@@ -6,7 +6,16 @@ export const getUser = async (id) => {
 };
 
 export const updateUser = async (user) => {
-  const res = await apiRequest.put(`employees/${user._id}`, user);
+  const {
+    _id,
+    organisationName,
+    created_at,
+    organisationUniqueId,
+    __v,
+    ...userdata
+  } = user;
+  console.log('userdata', userdata);
+  const res = await apiRequest.put(`employees/${_id}`, userdata);
   return res;
 };
 
@@ -21,7 +30,7 @@ export const employeeDeactivateAPI = async (id) => {
 };
 
 export const addEmployee = async (data) => {
-  const res = await apiRequest.post(`add-employee`, { data });
+  const res = await apiRequest.post(`add-employee`, data);
   return res.data;
 };
 

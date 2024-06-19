@@ -17,6 +17,9 @@ export default function DashBoardLeaveRequestTable() {
         apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
         days: differenceInDays(obj.end_date, obj.start_date) + 1,
       }));
+      const list = updatedList.filter(
+        (leave) => leave.leaveStatus === 'approved'
+      );
 
       setLeaveList(updatedList);
     } catch (error) {}

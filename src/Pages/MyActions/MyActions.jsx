@@ -7,9 +7,13 @@ import { differenceInDays, format, parseISO } from 'date-fns';
 export default function MyActions() {
   const [leaveDetailsStatus, setLeaveDetailsStatus] = useState(false);
   const [leaveDetails, setLeaveDetails] = useState({});
-  const [requestList, setRequestList] = useState([{}]);
+  const [requestList, setRequestList] = useState([]);
   const [listStatus, setListStatus] = useState(false);
   const role = 'Manager';
+  const [responseStatus, setResponseStatus] = useState({
+    status: 'OK',
+    message: '',
+  });
   const leaveAssign = (leave) => {
     setLeaveDetails(leave);
     setLeaveDetailsStatus(true);
@@ -27,10 +31,18 @@ export default function MyActions() {
           apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
           days: differenceInDays(obj.end_date, obj.start_date) + 1,
         }));
-
+      console.log(list);
       setRequestList(list);
       setListStatus(true);
     } catch (error) {}
+  };
+  const setMessageStatus = () => {
+    setTimeout(() => {
+      setMessageStatus({
+        status: 'OK',
+        message: '',
+      });
+    }, 3000);
   };
   useEffect(() => {
     if (!requestList.length) {
@@ -40,7 +52,18 @@ export default function MyActions() {
   return (
     <div className="myactions">
       <b>My Actions</b>
-      {listStatus ? (
+      {responseStatus.message && (
+        <p
+          style={
+            responseStatus.status === 'OK'
+              ? { color: '#30D143' }
+              : { color: '#ED715F' }
+          }
+        >
+          {responseStatus.message}
+        </p>
+      )}
+      {requestList.length ? (
         <div className="myactionlist">
           <table style={{ border: 'none' }}>
             <thead>
@@ -77,6 +100,9 @@ export default function MyActions() {
           setLeaveDetailsStatus={setLeaveDetailsStatus}
           getList={getLeaveRequestList}
           role={role}
+          responseStatus={responseStatus}
+          setResponseStatus={setResponseStatus}
+          setMessageStatus={setMessageStatus}
           leaveDetails={leaveDetails}
         />
       )}

@@ -20,7 +20,7 @@ export default function MyTeam() {
     try {
       if (teamFlag && teamName.length) {
         const res = await createTeamAPI(teamName);
-
+        setTeamName('');
         setTeamFlag(false);
         getTeams();
       } else {

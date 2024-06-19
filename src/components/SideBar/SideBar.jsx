@@ -40,9 +40,17 @@ export default function SideBar() {
         <Link to="/attendance">
           <img src="./attendance.svg" alt="" /> Attendance
         </Link>
-        <Link to={user.isPayrollExecutive ? '/payroll' : '/payslips'}>
+        <Link
+          to={
+            user.isPayrollExecutive || user.isAdmin
+              ? '/payroll'
+              : '/payslips'
+          }
+        >
           <img src="./payslips.svg" alt="" />
-          {user.isReportingManager ? 'Payroll' : 'Pay slips'}
+          {user.isPayrollExecutive || user.isAdmin
+            ? 'Payroll'
+            : 'Pay slips'}
         </Link>
         <Link to="/myactions">
           <img src="myactions.svg" alt="" /> My Action
