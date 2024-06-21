@@ -32,18 +32,22 @@ export default function LoginPage() {
       console.log('In Login');
       navigate('/dashboard');
     } catch (error) {
-      console.log(error);
-      if (
-        error.response.message === 'Auth failed, Invalid credentials'
-      ) {
-        setError('Invalid Credentials....');
-      } else if (
-        error.response.message ===
-        'Auth failed, Wrong password, please try again'
-      ) {
-        setError('Invalid Credentials....');
+      if (error.response) {
+        if (
+          error.response.message ===
+          'Auth failed, Invalid credentials'
+        ) {
+          setError('Invalid Credentials....');
+        } else if (
+          error.response.message ===
+          'Auth failed, Wrong password, please try again'
+        ) {
+          setError('Invalid Credentials....');
+        } else {
+          setError('Invalid Credentials....');
+        }
       } else {
-        setError('Invalid Credentials....');
+        setError(error.message);
       }
     }
   };
