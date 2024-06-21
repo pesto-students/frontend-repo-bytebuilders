@@ -27,7 +27,7 @@ export default function Payroll() {
     if (!employeeList.length) {
       getEmployee();
     }
-  });
+  }, [employeeList]);
   return (
     <div className="payrollContainer">
       <h1>Payroll</h1>

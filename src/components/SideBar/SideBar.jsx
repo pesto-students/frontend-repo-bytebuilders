@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './SideBar.css';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 export default function SideBar() {
   const user = useSelector((state) => state.user);
 
-  useEffect(() => {
-    console.log('SideBar', user);
-  }, []);
+  // useEffect(() => {
+  //   //
+  // }, [user]);
   return (
     <div className="sidebar">
       <div className="detailContainer">

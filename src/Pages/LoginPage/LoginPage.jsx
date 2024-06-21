@@ -9,8 +9,6 @@ import { loginUser } from '../../Redux/userSlice';
 export default function LoginPage() {
   const [error, setError] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {

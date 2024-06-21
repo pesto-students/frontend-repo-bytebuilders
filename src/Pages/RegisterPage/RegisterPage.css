@@ -2,6 +2,7 @@
   display: flex;
   background-color: #e3edff;
   overflow-y: scroll;
+  height: calc(130vh - 100px);
 }
 
 .registerleft {
