@@ -77,57 +77,60 @@ export default function Leaves() {
           </button>
         </div>
       </div>
+      {leaveList.length ? (
+        <div className="leavelist">
+          {responseStatus.message && (
+            <p
+              style={
+                responseStatus.status === 'OK'
+                  ? { color: '#30D143' }
+                  : { color: '#ED715F' }
+              }
+            >
+              {responseStatus.message}
+            </p>
+          )}
+          {leaveList.length != 0 && (
+            <div className="myleave">
+              <label htmlFor="myleave"> My Leave</label>
+              <div className="line"></div>
 
-      <div className="leavelist">
-        {responseStatus.message && (
-          <p
-            style={
-              responseStatus.status === 'OK'
-                ? { color: '#30D143' }
-                : { color: '#ED715F' }
-            }
-          >
-            {responseStatus.message}
-          </p>
-        )}
-        {leaveList.length != 0 && (
-          <div className="myleave">
-            <label htmlFor="myleave"> My Leave</label>
-            <div className="line"></div>
-
-            <table style={{ border: 'none' }}>
-              <thead>
-                <tr>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Type</th>
-                  <th>Days</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaveList.map((leave) => (
-                  <tr key={leave.leaveId}>
-                    <td>{leave.start_date}</td>
-                    <td>{leave.end_date}</td>
-                    <td>{leave.leave_type}</td>
-                    <td>{leave.days}</td>
-                    <td>
-                      <LeaveStatus status={leave.leaveStatus} />
-                    </td>
-                    <td>
-                      <Link onClick={() => leaveAssign(leave)}>
-                        more
-                      </Link>
-                    </td>
+              <table style={{ border: 'none' }}>
+                <thead>
+                  <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Type</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                    <th></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                </thead>
+                <tbody>
+                  {leaveList.map((leave) => (
+                    <tr key={leave.leaveId}>
+                      <td>{leave.start_date}</td>
+                      <td>{leave.end_date}</td>
+                      <td>{leave.leave_type}</td>
+                      <td>{leave.days}</td>
+                      <td>
+                        <LeaveStatus status={leave.leaveStatus} />
+                      </td>
+                      <td>
+                        <Link onClick={() => leaveAssign(leave)}>
+                          more
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p style={{ color: '#FF3F3F' }}>No Leave Applied</p>
+      )}
       {leaveDetailsStatus && (
         <LeaveDetails
           setLeaveDetailsStatus={setLeaveDetailsStatus}

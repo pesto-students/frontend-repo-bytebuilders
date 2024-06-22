@@ -6,6 +6,7 @@ import EmployeePermissionButton from '../EmployeePermisionButton/EmployeePermiss
 import { Link, useNavigate } from 'react-router-dom';
 import { employeeDeactivateAPI } from '../../../api/userAPI';
 import { useSelector } from 'react-redux';
+import { resetPasswordAPI } from '../../../api/forgetpasswordAPI';
 
 export default function EmployeeDetails({
   user,
@@ -38,7 +39,7 @@ export default function EmployeeDetails({
 
   const resetPassword = async (id) => {
     try {
-      await resetPassword(id);
+      await resetPasswordAPI(id);
     } catch (error) {}
   };
   useEffect(() => {

@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 export default function Organisation() {
   const [employeeList, setEmployeeList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const [query, setQuery] = useState('');
 
   const handleCardClick = (id) => {
     navigate(`/employee/${id}`);
@@ -19,7 +21,23 @@ export default function Organisation() {
 
       const list = res.data.filter((obj) => obj.isEmployeeActive);
       setEmployeeList(list);
+      setFilterList(list);
     } catch (error) {}
+  };
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+
+    setQuery(searchTerm);
+
+    if (searchTerm !== '') {
+      const filteredResults = employeeList.filter((employee) =>
+        employee.fullName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+      setFilterList(filteredResults);
+    }
   };
 
   useEffect(() => {
@@ -31,6 +49,12 @@ export default function Organisation() {
     <div className="organisation">
       <h1>Organisation</h1>
       <div className="addEmployeeButtonContainer">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={handleSearch}
+        />
         {user.canAddEmployees && (
           <button onClick={() => navigate('/addemployee')}>
             Add Employee
@@ -38,7 +62,7 @@ export default function Organisation() {
         )}
       </div>
       <div className="organisationList">
-        {employeeList.map((employee) => (
+        {filterList.map((employee) => (
           <EmployeeCard
             key={employee._id}
             Employee={employee}

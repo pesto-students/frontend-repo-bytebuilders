@@ -25,6 +25,7 @@ export default function DashBoardLeaveRequestTable() {
     } catch (error) {}
   };
   useEffect(() => {
+    console.log('In DashBrd Leave');
     if (!leaveList.length) {
       getLeave();
     }

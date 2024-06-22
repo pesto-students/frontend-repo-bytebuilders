@@ -42,7 +42,6 @@ export default function AddEmployee() {
         [name]: checked,
       });
     } else {
-      console.log(name);
       setFormData({
         ...formData,
         [name]: value,

@@ -22,7 +22,7 @@ export default function OnLeaveEmployee() {
     if (!employeeeList.length) {
       getEmployeeOnLeave();
     }
-  }, [employeeeList]);
+  }, []);
   return (
     <div className="onleveContainer">
       <span>On Leave : {employeeeList.length}</span>

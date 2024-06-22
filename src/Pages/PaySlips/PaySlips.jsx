@@ -4,6 +4,7 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import { months } from '../../Data/Permission';
 import { getPaySlipAPI } from '../../api/payrollapi';
 import { useSelector } from 'react-redux';
+import { classNames } from '@react-pdf-viewer/core';
 export default function PaySlips() {
   const user = useSelector((state) => state.user);
   const [years, setYears] = useState([]);
@@ -58,12 +59,21 @@ export default function PaySlips() {
   };
 
   useEffect(() => {
-    if (!years.length) {
+    console.log('years.length', years);
+    if (years.length === 0) {
       getYear();
     }
   }, []);
   return (
-    <div className="payslipContainer">
+    <div
+      className={
+        user.isAdmin || user.isPayrollExecutive
+          ? 'payslipContainer'
+          : ' payslipContainer employeePayslip'
+      }
+    >
+      {!(user.isAdmin || user.isPayrollExecutive) && <h1>Payroll</h1>}
+
       <div className="payslipSelector">
         <span>
           Year :
@@ -74,7 +84,7 @@ export default function PaySlips() {
           />
         </span>
         <span>
-          Moths :{' '}
+          Months :{' '}
           <Dropdown
             options={monthList}
             name={'month'}

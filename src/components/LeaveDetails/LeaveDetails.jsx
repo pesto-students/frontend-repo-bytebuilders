@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import LeaveStatus from './LeaveStatus/LeaveStatus';
 
 import { processLeaveAPI } from '../../api/leaveapi';
+import { useSelector } from 'react-redux';
 export default function LeaveDetails({
   setLeaveDetailsStatus,
   role,
@@ -25,6 +26,8 @@ export default function LeaveDetails({
     leaveId: '',
   });
 
+  const user = useSelector((state) => state.user);
+
   const processLeave = async (status) => {
     try {
       const data = { leave_id: leave.leaveId, action: status };
@@ -32,7 +35,7 @@ export default function LeaveDetails({
       const res = await processLeaveAPI(data);
       setResponseStatus({
         status: 'OK',
-        message: `Action Has been ${status}ed successfully.`,
+        message: `Leave Has been ${status}ed successfully.`,
       });
 
       getList();
@@ -80,7 +83,13 @@ export default function LeaveDetails({
             <span style={{ color: '#4982eb' }}>{leave.days}</span>
           </div>
           <b>Reason</b>
-          <input type="text" value={leave.reason} readOnly />
+          <input
+            type="text"
+            value={
+              role === 'Manager' ? leave.leaveReason : leave.reason
+            }
+            readOnly
+          />
           <div className="bottomLeaveDetailsContainer">
             <span>Applied on {leave.apply_date}</span>
             {leave.leaveStatus === 'new' && role === 'Employee' && (
@@ -90,24 +99,26 @@ export default function LeaveDetails({
             )}
           </div>
         </div>
-        {role === 'Manager' && leave.leaveStatus === 'new' && (
-          <div className="actioncontainer">
-            <button
-              onClick={() => processLeave('reject')}
-              className="actionbutton"
-              style={{ background: '#FD5252' }}
-            >
-              Reject
-            </button>
-            <button
-              onClick={() => processLeave('approve')}
-              className="actionbutton"
-              style={{ background: '#6399FD' }}
-            >
-              Approve
-            </button>
-          </div>
-        )}
+        {role === 'Manager' &&
+          user.canAcceptOrRejectLeaves &&
+          leave.leaveStatus === 'new' && (
+            <div className="actioncontainer">
+              <button
+                onClick={() => processLeave('reject')}
+                className="actionbutton"
+                style={{ background: '#FD5252' }}
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => processLeave('approve')}
+                className="actionbutton"
+                style={{ background: '#6399FD' }}
+              >
+                Approve
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

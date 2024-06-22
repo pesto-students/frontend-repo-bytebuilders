@@ -45,7 +45,7 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: '*',
+          path: '/*',
           element: <HomePage />,
         },
       ],

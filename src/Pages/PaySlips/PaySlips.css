@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
 }
+.employeePayslip {
+  padding: 36px;
+  gap: 24px;
+}
 .payslipSelector {
   display: flex;
   gap: 24px;

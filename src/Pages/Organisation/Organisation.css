@@ -18,6 +18,16 @@
 .addEmployeeButtonContainer {
   display: flex;
   justify-content: end;
+  gap: 24px;
+}
+.addEmployeeButtonContainer > input {
+  border-radius: 20px;
+  padding: 8px 12px;
+  border: 1px solid #000;
+}
+
+.addEmployeeButtonContainer > input::selection {
+  border: 1px solid #000;
 }
 .addEmployeeButtonContainer > button {
   background: #6399fd;
