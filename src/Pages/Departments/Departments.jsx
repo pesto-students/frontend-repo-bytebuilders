@@ -15,6 +15,7 @@ export default function Departments() {
     try {
       const depart = await getAllDepartments();
       setDepartmentList(depart.data);
+      setError('');
     } catch (error) {
       if (error.response) {
         setError(error.response.message);

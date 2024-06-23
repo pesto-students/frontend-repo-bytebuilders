@@ -8,6 +8,7 @@ export default function Payroll() {
   const [employeeList, setEmployeeList] = useState([]);
   const [selectorFlag, setSelectorFlag] = useState(false);
   const user = useSelector((state) => state.user);
+  const [error, setError] = useState('');
   const getEmployee = async () => {
     try {
       const { data } = await employeeListAPI();
@@ -16,7 +17,14 @@ export default function Payroll() {
         (employee) => employee.reportingManager === user.fullName
       );
       setEmployeeList(list);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const handleSelector = (value) => {
@@ -31,6 +39,7 @@ export default function Payroll() {
   return (
     <div className="payrollContainer">
       <h1>Payroll</h1>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       <div className="payrollSelector">
         <span onClick={() => handleSelector(false)}>My Team</span>
         <span>|</span>

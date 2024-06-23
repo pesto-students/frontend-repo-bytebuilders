@@ -19,7 +19,6 @@ export default function DashBoardTeam() {
     }
   };
   useEffect(() => {
-    console.log('In DashBrd team');
     if (Object.keys(team).length === 0) {
       handleTeamMemberList();
     }

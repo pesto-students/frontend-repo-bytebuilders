@@ -8,6 +8,19 @@ export default function Employee() {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [editflag, setEditflag] = useState(false);
+  const [error, setError] = useState('');
+  const [responseStatus, setResponseStatus] = useState({
+    status: 'OK',
+    message: '',
+  });
+  const setMessageStatus = () => {
+    setTimeout(() => {
+      setMessageStatus({
+        status: 'OK',
+        message: '',
+      });
+    }, 3000);
+  };
 
   const editUser = async () => {
     try {
@@ -15,8 +28,18 @@ export default function Employee() {
       const userdata = await updateUser(data);
 
       const { password, ...updatedUser } = userdata;
+      setMessageStatus({
+        status: 'OK',
+        message: 'Employee Updated successfullly.....',
+      });
+      setResponseStatus();
+      setError('');
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
     }
 
     setEditflag(false);
@@ -36,8 +59,13 @@ export default function Employee() {
     try {
       const res = await getUser(id);
       setUser(res.data);
+      setError('');
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
     }
   };
 
@@ -54,6 +82,9 @@ export default function Employee() {
         editflag={editflag}
         handleClick={handleClick}
         setUser={setUser}
+        setMessageStatus={setMessageStatus}
+        responseStatus={responseStatus}
+        setResponseStatus={setResponseStatus}
       />
     </div>
   );

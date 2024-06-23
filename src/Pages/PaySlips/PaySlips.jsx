@@ -11,7 +11,7 @@ export default function PaySlips() {
   const [monthList, setMonthList] = useState([]);
   const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
   const [paySlipURL, setPaySlipURL] = useState('');
-
+  const [error, setError] = useState('');
   const getYear = () => {
     const startYear = new Date(user.joiningDate).getFullYear();
     const endYear = new Date().getFullYear();
@@ -39,7 +39,14 @@ export default function PaySlips() {
         month: months.indexOf(yearMonth.month) + 1,
       });
       setPaySlipURL(res.data.payslipUrl);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   const getMonths = () => {
     const startYear = new Date(user.joiningDate).getFullYear();
@@ -59,7 +66,6 @@ export default function PaySlips() {
   };
 
   useEffect(() => {
-    console.log('years.length', years);
     if (years.length === 0) {
       getYear();
     }
@@ -73,7 +79,7 @@ export default function PaySlips() {
       }
     >
       {!(user.isAdmin || user.isPayrollExecutive) && <h1>Payroll</h1>}
-
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       <div className="payslipSelector">
         <span>
           Year :

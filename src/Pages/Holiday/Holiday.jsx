@@ -21,6 +21,7 @@ export default function Holiday() {
         setDate('');
         setName('');
         getHolidays();
+        setError('');
       } else {
         setError('Please fill all the fields...');
       }
@@ -38,6 +39,7 @@ export default function Holiday() {
         date: format(parseISO(obj.date), 'yyyy-mm-dd'),
       }));
       setHolidayList(holidays);
+      setError('');
     } catch (error) {
       setError('Something Went Wrong...');
     }

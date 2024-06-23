@@ -14,12 +14,17 @@ export default function EmployeeDetails({
   editflag,
   handleClick,
   setUser,
+  setMessageStatus = null,
+  responseStatus = null,
+  setResponseStatus = null,
 }) {
   const storedUser = useSelector((state) => state.user);
   const [userFlag, setUserFlag] = useState(false);
   const storeUser = useSelector((state) => state.user);
   const [managerFlag, setManagerFlag] = useState(true);
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+
   const handleToggle = (e) => {
     let { name } = e.target;
 
@@ -32,15 +37,36 @@ export default function EmployeeDetails({
   const deactivateEmployee = async () => {
     try {
       const res = await employeeDeactivateAPI(user._id);
-      console.log(res);
+      setMessageStatus({
+        status: 'OK',
+        message: 'Employee deactivated.........',
+      });
+      setResponseStatus();
       navigate('/organisation');
-    } catch (error) {}
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const resetPassword = async (id) => {
     try {
       await resetPasswordAPI(id);
-    } catch (error) {}
+      setMessageStatus({
+        status: 'OK',
+        message: 'Password send successfully on employee mail....',
+      });
+      setResponseStatus();
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   useEffect(() => {
     storeUser._id === user._id
@@ -324,6 +350,18 @@ export default function EmployeeDetails({
             </div>
           </div>
         </>
+      )}
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
+      {responseStatus.message && (
+        <p
+          style={
+            responseStatus.status === 'OK'
+              ? { color: '#30D143' }
+              : { color: '#ED715F' }
+          }
+        >
+          {responseStatus.message}
+        </p>
       )}
       <div className="bottomContainer">
         {userFlag && (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Dropdown.css';
 export default function Dropdown({
   options,
@@ -6,12 +6,15 @@ export default function Dropdown({
   value,
   handleChange,
 }) {
+  useEffect(() => {
+    console.log(options);
+  }, []);
   return (
     <>
       <select name={name} value={value} onChange={handleChange}>
         <option value="">Select an Option</option>
-        {options.map((option, index) => (
-          <option key={index} value={option}>
+        {options.map((option) => (
+          <option key={option} value={option}>
             {option}
           </option>
         ))}

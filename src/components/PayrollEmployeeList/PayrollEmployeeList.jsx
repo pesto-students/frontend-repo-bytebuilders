@@ -33,8 +33,14 @@ export default function PayrollEmployeeList({ employeeList }) {
       message.stausCode = 200;
       message.status = true;
     } catch (error) {
-      message.message = error.response.data.message;
-      message.status = true;
+      if (error.response) {
+        message.message = error.response.data.message;
+        message.status = true;
+      } else {
+        message.message = error.message;
+        message.status = true;
+        message.stausCode = 201;
+      }
     }
   };
   useEffect(() => {

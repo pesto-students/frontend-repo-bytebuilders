@@ -147,7 +147,7 @@ function App() {
   const getUser = async () => {
     try {
       const data = await getUserdataAPI();
-      console.log('data', data);
+
       dispatch(setUser(data));
     } catch (error) {
       if (error.message === 'Network Error') {
@@ -159,10 +159,8 @@ function App() {
     }
   };
   useEffect(() => {
-    console.log('In Appjs', user, token);
     if (!user && token) {
       getUser();
-      console.log('IngetUser');
     }
   }, []);
   return <RouterProvider router={router} />;
