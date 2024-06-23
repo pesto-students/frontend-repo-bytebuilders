@@ -37,15 +37,15 @@ export function Layout() {
   );
 }
 
-// export function LayoutWithoutNavbar() {
-//   //const loading = useSelector((state) => state.user.loading);
-//   // console.log('loading', loading);
-//   <div className="layout">
-//     <div className="content">
-//       <Outlet />
-//     </div>
-//   </div>;
-// }
+export function LayoutWithoutNavbar() {
+  //const loading = useSelector((state) => state.user.loading);
+  // console.log('loading', loading);
+  <div className="layout">
+    <div className="content">
+      <Outlet />
+    </div>
+  </div>;
+}
 
 export function RequireAuth() {
   const loading = useSelector((state) => state.isLoading);

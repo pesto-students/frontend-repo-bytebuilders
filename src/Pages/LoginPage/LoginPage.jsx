@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import Welcome from '../../components/welcome/Welcome';
 import WelcomeRight from '../../components/welcome/WelcomeRight/WelcomeRight';
 import { loginUserAPI } from '../../api/loginregisterAPI';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../Redux/userSlice';
 export default function LoginPage() {
   const [error, setError] = useState('');
-
+  const isAuthenticated = useSelector(
+    (state) => state.isAuthenticated
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -49,6 +51,12 @@ export default function LoginPage() {
       }
     }
   };
+  const verifyIsAuthentivcated = () => {};
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, []);
   return (
     <div className="loginpage">
       <div className="loginleft">

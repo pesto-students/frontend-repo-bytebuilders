@@ -5,8 +5,12 @@ import './RegisterPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { adminPermission } from '../../Data/Permission';
 import { registerUserAPI } from '../../api/userAPI';
+import { useSelector } from 'react-redux';
 export default function RegisterPage() {
   const [error, setError] = useState('');
+  const isAuthenticated = useSelector(
+    (state) => state.isAuthenticated
+  );
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -40,6 +44,12 @@ export default function RegisterPage() {
       setError('User is not registered please try again.....');
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, []);
 
   return (
     <div className="registerPage">

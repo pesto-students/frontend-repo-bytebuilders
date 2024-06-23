@@ -1,104 +1,140 @@
+/* Navbar.css */
+
 .navbarContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 20px;
-  height: 100px;
-  border-bottom: 1px solid #000000;
-  /* box-shadow: 0px 6px 5.2px rgba(0, 0, 0, 0.25); */
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-size: 16px;
+}
+
+.rightbox .logo {
+  height: 40px;
 }
 
 .leftbox {
   display: flex;
-  gap: 20px;
-  font-family: 'Montserrat Alternates';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  color: #000000;
+  align-items: center;
 }
 
-.leftbox > a:hover {
-  scale: 1.02;
-  color: #4982eb;
+.menuIcon img {
+  height: 30px;
+  cursor: pointer;
+  display: none; /* Hide by default */
+}
+
+.navbarloginLogout,
+.navbarprofile {
+  margin-left: 20px;
 }
 
 .navbarprofile {
-  background-color: #6399fd80;
-  width: 15vh;
-  border-radius: 20vh;
-}
-.navbarprofile > img {
-  border-radius: 100%;
-  border: 1px solid #000;
-  height: 7vh;
-}
-.mobileMenu {
-  position: absolute;
-  background-color: #4982eb;
-  right: -50%;
-
-  width: 50%;
-  color: white;
-  top: 0;
-  transition: all 1s ease;
-
+  display: flex;
   align-items: center;
-  justify-content: center;
-  display: none;
-}
-.menuIcon {
-  display: none;
-}
-.menuIcon img {
-  width: 36px;
-  height: 36px;
   cursor: pointer;
 }
-.active {
-  right: 0;
-  height: 60vh;
-}
 
-.navbarloginLogout {
+.authLinks {
   display: flex;
-  gap: 24px;
-
-  font-family: 'Montserrat Alternates';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 150%;
-
-  color: #000000;
-}
-.circle {
-  border: 1px solid black;
-}
-@media screen and (max-width: 1366px) {
+  align-items: center;
 }
 
-@media screen and (max-width: 1024px) {
+.authLink {
+  margin-left: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.authLink:hover {
+  color: #0056b3;
+}
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1000;
+  font-size: 16px;
+  width: 80%; /* Set the width for mobile menu */
+  max-height: 80vh; /* Set the max height for mobile menu */
+  overflow-y: auto;
+}
+
+.mobileMenu a {
+  display: block;
+  margin: 5px 0;
+  color: #007bff;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.mobileMenu a:hover {
+  background-color: #f0f0f0;
+}
+
+.mobileMenu.active {
+  display: flex;
+}
+
+.mobileProfile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  transition: background-color 0.3s;
+}
+
+.mobileProfile:hover {
+  background-color: #f0f0f0;
+}
+
+.mobileProfile .circle {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+@media (max-width: 1024px) {
+  .menuIcon img {
+    display: block; /* Show on small screens */
+  }
+
+  .authLinks {
+    display: none; /* Hide auth links on small screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .navbarContainer {
+    padding: 10px;
+  }
+
   .mobileMenu {
-    display: flex;
-    flex-direction: column;
+    width: 90%; /* Adjust width for smaller screens */
   }
-  .menuIcon {
-    display: block;
-  }
-  .leftbox {
-    display: flex;
-    flex-direction: column;
-    background-color: #4982eb;
-  }
-  .navbarprofile {
-    background-color: #ffff;
-  }
-  .active {
-    display: flex;
-    justify-content: space-between;
-  }
-}
 
-@media screen and (max-width: 738px) {
+  .mobileMenu a {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
 }

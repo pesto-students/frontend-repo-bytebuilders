@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './HomePage.css';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 export default function HomePage() {
+  const isAuthenticated = useSelector(
+    (state) => state.isAuthenticated
+  );
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, []);
   return (
     <div className="homepageContainer">
       <div className="homepageText">

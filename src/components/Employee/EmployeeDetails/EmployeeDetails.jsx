@@ -352,7 +352,7 @@ export default function EmployeeDetails({
         </>
       )}
       {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
-      {responseStatus.message && (
+      {responseStatus && responseStatus.message && (
         <p
           style={
             responseStatus.status === 'OK'

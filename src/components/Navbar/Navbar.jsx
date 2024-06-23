@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../Redux/userSlice';
 import Initials from '../Initials/Initials';
+
 export default function Navbar() {
   const authenticated = useSelector((state) => state.isAuthenticated);
   const user = useSelector((state) => state.user);
@@ -16,63 +17,101 @@ export default function Navbar() {
     dispatch(logoutUser());
     navigate('/');
   };
+
   return (
     <div className="navbarContainer">
       <div className="rightbox">
-        <Link>
-          <img src="./logo.svg" alt="" />
+        <Link to="/">
+          <img src="./logo.svg" alt="Logo" className="logo" />
         </Link>
       </div>
-      {/* <div className="centerbox"></div> */}
       <div className="leftbox">
-        <div className="menuIcon">
-          <img
-            src="./menu.png"
-            alt="Menu"
-            onClick={() => setOpen((prev) => !prev)}
-          />
+        <div className="menuIcon" onClick={() => setOpen(!open)}>
+          <img src="./menu.png" alt="Menu" />
         </div>
-        <div>
-          {!authenticated ? (
-            <div className="navbarloginLogout">
-              <Link to="/register">Sign Up</Link>
-              <Link to="/login">Log in</Link>
-            </div>
+        <div className={`mobileMenu ${open ? 'active' : ''}`}>
+          {authenticated ? (
+            <>
+              {' '}
+              <Link to="/dashboard" onClick={() => setOpen(false)}>
+                Dashboard
+              </Link>
+              <Link to="/myteam" onClick={() => setOpen(false)}>
+                My Team
+              </Link>
+              <Link to="/organisation" onClick={() => setOpen(false)}>
+                Organisation
+              </Link>
+              <Link to="/departments" onClick={() => setOpen(false)}>
+                Departments
+              </Link>
+              <Link to="/designation" onClick={() => setOpen(false)}>
+                Designation
+              </Link>
+              <Link to="/leaves" onClick={() => setOpen(false)}>
+                Leaves
+              </Link>
+              <Link to="/holiday" onClick={() => setOpen(false)}>
+                Holiday
+              </Link>
+              <Link to="/attendance" onClick={() => setOpen(false)}>
+                Attendance
+              </Link>
+              {user.isAdmin || user.isPayrollExecutive ? (
+                <Link to="/payroll" onClick={() => setOpen(false)}>
+                  Payroll
+                </Link>
+              ) : (
+                <Link to="/payslips" onClick={() => setOpen(false)}>
+                  Payslip
+                </Link>
+              )}
+              <Link to="/myactions" onClick={() => setOpen(false)}>
+                My Action
+              </Link>
+              <Link to="/profile" onClick={() => setOpen(false)}>
+                My Profile
+              </Link>
+            </>
           ) : (
             <>
-              <div className="navbarprofile" onClick={logout}>
-                <div className="cirle">
-                  <Initials name={user.fullName} />
-                </div>
-              </div>
+              <>
+                <Link to="/register" className="authLink">
+                  Sign Up
+                </Link>
+                <Link to="/login" className="authLink">
+                  Log in
+                </Link>
+              </>
             </>
+          )}
+          {authenticated && (
+            <div className="mobileProfile" onClick={logout}>
+              <div className="circle">
+                <Initials name={user.fullName} />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="authLinks">
+          {!authenticated ? (
+            <>
+              <Link to="/register" className="authLink">
+                Sign Up
+              </Link>
+              <Link to="/login" className="authLink">
+                Log in
+              </Link>
+            </>
+          ) : (
+            <div className="navbarProfile" onClick={logout}>
+              <div className="circle">
+                <Initials name={user.fullName} />
+              </div>
+            </div>
           )}
         </div>
       </div>
     </div>
   );
 }
-{
-  /* <div className={open ? 'mobileMenu active' : 'mobileMenu'}></div> */
-}
-// <Link to="/myteam">
-// <img src="./team.svg" alt="" /> My Team
-// </Link>
-// <Link to="/departments">
-// <img src="./departments.svg" alt="" /> Departments
-// </Link>
-// <Link to="/leaves">
-// <img src="./calender.svg" alt="" /> Leaves
-// </Link>
-// <Link to="/attendance">
-// <img src="./attendance.svg" alt="" /> Attendance
-// </Link>
-// <Link to="#payslips">
-// <img src="./payslips.svg" alt="" /> Pay Slip
-// </Link>
-// <Link to="/myactions">
-// <img src="myactions.svg" alt="" /> My Action
-// </Link>
-// <Link to="#profile">
-// <img src="./profile.svg" alt="" /> My Profile
-// </Link>
