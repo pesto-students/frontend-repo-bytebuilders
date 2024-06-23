@@ -6,6 +6,7 @@ import LeaveStatus from '../../LeaveDetails/LeaveStatus/LeaveStatus';
 import { differenceInDays, format, parseISO } from 'date-fns';
 export default function DashBoardLeaveRequestTable() {
   const [leaveList, setLeaveList] = useState([]);
+  const [error, setError] = useState('');
   const getLeave = async () => {
     try {
       const res = await getLeaveHistoryAPI();
@@ -22,7 +23,14 @@ export default function DashBoardLeaveRequestTable() {
       );
 
       setLeaveList(updatedList);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   useEffect(() => {
     console.log('In DashBrd Leave');
@@ -31,37 +39,40 @@ export default function DashBoardLeaveRequestTable() {
     }
   }, []);
   return (
-    <div className="leverequestTableDashBoard">
-      {leaveList.length != 0 ? (
-        <>
-          <table style={{ border: 'none' }}>
-            <thead>
-              <tr>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Type</th>
-                <th>Days</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaveList.map((leave) => (
-                <tr key={leave.leaveId}>
-                  <td>{leave.start_date}</td>
-                  <td>{leave.end_date}</td>
-                  <td>{leave.leave_type}</td>
-                  <td>{leave.days}</td>
-                  <td>
-                    <LeaveStatus status={leave.leaveStatus} />
-                  </td>
+    <>
+      {error && <p style={{ color: '#FF3F3F' }}></p>}
+      <div className="leverequestTableDashBoard">
+        {leaveList.length != 0 ? (
+          <>
+            <table style={{ border: 'none' }}>
+              <thead>
+                <tr>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Type</th>
+                  <th>Days</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      ) : (
-        <h3>No Leave Data Available</h3>
-      )}
-    </div>
+              </thead>
+              <tbody>
+                {leaveList.map((leave) => (
+                  <tr key={leave.leaveId}>
+                    <td>{leave.start_date}</td>
+                    <td>{leave.end_date}</td>
+                    <td>{leave.leave_type}</td>
+                    <td>{leave.days}</td>
+                    <td>
+                      <LeaveStatus status={leave.leaveStatus} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <h3>No Leave Data Available</h3>
+        )}
+      </div>
+    </>
   );
 }

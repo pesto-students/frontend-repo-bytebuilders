@@ -48,6 +48,8 @@ export default function ForgetPassword() {
     } catch (error) {
       if (error.response.message === 'Failed to send OTP') {
         setError('Please try again....');
+      } else {
+        setError(error.message);
       }
     }
   };
@@ -74,8 +76,6 @@ export default function ForgetPassword() {
         setError('Please fill all the fields');
       }
     } catch (error) {
-      console.log(error);
-
       // Check if the error has a response property
       if (error.response) {
         const message = error.response.message;

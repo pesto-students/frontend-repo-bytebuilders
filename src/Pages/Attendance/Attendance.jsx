@@ -14,6 +14,7 @@ export default function Attendance() {
   const [checkIn, setCheckIn] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [attendanceList, setAttendanceList] = useState([]);
+  const [error, setError] = useState('');
   const [hoverInfo, setHoverInfo] = useState({
     visible: false,
     x: 0,
@@ -37,7 +38,15 @@ export default function Attendance() {
           setLeaveStatus(true);
         }
       }
-    } catch (error) {}
+
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   const handleMouseIn = (e, punchTimes) => {
     const rect = e.target.getBoundingClientRect();
@@ -75,14 +84,28 @@ export default function Attendance() {
     try {
       const res = await punchInAPI();
       getAttendance();
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const handleCheckOut = async () => {
     try {
       const res = await punchOutAPI();
       getAttendance();
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   useEffect(() => {
     if (!attendanceList.length) {
@@ -145,6 +168,7 @@ export default function Attendance() {
         </div>
       </div>
       <b>My Attendance</b>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       <div className="attendanceList">
         <table className="attendancetable">
           <thead>

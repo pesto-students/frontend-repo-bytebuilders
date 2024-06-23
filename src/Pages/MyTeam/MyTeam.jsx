@@ -10,6 +10,7 @@ export default function MyTeam() {
   const [teamName, setTeamName] = useState('');
   const [teamFlag, setTeamFlag] = useState(false);
   const user = useSelector((state) => state.user);
+  const [error, setError] = useState('');
   const getTeams = async () => {
     try {
       const res = await getMyTeam();
@@ -26,7 +27,14 @@ export default function MyTeam() {
       } else {
         setTeamFlag(true);
       }
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   const handleChange = (e) => {
     setTeamName(e.target.value);
@@ -56,6 +64,7 @@ export default function MyTeam() {
         </>
       )}
       <h2>My Team</h2>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       {/* {teams.map((team) => (
         <Myteams team={team} user={user} />
       ))} */}

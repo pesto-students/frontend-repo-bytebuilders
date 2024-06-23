@@ -16,23 +16,38 @@ export default function Designation() {
       const depart = await getAlldesignations();
 
       setdesignationList(depart.data);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const designationadd = async (e) => {
-    if (designation) {
-      e.preventDefault();
+    try {
+      if (designation) {
+        e.preventDefault();
 
-      const res = await addDesignations(designation);
+        const res = await addDesignations(designation);
 
-      const desig = await getAlldesignations();
+        const desig = await getAlldesignations();
 
-      setdesignationList(desig.data);
-      setdesignation('');
-      setError('');
-      setAddStatus(false);
-    } else {
-      setError('Please Enter Designation Name....');
+        setdesignationList(desig.data);
+        setdesignation('');
+        setError('');
+        setAddStatus(false);
+      } else {
+        setError('Please Enter Designation Name....');
+      }
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
     }
   };
 

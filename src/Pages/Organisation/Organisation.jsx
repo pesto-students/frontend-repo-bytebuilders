@@ -9,6 +9,7 @@ export default function Organisation() {
   const [filterList, setFilterList] = useState([]);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const [query, setQuery] = useState('');
 
   const handleCardClick = (id) => {
@@ -22,7 +23,14 @@ export default function Organisation() {
       const list = res.data.filter((obj) => obj.isEmployeeActive);
       setEmployeeList(list);
       setFilterList(list);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const handleSearch = (event) => {
@@ -48,6 +56,7 @@ export default function Organisation() {
   return (
     <div className="organisation">
       <h1>Organisation</h1>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       <div className="addEmployeeButtonContainer">
         <input
           type="text"

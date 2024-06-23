@@ -10,6 +10,7 @@ export default function MyActions() {
   const [requestList, setRequestList] = useState([]);
   const [listStatus, setListStatus] = useState(false);
   const role = 'Manager';
+  const [error, setError] = useState('');
   const [responseStatus, setResponseStatus] = useState({
     status: 'OK',
     message: '',
@@ -34,7 +35,14 @@ export default function MyActions() {
       console.log(list);
       setRequestList(list);
       setListStatus(true);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   const setMessageStatus = () => {
     setTimeout(() => {
@@ -52,6 +60,7 @@ export default function MyActions() {
   return (
     <div className="myactions">
       <b>My Actions</b>
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       {responseStatus.message && (
         <p
           style={
@@ -92,7 +101,7 @@ export default function MyActions() {
         </div>
       ) : (
         <span style={{ color: '#FF3F3F' }}>
-          No request Preset....
+          No request Present....
         </span>
       )}
       {leaveDetailsStatus && (

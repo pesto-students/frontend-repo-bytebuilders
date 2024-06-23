@@ -15,7 +15,13 @@ export default function Departments() {
     try {
       const depart = await getAllDepartments();
       setDepartmentList(depart.data);
-    } catch (error) {}
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const departmentadd = async (e) => {
@@ -35,7 +41,13 @@ export default function Departments() {
         setError('Please Enter Department Name.....');
         setAddStatus(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   useEffect(() => {

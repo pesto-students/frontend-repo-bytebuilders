@@ -4,19 +4,20 @@ import Initials from '../Initials/Initials';
 import { employeeOnLeaveAPI } from '../../api/leaveapi';
 export default function OnLeaveEmployee() {
   const [employeeeList, setEmployeeList] = useState([]);
-  // const getInitial = (name) => {
-  //   const words = name.trim().split(' ');
-  //   if (words.length === 1) {
-  //     return words[0].charAt(0).toUpperCase();
-  //   }
-  //   return words.map((word) => word.charAt(0).toUpperCase()).join('');
-  // };
+  const [error, setError] = useState('');
   const getEmployeeOnLeave = async () => {
     try {
       const res = await employeeOnLeaveAPI();
 
       setEmployeeList(res.data);
-    } catch (error) {}
+      setError('');
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
   useEffect(() => {
     if (!employeeeList.length) {
@@ -24,23 +25,26 @@ export default function OnLeaveEmployee() {
     }
   }, []);
   return (
-    <div className="onleveContainer">
-      <span>On Leave : {employeeeList.length}</span>
-      {employeeeList.length &&
-        employeeeList.map((employee) => (
-          <div className="employeetab">
-            <span>
-              <Initials name={employee.fullName} />
-            </span>
-            <div className="nametab">
-              <span>{employee.fullName}</span>
-
+    <>
+      {error && <p style={{ color: '#FF3F3F' }}></p>}
+      <div className="onleveContainer">
+        <span>On Leave : {employeeeList.length}</span>
+        {employeeeList.length &&
+          employeeeList.map((employee) => (
+            <div className="employeetab">
               <span>
-                {employee.designation} , {employee.department}
+                <Initials name={employee.fullName} />
               </span>
+              <div className="nametab">
+                <span>{employee.fullName}</span>
+
+                <span>
+                  {employee.designation} , {employee.department}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
-    </div>
+          ))}
+      </div>
+    </>
   );
 }

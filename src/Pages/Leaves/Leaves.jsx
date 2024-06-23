@@ -13,6 +13,7 @@ export default function Leaves() {
   const [addLeaveStatus, setAddLeaveStatus] = useState(false);
   const [leaveList, setLeaveList] = useState([]);
   const [leaveDetails, setLeaveDetails] = useState({});
+  const [error, setError] = useState('');
   const [responseStatus, setResponseStatus] = useState({
     status: 'OK',
     message: '',
@@ -33,7 +34,13 @@ export default function Leaves() {
       }));
 
       setLeaveList(updatedList);
-    } catch (error) {}
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.message);
+      } else {
+        setError(error.message);
+      }
+    }
   };
 
   const leaveAssign = (leave) => {
@@ -90,6 +97,7 @@ export default function Leaves() {
               {responseStatus.message}
             </p>
           )}
+          {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
           {leaveList.length != 0 && (
             <div className="myleave">
               <label htmlFor="myleave"> My Leave</label>
