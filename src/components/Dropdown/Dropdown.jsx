@@ -7,7 +7,7 @@ export default function Dropdown({
   handleChange,
 }) {
   useEffect(() => {
-    console.log(options);
+    console.log('In DropDown', options);
   }, []);
   return (
     <>

@@ -49,25 +49,38 @@ export function LayoutWithoutNavbar() {
 
 export function RequireAuth() {
   const loading = useSelector((state) => state.isLoading);
+
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state) => state.isAuthenticated
   );
   const user = useSelector((state) => state.user);
-
+  const verifyAuthenticate = () => {
+    if (!isAuthenticated) {
+      console.log(isAuthenticated);
+      navigate('/login');
+    }
+  };
+  useEffect(() => {
+    verifyAuthenticate();
+  }, []);
   return (
     user && (
       <>
-        <div className="layout">
-          <div className="navbar">
-            <Navbar />
+        {isAuthenticated ? (
+          <div className="layout">
+            <div className="navbar">
+              <Navbar />
+            </div>
+            <div className="content">
+              <SideBar />
+              {/* {loading ? <Loading /> : <Outlet />} */}
+              <Outlet />
+            </div>
           </div>
-          <div className="content">
-            <SideBar />
-            {/* {loading ? <Loading /> : <Outlet />} */}
-            <Outlet />
-          </div>
-        </div>
+        ) : (
+          <Layout />
+        )}
       </>
     )
   );
