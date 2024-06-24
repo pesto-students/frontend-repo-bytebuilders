@@ -51,33 +51,63 @@
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-
   color: #ffffff;
   padding: 8px 12px;
 }
-.leavelist {
-  background-color: #ffffff;
-  height: 100%;
-  overflow-y: scroll;
-}
 
 .leavelist {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  background-color: #ffffff;
   padding: 12px 36px;
+  border-radius: 5px;
+  overflow-y: auto;
+  flex: 1; /* Ensure it takes remaining space */
 }
 
 .myleave {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  overflow-y: scroll;
 }
 
 .myleave > label {
   padding: 12px;
   font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+}
+
+.pagination ul li {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination ul li.active {
+  font-weight: bold;
 }

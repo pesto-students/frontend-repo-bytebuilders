@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import './Designation.css';
-import {
-  addDesignations,
-  getAlldesignations,
-} from '../../api/designationapi';
+import { Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { addDesignations, getAlldesignations } from '../../api/designationapi';
 import DepartmentDesignationTable from '../../components/DepartmentDesignation Table/DepartmentDesignationTable';
 
 export default function Designation() {
-  const [designationList, setdesignationList] = useState([]);
-  const [designation, setdesignation] = useState('');
+  const [designationList, setDesignationList] = useState([]);
+  const [designation, setDesignation] = useState('');
   const [addStatus, setAddStatus] = useState(false);
   const [error, setError] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
+
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const designations = async () => {
     try {
-      const depart = await getAlldesignations();
-
-      setdesignationList(depart.data);
+      const desig = await getAlldesignations();
+      setDesignationList(desig.data);
       setError('');
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      handleApiError(error);
     }
   };
 
@@ -30,24 +30,25 @@ export default function Designation() {
     try {
       if (designation) {
         e.preventDefault();
-
         const res = await addDesignations(designation);
-
         const desig = await getAlldesignations();
-
-        setdesignationList(desig.data);
-        setdesignation('');
-        setError('');
+        setDesignationList(desig.data);
+        setDesignation('');
         setAddStatus(false);
+        setSnackbar({ open: true, message: 'Designation added successfully', severity: 'success' });
       } else {
         setError('Please Enter Designation Name....');
       }
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      handleApiError(error);
+    }
+  };
+
+  const handleApiError = (error) => {
+    if (error.response) {
+      setError(error.response.data.message || 'Something went wrong');
+    } else {
+      setError(error.message || 'Network Error');
     }
   };
 
@@ -56,6 +57,7 @@ export default function Designation() {
       designations();
     }
   }, []);
+
   return (
     <div className="designations">
       <h1>Designations</h1>
@@ -63,12 +65,21 @@ export default function Designation() {
       <DepartmentDesignationTable
         name={'Designation'}
         List={designationList}
-        setValue={setdesignation}
+        setValue={setDesignation}
         addValue={designationadd}
         setAddStatus={setAddStatus}
         addStatus={addStatus}
         inValue={designation}
       />
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

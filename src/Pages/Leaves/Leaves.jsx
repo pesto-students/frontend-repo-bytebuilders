@@ -18,22 +18,32 @@ export default function Leaves() {
     status: 'OK',
     message: '',
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
+  const [sortOrder, setSortOrder] = useState('desc'); // Initial sort order
 
   const user = useSelector((state) => state.user);
-
   const role = 'Employee';
+
   const getLeaveHistory = async () => {
     try {
       const res = await getLeaveHistoryAPI();
-      const updatedList = res.map((obj) => ({
+      let sortedList = res.map((obj) => ({
         ...obj,
-        start_date: format(parseISO(obj.start_date), 'yyyy-mm-dd'),
-        end_date: format(parseISO(obj.end_date), 'yyyy-mm-dd'),
-        apply_date: format(parseISO(obj.apply_date), 'yyyy-mm-dd'),
-        days: differenceInDays(obj.end_date, obj.start_date) + 1,
+        start_date: format(parseISO(obj.start_date), 'yyyy-MM-dd'),
+        end_date: format(parseISO(obj.end_date), 'yyyy-MM-dd'),
+        apply_date: format(parseISO(obj.apply_date), 'yyyy-MM-dd'),
+        days: differenceInDays(parseISO(obj.end_date), parseISO(obj.start_date)) + 1,
       }));
 
-      setLeaveList(updatedList);
+      // Sort by apply_date based on sortOrder
+      sortedList.sort((a, b) => {
+        const dateA = parseISO(a.apply_date);
+        const dateB = parseISO(b.apply_date);
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      });
+
+      setLeaveList(sortedList);
     } catch (error) {
       if (error.response) {
         setError(error.response.message);
@@ -47,9 +57,10 @@ export default function Leaves() {
     setLeaveDetails(leave);
     setLeaveDetailsStatus(true);
   };
+
   const setMessageStatus = () => {
     setTimeout(() => {
-      setMessageStatus({
+      setResponseStatus({
         status: 'OK',
         message: '',
       });
@@ -57,17 +68,29 @@ export default function Leaves() {
   };
 
   useEffect(() => {
-    if (!leaveList.length) {
-      getLeaveHistory();
-    }
+    getLeaveHistory(); // Fetch leave history when component mounts
   }, []);
+
+  // Handle pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = leaveList.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Toggle sorting order and re-fetch data
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    getLeaveHistory(); // Re-fetch data with new sort order
+  };
+
   return (
     <div className="leavecontainer">
       <div className="leavenumcontainer">
         <div className="leaveNum">
           <div className="leavetype">
             <span>{user?.casualLeaveDays}</span>
-            <span>Causal Leave</span>
+            <span>Casual Leave</span>
           </div>
           <div className="leavetype">
             <span>{user?.lopLeaveDays}</span>
@@ -84,6 +107,7 @@ export default function Leaves() {
           </button>
         </div>
       </div>
+
       {leaveList.length ? (
         <div className="leavelist">
           {responseStatus.message && (
@@ -98,7 +122,7 @@ export default function Leaves() {
             </p>
           )}
           {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
-          {leaveList.length != 0 && (
+          {currentItems.length !== 0 && (
             <div className="myleave">
               <label htmlFor="myleave"> My Leave</label>
               <div className="line"></div>
@@ -111,11 +135,16 @@ export default function Leaves() {
                     <th>Type</th>
                     <th>Days</th>
                     <th>Status</th>
+                    <th>
+                      <button onClick={toggleSortOrder}>
+                        Apply Date {sortOrder === 'asc' ? '▲' : '▼'}
+                      </button>
+                    </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {leaveList.map((leave) => (
+                  {currentItems.map((leave) => (
                     <tr key={leave.leaveId}>
                       <td>{leave.start_date}</td>
                       <td>{leave.end_date}</td>
@@ -124,6 +153,7 @@ export default function Leaves() {
                       <td>
                         <LeaveStatus status={leave.leaveStatus} />
                       </td>
+                      <td>{leave.apply_date}</td>
                       <td>
                         <Link onClick={() => leaveAssign(leave)}>
                           more
@@ -133,12 +163,33 @@ export default function Leaves() {
                   ))}
                 </tbody>
               </table>
+
+              {/* Pagination */}
+              <div className="pagination">
+                {leaveList.length > itemsPerPage && (
+                  <ul>
+                    {Array(Math.ceil(leaveList.length / itemsPerPage))
+                      .fill()
+                      .map((_, index) => (
+                        <li
+                          key={index + 1}
+                          onClick={() => paginate(index + 1)}
+                          className={currentPage === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </li>
+                      ))}
+                  </ul>
+                )}
+              </div>
             </div>
           )}
         </div>
       ) : (
         <p style={{ color: '#FF3F3F' }}>No Leave Applied</p>
       )}
+
+      {/* Leave details modal */}
       {leaveDetailsStatus && (
         <LeaveDetails
           setLeaveDetailsStatus={setLeaveDetailsStatus}
@@ -150,6 +201,8 @@ export default function Leaves() {
           leaveDetails={leaveDetails}
         />
       )}
+
+      {/* Add leave modal */}
       {addLeaveStatus && (
         <AddLeave
           setAddLeaveStatus={setAddLeaveStatus}

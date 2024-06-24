@@ -12,7 +12,7 @@ export default function Welcome({
       </Link>
       <br />
 
-      <h1>{h1message}</h1>
+      {/* <h1>{h1message}</h1> */}
       <span>{spanmessage}</span>
     </div>
   );
