@@ -13,9 +13,7 @@ export default function Payroll() {
     try {
       const { data } = await employeeListAPI();
 
-      const list = data.filter(
-        (employee) => employee.reportingManager === user.fullName
-      );
+      const list = data.filter((employee) => true);
       setEmployeeList(list);
       setError('');
     } catch (error) {
