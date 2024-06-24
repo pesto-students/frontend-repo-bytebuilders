@@ -3,8 +3,8 @@ import axios from 'axios';
 import { store } from '../Redux/store';
 import { disableLoading, enableLoading } from '../Redux/userSlice';
 const apiRequest = await axios.create({
-  //baseURL: 'http://localhost:8000/api/',
-  baseURL: 'https://43.204.152.186:8000/api/',
+  baseURL: 'http://localhost:8000/api/',
+  //baseURL: 'https://43.204.152.186:8000/api/',
   withCredentials: true,
 });
 

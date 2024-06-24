@@ -91,3 +91,11 @@ td > a {
 button:hover {
   scale: 1.05;
 }
+h1 {
+  font-size: 32px;
+  color: #20201e;
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+}

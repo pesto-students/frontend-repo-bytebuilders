@@ -10,9 +10,13 @@ export const generatePayrollAPI = async ({ userId, month, year }) => {
 };
 
 export const getPaySlipAPI = async ({ month, year }) => {
-  const res = await apiRequest.post(`download-payslip`, {
-    month: month,
-    year: year,
-  });
-  return res;
+  try {
+    const res = await apiRequest.post(`download-payslip`, {
+      month: month,
+      year: year,
+    });
+    return res;
+  } catch (error) {
+    throw error;
+  }
 };
