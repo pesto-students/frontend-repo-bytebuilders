@@ -6,17 +6,22 @@ export const getLeaveHistoryAPI = async () => {
 };
 
 export const addleave = async (data) => {
-  const res = await apiRequest.post(
-    'add-leave',
-
-    data
-  );
-  return res;
+  try {
+    const res = await apiRequest.post('add-leave', data);
+    return { success: true, message: res.data.message };
+  } catch (error) {
+    throw error.response.data;
+  }
 };
 
+
 export const processLeaveAPI = async (data) => {
-  const res = await apiRequest.post('process-leave', data);
-  return res;
+  try {
+    const res = await apiRequest.post('process-leave', data);
+    return { success: true, message: res.data.message };
+  } catch (error) {
+    throw error.response.data;
+  }
 };
 
 export const leaveRequestAPI = async () => {
