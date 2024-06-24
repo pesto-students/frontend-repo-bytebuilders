@@ -64,6 +64,7 @@ export function RequireAuth() {
           </div>
           <div className="content">
             <SideBar />
+            {/* {loading ? <Loading /> : <Outlet />} */}
             <Outlet />
           </div>
         </div>

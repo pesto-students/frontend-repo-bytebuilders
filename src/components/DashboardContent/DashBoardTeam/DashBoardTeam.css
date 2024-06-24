@@ -1,0 +1,43 @@
+/* DashBoardTeam.css */
+
+.TeamTableDashBoard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.TeamTableDashBoard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.TeamTableDashBoard th,
+.TeamTableDashBoard td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.TeamTableDashBoard th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.TeamTableDashBoard h3 {
+  margin: 20px 0;
+  text-align: center;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .TeamTableDashBoard {
+    padding: 15px;
+  }
+
+  .TeamTableDashBoard th,
+  .TeamTableDashBoard td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}

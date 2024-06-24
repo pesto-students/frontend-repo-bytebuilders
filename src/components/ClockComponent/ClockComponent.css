@@ -1,20 +1,47 @@
+/* ClockComponent.css */
+
 .dashtimedate {
   display: flex;
-  border: 2px solid black;
-  align-items: center;
   flex-direction: column;
-  padding: 12px;
-  border-radius: 5px;
+  align-items: flex-end;
+  font-family: 'Arial', sans-serif;
+  color: #333;
 }
 
 .dashtime {
-  font-size: 64px;
-}
-.dashtime > span {
-  font-size: 14px;
+  font-size: 24px;
   font-weight: bold;
+  display: flex;
+  align-items: baseline;
 }
+
+.dashtime span {
+  font-size: 18px;
+  margin-left: 5px;
+  text-transform: uppercase;
+}
+
 .dashdate {
-  font-size: 14px;
-  font-weight: 300;
+  font-size: 16px;
+  color: #666;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .dashtimedate {
+    align-items: center;
+  }
+
+  .dashtime {
+    font-size: 20px;
+  }
+
+  .dashtime span {
+    font-size: 16px;
+  }
+
+  .dashdate {
+    font-size: 14px;
+    margin-top: 3px;
+  }
 }

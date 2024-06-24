@@ -1,0 +1,44 @@
+/* DashBoardCelebration.css */
+
+.onleveContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.employeetab {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: calc(
+    25% - 15px
+  ); /* Adjust width based on container and gap */
+}
+
+.employeetab span {
+  margin-right: 10px;
+}
+
+.nametab {
+  flex-grow: 1;
+}
+
+.nametab span {
+  display: block;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .employeetab {
+    width: calc(50% - 15px); /* 2 items per row on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .employeetab {
+    width: 100%; /* 1 item per row on mobile screens */
+  }
+}

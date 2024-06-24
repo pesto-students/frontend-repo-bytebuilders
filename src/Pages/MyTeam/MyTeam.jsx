@@ -46,7 +46,7 @@ export default function MyTeam() {
   }, []);
   return (
     <div className="myteamContainer">
-      {user.isAdmin && (
+      {user.isAdmin && user.isReportingManager && (
         <>
           <h2>Teams</h2>
           <div className="addteambutton">

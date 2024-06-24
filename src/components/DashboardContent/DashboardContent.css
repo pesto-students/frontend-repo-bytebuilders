@@ -1,27 +1,63 @@
-.dashleaverequestable {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  width: 90vh;
-  height: 50vh;
-  overflow-y: scroll;
+/* DashboardContent.css */
+
+.dashboardcontent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 20px;
 }
 
-.leavetabletitledash {
+.dashleaverequestable,
+.dashteamleave {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashleaverequestable {
+  grid-column: span 2; /* Takes two columns in the grid */
+}
+
+.leavetabletitledash,
+.dashteamleaveTitle {
   display: flex;
   justify-content: space-between;
-}
-.dashboardcontent {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.dashteamleave {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  width: 70vh;
-  height: 50vh;
-  overflow-y: scroll;
+.leavetabletitledash h3,
+.dashteamleaveTitle h3 {
+  font-size: 1.4rem; /* Increased font size for headings */
+  margin-bottom: 0;
+  color: #333; /* Darker text color */
+}
+
+.line {
+  border-top: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+.leavetabletitledash span,
+.dashteamleaveTitle span {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold; /* Bold text for clickable spans */
+}
+
+@media (min-width: 768px) {
+  .dashboardcontent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashleaverequestable {
+    grid-column: span 2; /* Takes two columns in the grid */
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboardcontent {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

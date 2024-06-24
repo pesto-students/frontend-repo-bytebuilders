@@ -19,6 +19,7 @@ export const userSlice = createSlice({
       state.isAuthenticated = false;
     },
     enableLoading: (state, action) => {
+      console.log('iN Enable Loading');
       state.isLoading = true;
     },
     disableLoading: (state, action) => {

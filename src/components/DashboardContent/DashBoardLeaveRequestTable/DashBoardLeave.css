@@ -1,16 +1,35 @@
-.approvalStatus {
-  padding: 10px;
-  background-color: #30d14340;
-  border-radius: 5px;
-  color: #30d143;
-}
+/* DashBoardLeave.css */
 
 .leverequestTableDashBoard {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
 }
 
-.leverequestTableDashBoard > table {
-  font-size: 12px;
+.leverequestTableDashBoard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leverequestTableDashBoard th,
+.leverequestTableDashBoard td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.leverequestTableDashBoard th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.leverequestTableDashBoard tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .leverequestTableDashBoard table {
+    font-size: 14px; /* Reduce font size on smaller screens */
+  }
 }

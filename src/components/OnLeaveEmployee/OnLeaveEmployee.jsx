@@ -28,22 +28,25 @@ export default function OnLeaveEmployee() {
     <>
       {error && <p style={{ color: '#FF3F3F' }}></p>}
       <div className="onleveContainer">
-        <span>On Leave : {employeeeList.length}</span>
-        {employeeeList.length &&
-          employeeeList.map((employee) => (
-            <div className="employeetab">
-              <span>
-                <Initials name={employee.fullName} />
-              </span>
-              <div className="nametab">
-                <span>{employee.fullName}</span>
-
+        {employeeeList.length && (
+          <>
+            <span>On Leave : {employeeeList.length}</span>
+            {employeeeList.map((employee) => (
+              <div className="employeetab">
                 <span>
-                  {employee.designation} , {employee.department}
+                  <Initials name={employee.fullName} />
                 </span>
+                <div className="nametab">
+                  <span>{employee.fullName}</span>
+
+                  <span>
+                    {employee.designation} , {employee.department}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </>
+        )}
       </div>
     </>
   );
