@@ -28,21 +28,40 @@ export default function Designation() {
 
   const designationadd = async (e) => {
     try {
-      if (designation) {
+      if (e) {
         e.preventDefault();
-        const res = await addDesignations(designation);
-        const desig = await getAlldesignations();
-        setDesignationList(desig.data);
-        setDesignation('');
-        setAddStatus(false);
-        setSnackbar({ open: true, message: 'Designation added successfully', severity: 'success' });
-      } else {
-        setError('Please Enter Designation Name....');
       }
+  
+      if (!designation) {
+        setSnackbar({ open: true, message: 'Please enter a Designation Name', severity: 'error' });
+        return;
+      }
+  
+      const res = await addDesignations(designation);
+      const desig = await getAlldesignations();
+      setDesignationList(desig.data);
+      setDesignation('');
+      setAddStatus(false);
+      setSnackbar({ open: true, message: 'Designation added successfully', severity: 'success' });
     } catch (error) {
-      handleApiError(error);
+      let errorMessage = 'Failed to add designation. Please try again.';
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = error.response.data.message;
+        } else if (error.response.status === 404) {
+          errorMessage = error.response.data.message;
+        } else {
+          errorMessage = `Server Error: ${error.response.status}. Please try again later.`;
+        }
+      } else if (error.request) {
+        errorMessage = 'Network error. Please check your internet connection.';
+      } else {
+        errorMessage = 'An unexpected error occurred. Please try again later.';
+      }
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
   };
+  
 
   const handleApiError = (error) => {
     if (error.response) {

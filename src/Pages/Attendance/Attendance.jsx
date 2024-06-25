@@ -10,7 +10,6 @@ import ClockComponent from '../../components/ClockComponent/ClockComponent';
 
 export default function Attendance() {
   const [leaveStatus, setLeaveStatus] = useState(false);
-
   const [checkIn, setCheckIn] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [attendanceList, setAttendanceList] = useState([]);
@@ -21,6 +20,10 @@ export default function Attendance() {
     y: 0,
     content: [],
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
+  const [loading, setLoading] = useState(true); // Loading state
+
   const getAttendance = async () => {
     try {
       const list = await getPunchDataAPI();
@@ -32,8 +35,7 @@ export default function Attendance() {
         const checkstatus = Math.floor(today.punchTimes.length % 2)
           ? setCheckIn(false)
           : setCheckIn(true);
-        console.log('checkstatus', checkstatus);
-        console.log(Math.floor(today.punchTimes.length % 2));
+        
         if (today.isHoliday || today.isWeekend || today.isOnLeave) {
           setLeaveStatus(true);
         }
@@ -46,11 +48,13 @@ export default function Attendance() {
       } else {
         setError(error.message);
       }
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched
     }
   };
+
   const handleMouseIn = (e, punchTimes) => {
     const rect = e.target.getBoundingClientRect();
-    console.log(punchTimes);
     setHoverInfo({
       visible: punchTimes.length ? true : false,
       x: rect.left,
@@ -58,6 +62,7 @@ export default function Attendance() {
       content: punchTimes,
     });
   };
+
   const statusOffice = (attendance) => {
     const status = attendance.isHoliday
       ? 'Holiday'
@@ -70,10 +75,14 @@ export default function Attendance() {
       : 'Absent';
     return status;
   };
+
   const punchOutTime = (punchTimes) => {
-    return Math.floor(punchTimes.length % 2)
-      ? punchTimes[punchTimes.length - 2]
-      : punchTimes[punchTimes.length - 1];
+    // Check if the last punch in the array is a punch out, otherwise show "MISSING"
+    if (punchTimes.length % 2 === 1) {
+      return "MISSING";
+    } else {
+      return punchTimes[punchTimes.length - 1];
+    }
   };
 
   const handleMouseOut = (e) => {
@@ -86,11 +95,7 @@ export default function Attendance() {
       getAttendance();
       setError('');
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      handleError(error);
     }
   };
 
@@ -100,18 +105,32 @@ export default function Attendance() {
       getAttendance();
       setError('');
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      handleError(error);
     }
   };
+
+  const handleError = (error) => {
+    if (error.response) {
+      setError(error.response.message);
+    } else {
+      setError(error.message);
+    }
+  };
+
   useEffect(() => {
     if (!attendanceList.length) {
       getAttendance();
     }
   }, []);
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = attendanceList.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="attendanceContainer">
       <div className="attendancetopbox">
@@ -169,53 +188,71 @@ export default function Attendance() {
       </div>
       <b>My Attendance</b>
       {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
-      <div className="attendanceList">
-        <table className="attendancetable">
-          <thead>
-            <tr>
-              <th> Date</th>
-              <th> Status</th>
-              <th> Check In</th>
-              <th>Check out</th>
-              <th>Worked</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendanceList.map((attendance) => (
-              <tr
-                key={attendance.date}
-                style={
-                  attendance.isHoliday || attendance.isWeekend
-                    ? { background: '#2EC9FE40' }
-                    : {}
-                }
-              >
-                <td>{attendance.date}</td>
-                <td>
-                  <div>{statusOffice(attendance)}</div>
-                </td>
-                <td>{attendance.punchTimes[0]}</td>
-                <td>{punchOutTime(attendance.punchTimes)}</td>
-                <td
-                  onMouseEnter={(e) =>
-                    handleMouseIn(e, attendance.punchTimes)
-                  }
-                  onMouseLeave={(e) => handleMouseOut(e)}
-                >
-                  {attendance.netHourInOffice}
-                </td>
+      {loading ? (
+        <div className="loader">Loading...</div>
+      ) : (
+        <div className="attendanceList">
+          <table className="attendancetable">
+            <thead>
+              <tr>
+                <th> Date</th>
+                <th> Status</th>
+                <th> Check In</th>
+                <th>Check out</th>
+                <th>Worked</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {hoverInfo.visible && (
-          <HoverBox
-            top={hoverInfo.y}
-            left={hoverInfo.x}
-            content={hoverInfo.content}
-          />
-        )}
-      </div>
+            </thead>
+            <tbody>
+              {currentItems.map((attendance) => (
+                <tr
+                  key={attendance.date}
+                  style={
+                    attendance.isHoliday || attendance.isWeekend
+                      ? { background: '#2EC9FE40' }
+                      : {}
+                  }
+                >
+                  <td>{attendance.date}</td>
+                  <td>
+                    <div>{statusOffice(attendance)}</div>
+                  </td>
+                  <td>{attendance.punchTimes[0]}</td>
+                  <td>{punchOutTime(attendance.punchTimes)}</td>
+                  <td
+                    onMouseEnter={(e) =>
+                      handleMouseIn(e, attendance.punchTimes)
+                    }
+                    onMouseLeave={(e) => handleMouseOut(e)}
+                  >
+                    {attendance.netHourInOffice}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="pagination">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={indexOfLastItem >= attendanceList.length}
+            >
+              Next
+            </button>
+          </div>
+          {hoverInfo.visible && (
+            <HoverBox
+              top={hoverInfo.y}
+              left={hoverInfo.x}
+              content={hoverInfo.content}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

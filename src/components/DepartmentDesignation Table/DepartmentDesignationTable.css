@@ -1,3 +1,34 @@
+#customTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#customTable th, #customTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customTable th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 5px 10px;
+}
+
+.pagination span {
+  margin: 0 10px;
+}
+
 .addbutton {
   top: 32px;
   display: flex;
@@ -10,17 +41,14 @@
   padding: 8px;
   width: 287px;
   height: 48px;
-
   background: #ffffff;
   border: 1px solid #868686;
   border-radius: 4px;
-
   font-family: 'Prompt';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
-
   color: #9f9595;
 }
 
@@ -37,6 +65,5 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
-
   color: #ffffff;
 }

@@ -28,23 +28,42 @@ export default function Departments() {
   };
 
   const departmentadd = async (e) => {
-    e.preventDefault();
     try {
-      if (department) {
-        const res = await addDepartments(department);
-        const depart = await getAllDepartments();
-        setDepartmentList(depart.data);
-        setDepartment('');
-        setAddStatus(false);
-        setSnackbar({ open: true, message: 'Department added successfully', severity: 'success' });
-      } else {
-        setError('Please Enter Department Name.....');
-        setAddStatus(false);
+      if (e) {
+        e.preventDefault();
       }
+  
+      if (!department) {
+        setSnackbar({ open: true, message: 'Please enter a Department Name', severity: 'error' });
+        return;
+      }
+  
+      const res = await addDepartments(department);
+      const depart = await getAllDepartments();
+      setDepartmentList(depart.data);
+      setDepartment(''); 
+      setAddStatus(false); 
+      setSnackbar({ open: true, message: res.data.message, severity: 'success' }); 
     } catch (error) {
-      handleApiError(error);
+      let errorMessage = 'Failed to add department. Please try again.';
+      if (error.response) {
+        if (error.response.status === 400) {
+          
+          errorMessage = error.response.data.message;
+        } else if (error.response.status === 404) {
+          errorMessage = 'Resource not found. Please contact support.';
+        } else {
+          errorMessage = `Server Error: ${error.response.status}. Please try again later.`;
+        }
+      } else if (error.request) {
+        errorMessage = 'Network error. Please check your internet connection.';
+      } else {
+        errorMessage = 'An unexpected error occurred. Please try again later.';
+      }
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
   };
+  
 
   const handleApiError = (error) => {
     if (error.response) {

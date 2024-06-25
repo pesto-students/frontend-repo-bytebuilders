@@ -30,15 +30,26 @@ export default function RegisterPage() {
 
   const validatePhone = (phone) => /^[0-9]{10}$/.test(phone);
 
+  const isValidDate = (dateString) => {
+    const date = new Date(dateString);
+    return !isNaN(date.getTime()) && dateString.split('-').length === 3;
+  };
+
   const validateDateOfBirth = (dateOfBirth) => {
-    const today = new Date();
+    if (!isValidDate(dateOfBirth)) return false;
+    const currentYear = new Date().getFullYear();
+    const minDate = new Date(currentYear - 60, 0, 1); // January 1 of currentYear - 60
+    const maxDate = new Date(currentYear - 18, 11, 31); // December 31 of currentYear - 18
     const birthDate = new Date(dateOfBirth);
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age >= 18;
+    const today = new Date();
+    return birthDate >= minDate && birthDate <= maxDate && birthDate <= today;
+  };
+
+  const validateJoiningDate = (joiningDate) => {
+    if (!isValidDate(joiningDate)) return false;
+    const today = new Date();
+    const joinDate = new Date(joiningDate);
+    return joinDate <= today;
   };
 
   const handleBlur = (field, value) => {
@@ -61,13 +72,13 @@ export default function RegisterPage() {
         tempErrors.employeeIdentificationCode = value ? '' : 'Employee Identification Code is required';
         break;
       case 'joiningDate':
-        tempErrors.joiningDate = value ? '' : 'Joining Date is required';
+        tempErrors.joiningDate = validateJoiningDate(value) ? '' : 'Joining Date must not be in the future or invalid';
         break;
       case 'organisationName':
         tempErrors.organisationName = value ? '' : 'Organisation Name is required';
         break;
       case 'dateOfBirth':
-        tempErrors.dateOfBirth = validateDateOfBirth(value) ? '' : 'You must be at least 18 years old';
+        tempErrors.dateOfBirth = validateDateOfBirth(value) ? '' : 'Age should be between 18 to 60 or invalid date';
         break;
       default:
         break;
@@ -75,14 +86,11 @@ export default function RegisterPage() {
 
     setErrors(tempErrors);
 
-    // Clear the input field if there are no errors
+    // Show Snackbar if there are errors
     if (tempErrors[field] && value.trim() !== '') {
       setSnackbar({ open: true, message: tempErrors[field], severity: 'error' });
-      setTimeout(() => {
-        setSnackbar({ ...snackbar, open: false });
-      }, 4000); // Close Snackbar after 4 seconds
     } else {
-      setSnackbar({ ...snackbar, open: false }); // Clear Snackbar if no error
+      setSnackbar({ ...snackbar, open: false });
     }
   };
 
@@ -105,7 +113,6 @@ export default function RegisterPage() {
 
     if (formValid) {
       try {
-        // const adminPermission = { isAdmin: true };
         const response = { ...data, ...adminPermission };
 
         await registerUserAPI(response);
@@ -181,6 +188,7 @@ export default function RegisterPage() {
               <input
                 type="date"
                 name="joiningDate"
+                max={getTodayDate()}
                 onBlur={(e) => handleBlur('joiningDate', e.target.value)}
               />
             </div>
@@ -230,7 +238,12 @@ export default function RegisterPage() {
 }
 
 function getMaxDateOfBirth() {
-  const today = new Date();
-  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  const currentYear = new Date().getFullYear();
+  const maxDate = new Date(currentYear - 18, 11, 31); // December 31 of currentYear - 18
   return maxDate.toISOString().split('T')[0];
+}
+
+function getTodayDate() {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
 }
