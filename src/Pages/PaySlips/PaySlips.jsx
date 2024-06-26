@@ -9,6 +9,7 @@ import { disableLoading, enableLoading } from '../../Redux/userSlice';
 import { store } from '../../Redux/store';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
 
 export default function PaySlips() {
   const user = useSelector((state) => state.user);
@@ -17,6 +18,7 @@ export default function PaySlips() {
   const [monthList, setMonthList] = useState([]);
   const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
   const [paySlipURL, setPaySlipURL] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false); // New state for download button loading
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -53,6 +55,7 @@ export default function PaySlips() {
   const handlePaySlip = async () => {
     try {
       store.dispatch(enableLoading());
+      setIsDownloading(true);
       const res = await getPaySlipAPI({
         year: yearMonth.year,
         month: months.indexOf(yearMonth.month) + 1,
@@ -72,6 +75,7 @@ export default function PaySlips() {
       setOpenSnackbar(true);
       setTimeout(() => {
         store.dispatch(disableLoading());
+        setIsDownloading(false); // Reset download button loading state
       }, 2000);
     }
   };
@@ -101,7 +105,12 @@ export default function PaySlips() {
 
   const handleClick = (event) => {
     event.preventDefault();
-    window.open(paySlipURL, '_blank', 'noopener,noreferrer');
+    const link = document.createElement('a');
+    link.href = paySlipURL;
+    link.setAttribute('download', `PaySlip-${yearMonth.year}-${yearMonth.month}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleCloseSnackbar = () => {
@@ -149,18 +158,16 @@ export default function PaySlips() {
               />
             </span>
             <span>
-              <button onClick={handlePaySlip}>Get Pay Slip</button>
+              <button onClick={handlePaySlip} style={{ cursor: 'pointer' }}>Get Pay Slip</button>
             </span>
+            {paySlipURL && (
+              <span>
+                <button onClick={handleClick} style={{ cursor: 'pointer' }} disabled={isDownloading}>
+                  {isDownloading ? <CircularProgress size={24} /> : 'Download Pay Slip'}
+                </button>
+              </span>
+            )}
           </div>
-
-          {paySlipURL && (
-            <div className="paySlipviewer">
-              <a href={paySlipURL} onClick={handleClick}>
-                Pay Slip-{yearMonth.year}-{yearMonth.month} Please
-                click to view
-              </a>
-            </div>
-          )}
         </div>
       )}
       <Snackbar
