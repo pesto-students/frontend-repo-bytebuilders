@@ -8,10 +8,10 @@ import Loading from '../Loading/Loading';
 export default function Dashboard() {
   const user = useSelector((state) => state.user);
   const isLoading = useSelector((state) => state.isLoading);
-  console.log('isLoading', isLoading);
+
   useEffect(() => {
-    console.log('In DashBoard', user);
-  }, []);
+    console.log('In Dashboard', user);
+  }, [user]);
 
   return (
     <>
@@ -21,8 +21,9 @@ export default function Dashboard() {
         <div className="dashboard">
           <div className="dashtitle">
             <div className="dashwelcome">
-              <h1>DashBoard</h1>
-              <i>Hello, {user.fullName}....</i>
+              <h1>{user.organisationName}</h1>
+              <br></br>
+              <i>Hello, {user.fullName}...</i>
             </div>
             <div className="dashtimedatestatus">
               <ClockComponent />
