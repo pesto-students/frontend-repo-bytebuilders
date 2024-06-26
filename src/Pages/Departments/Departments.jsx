@@ -43,7 +43,7 @@ export default function Departments() {
       setDepartmentList(depart.data);
       setDepartment(''); 
       setAddStatus(false); 
-      setSnackbar({ open: true, message: res.data.message, severity: 'success' }); 
+      setSnackbar({ open: true, message: res.message, severity: 'success' }); 
     } catch (error) {
       let errorMessage = 'Failed to add department. Please try again.';
       if (error.response) {
