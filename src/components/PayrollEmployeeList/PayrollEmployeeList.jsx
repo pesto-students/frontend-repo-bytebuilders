@@ -4,13 +4,25 @@ import EmployeeList from '../Employee/EmployeeListContainer/EmployeeList/Employe
 import { formatDate } from 'date-fns';
 import { months } from '../../Data/Permission';
 import { generatePayrollAPI } from '../../api/payrollapi';
+import SnackbarMessage from './SnackBarMessage';
+import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
+
 export default function PayrollEmployeeList({ employeeList }) {
-  const [message, setMessage] = useState({
+  const [snackbar, setSnackbar] = useState({
+    open: false,
     message: '',
-    status: false,
-    stausCode: 400,
+    severity: 'success', // default severity
   });
+
+  const [loading, setLoading] = useState(false); // State for loading indicator
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const generatePaySlip = async (id, yearmonth) => {
+    setLoading(true); // Start loading indicator
+
     let year = formatDate(new Date(), 'yyyy');
     let month = formatDate(new Date(), 'MM');
 
@@ -29,36 +41,45 @@ export default function PayrollEmployeeList({ employeeList }) {
     try {
       const res = await generatePayrollAPI(dateObj);
 
-      message.message = res.data.message;
-      message.stausCode = 200;
-      message.status = true;
+      setSnackbar({
+        open: true,
+        message: res.data.message,
+        severity: 'success',
+      });
+
+      // Automatically close the snackbar after 3 seconds
+      setTimeout(() => {
+        handleCloseSnackbar();
+      }, 3000);
     } catch (error) {
       if (error.response) {
-        message.message = error.response.data.message;
-        message.status = true;
+        setSnackbar({
+          open: true,
+          message: error.response.data.message,
+          severity: 'error',
+        });
       } else {
-        message.message = error.message;
-        message.status = true;
-        message.stausCode = 201;
+        setSnackbar({
+          open: true,
+          message: error.message,
+          severity: 'error',
+        });
       }
+    } finally {
+      setLoading(false); // Stop loading indicator
     }
   };
-  useEffect(() => {
-    setMessage({ message: '', status: false, stausCode: 400 });
-  }, []);
+
   return (
     <div className="payrollEmployeeListContainer">
-      {message.status && (
-        <span
-          style={
-            message.stausCode === 200
-              ? { color: '#30D143' }
-              : { color: '#FD5252' }
-          }
-        >
-          {message.message}
-        </span>
-      )}
+      <SnackbarMessage
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={handleCloseSnackbar}
+        autoHideDuration={3000} // Specify the autoHideDuration
+      />
+      {loading && <CircularProgress size={24} className="loader" />} {/* Display loader when loading is true */}
       {employeeList.map((employee) => (
         <EmployeeList
           employee={employee}
