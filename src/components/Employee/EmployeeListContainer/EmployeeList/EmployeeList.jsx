@@ -3,12 +3,15 @@ import './EmployeeList.css';
 import { format, parseISO } from 'date-fns';
 import Dropdown from '../../../Dropdown/Dropdown';
 import { months } from '../../../../Data/Permission';
+import CircularProgress from '@mui/material/CircularProgress';
+
 export default function EmployeeList({
   employee,
   employeeDetailFlag = false,
   payrollFlag = false,
   handleCheck = null,
   generatePaySlip = null,
+  loading = false,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [years, setYears] = useState([]);
@@ -18,49 +21,42 @@ export default function EmployeeList({
     year: '',
     month: '',
   });
+
   const getYear = () => {
     const startYear = new Date(employee.joiningDate).getFullYear();
     const endYear = new Date().getFullYear();
-
+    const yearsArray = [];
+    
     for (let year = startYear; year <= endYear; year++) {
-      years.push(year);
+      yearsArray.push(year);
     }
-    setYears(years);
+    setYears(yearsArray);
   };
-  // const handleSetMonth = () => {
-  //   console.log(yearMonth);
 
-  //   const dateToday = format(new Date(), 'mm');
-  //   console.log(dateToday);
-  // };
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setYearMonth({ ...yearMonth, year: value });
-  // };
   const handleMonth = (e) => {
-    const { name, value } = e.target;
-    console.log(value);
-    yearMonth.month = value;
+    const { value } = e.target;
+    setYearMonth((prevYearMonth) => ({
+      ...prevYearMonth,
+      month: value,
+    }));
   };
 
   const handleYears = (e) => {
-    const { name, value } = e.target;
-
-    yearMonth.year = value;
+    const { value } = e.target;
     setYearMonth((prevYearMonth) => ({
-      ...prevYearMonth, // Spread previous state
-      year: value, // Update name property
+      ...prevYearMonth,
+      year: value,
     }));
   };
 
   useEffect(() => {
-    if (payrollFlag && years.length == 0) {
+    if (payrollFlag && years.length === 0) {
       getYear();
     }
   }, []);
+
   return (
-    <>
+    <div className="employeeListContainer">
       <div key={employee._id} className="employeeList">
         {employeeDetailFlag && (
           <input
@@ -77,6 +73,7 @@ export default function EmployeeList({
             >
               Generate PaySlip
             </button>
+            {loading && <CircularProgress size={20} style={{ marginLeft: 10 }} />}
           </span>
         )}
         <span onClick={() => setIsExpanded(!isExpanded)}>
@@ -107,7 +104,7 @@ export default function EmployeeList({
             <div className="employeelistdetails">
               <label htmlFor="joiningDate">Joining Date</label>
               <span>
-                {format(parseISO(employee.joiningDate), 'yyyy-mm-dd')}
+                {format(parseISO(employee.joiningDate), 'yyyy-MM-dd')}
               </span>
             </div>
           </div>
@@ -155,6 +152,6 @@ export default function EmployeeList({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
