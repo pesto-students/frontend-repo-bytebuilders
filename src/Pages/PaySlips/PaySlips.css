@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
 }
+
 .employeePayslip {
   padding: 36px;
   gap: 24px;
 }
+
 .payslipSelector {
   display: flex;
   gap: 24px;
@@ -22,12 +24,14 @@
   font-weight: 400;
   color: #ffffff;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .paySlipviewer {
   display: flex;
   padding-top: 10%;
-
   align-items: center;
   color: #6399fd;
   font-size: 16px;
