@@ -13,7 +13,7 @@ export default function DepartmentDesignationTable({
 }) {
   const user = useSelector((state) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 5;
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(List.length / itemsPerPage);
