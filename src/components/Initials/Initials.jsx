@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Initials.css';
+
 export default function Initials({ name }) {
   const [initials, setInitials] = useState('');
   const [backColour, setBackColour] = useState('');
@@ -10,6 +11,7 @@ export default function Initials({ name }) {
     '#D26CDB',
     '#5FA832',
   ];
+
   const createInitials = () => {
     const words = name.trim().split(' ');
     let str = '';
@@ -23,20 +25,32 @@ export default function Initials({ name }) {
 
     setInitials(str.length > 1 ? str.slice(0, 2) : str);
   };
+
   const selectColour = () => {
     const randomIndex = Math.floor(Math.random() * colorlist.length);
     setBackColour(colorlist[randomIndex]);
   };
+
   useEffect(() => {
     createInitials();
     selectColour();
-  }, []);
+  }, [name]);
+
+  const handleLogout = () => {
+    // Implement logout logic here
+    console.log('Logging out...');
+  };
+
   return (
-    <div
-      className="initialCircle"
-      style={{ backgroundColor: backColour }}
-    >
-      {initials}
+    <div className="container">
+      {/* <div
+        className="initialCircle"
+        // style={{ backgroundColor: backColour }}
+      >
+      </div> */}
+      <button className="logoutButton" onClick={handleLogout}>
+        Log Out
+      </button>
     </div>
   );
 }
