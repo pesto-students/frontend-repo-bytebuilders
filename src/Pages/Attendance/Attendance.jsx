@@ -7,6 +7,8 @@ import {
 } from '../../api/attendenceapi';
 import HoverBox from '../../components/Attendance/HoverBox/HoverBox';
 import ClockComponent from '../../components/ClockComponent/ClockComponent';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 export default function Attendance() {
   const [leaveStatus, setLeaveStatus] = useState(false);
@@ -21,21 +23,23 @@ export default function Attendance() {
     content: [],
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
-  const [loading, setLoading] = useState(true); // Loading state
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [loading, setLoading] = useState(true);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // To differentiate between success and error messages
 
   const getAttendance = async () => {
     try {
       const list = await getPunchDataAPI();
-
       setAttendanceList(list);
+
       if (list.length) {
         const today = list[list.length - 1];
 
         const checkstatus = Math.floor(today.punchTimes.length % 2)
           ? setCheckIn(false)
           : setCheckIn(true);
-        
+
         if (today.isHoliday || today.isWeekend || today.isOnLeave) {
           setLeaveStatus(true);
         }
@@ -43,13 +47,9 @@ export default function Attendance() {
 
       setError('');
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      handleError(error);
     } finally {
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false);
     }
   };
 
@@ -73,48 +73,55 @@ export default function Attendance() {
       : attendance.punchTimes.length
       ? 'Present'
       : 'Absent';
+
     return status;
   };
 
   const punchOutTime = (punchTimes) => {
-    // Check if the last punch in the array is a punch out, otherwise show "MISSING"
     if (punchTimes.length % 2 === 1) {
-      return "MISSING";
+      return 'MISSING';
     } else {
       return punchTimes[punchTimes.length - 1];
     }
   };
 
-  const handleMouseOut = (e) => {
+  const handleMouseOut = () => {
     setHoverInfo({ ...hoverInfo, visible: false });
   };
 
   const handleCheckIn = async () => {
     try {
-      const res = await punchInAPI();
-      getAttendance();
-      setError('');
+      await punchInAPI();
+      await getAttendance();
+      setSnackbarMessage('Punched In successfully.');
+      setSnackbarSeverity('success');
     } catch (error) {
       handleError(error);
+      setSnackbarMessage("please punch out before punch in")
     }
   };
 
   const handleCheckOut = async () => {
     try {
-      const res = await punchOutAPI();
-      getAttendance();
-      setError('');
+      await punchOutAPI();
+      await getAttendance();
+      setSnackbarMessage('Punched Out successfully.');
+      setSnackbarSeverity('success');
     } catch (error) {
       handleError(error);
+      setSnackbarMessage("please punch in before punch out")
     }
   };
 
   const handleError = (error) => {
     if (error.response) {
       setError(error.response.message);
+      setSnackbarMessage(error.response.message);
     } else {
       setError(error.message);
+      setSnackbarMessage(error.message);
     }
+    setSnackbarSeverity('error');
   };
 
   useEffect(() => {
@@ -133,6 +140,18 @@ export default function Attendance() {
 
   return (
     <div className="attendanceContainer">
+      <Snackbar
+        open={!!snackbarMessage}
+        autoHideDuration={2500}
+        onClose={() => setSnackbarMessage('')}
+      >
+        <SnackbarContent
+          message={snackbarMessage}
+          style={{
+            backgroundColor: snackbarSeverity === 'success' ? '#43A047' : '#D32F2F',
+          }}
+        />
+      </Snackbar>
       <div className="attendancetopbox">
         <ClockComponent />
         <div className="attendancecheckbox">
@@ -189,7 +208,9 @@ export default function Attendance() {
       <b>My Attendance</b>
       {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
       {loading ? (
-        <div className="loader">Loading...</div>
+        <div className="loader">
+          <div></div>
+        </div>
       ) : (
         <div className="attendanceList">
           <table className="attendancetable">
@@ -222,7 +243,7 @@ export default function Attendance() {
                     onMouseEnter={(e) =>
                       handleMouseIn(e, attendance.punchTimes)
                     }
-                    onMouseLeave={(e) => handleMouseOut(e)}
+                    onMouseLeave={handleMouseOut}
                   >
                     {attendance.netHourInOffice}
                   </td>
