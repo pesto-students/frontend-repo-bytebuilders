@@ -6,11 +6,19 @@ export const getPunchDataAPI = async () => {
 };
 
 export const punchInAPI = async () => {
-  const res = await apiRequest.post('punch-in');
-  return res;
+  try {
+    const res = await apiRequest.post('punch-in');
+    return res.data; 
+  } catch (error) {
+    throw error; 
+  }
 };
 
 export const punchOutAPI = async () => {
-  const res = await apiRequest.post('punch-out');
-  return res;
+  try {
+    const res = await apiRequest.post('punch-out');
+    return res.data; 
+  } catch (error) {
+    throw error; 
+  }
 };
