@@ -20,7 +20,7 @@ export default function Dashboardcontent() {
       </div>
       <div className="dashteamleave">
         <div className="dashteamleaveTitle">
-          <h3>Who is On Leave</h3>
+          <h3>On Leave Today</h3>
         </div>
         <div className="line"></div>
         <OnLeaveEmployee />
@@ -35,7 +35,7 @@ export default function Dashboardcontent() {
       </div>
       <div className="dashteamleave">
         <div className="dashteamleaveTitle">
-          <h3>Celebration</h3>
+          <h3>Who was born today  🍰 </h3>
         </div>
         <div className="line"></div>
         <DashBoardCelebration />
