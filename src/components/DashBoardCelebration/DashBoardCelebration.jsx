@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './DashBoardCelebration.css';
 import Initials from '../Initials/Initials';
 import { getBirthdayEmployeeAPI } from '../../api/userAPI';
+
 export default function DashBoardCelebration() {
-  const [employeeeList, setEmployeeList] = useState([]);
+  const [employeeList, setEmployeeList] = useState([]);
   const [error, setError] = useState('');
+
   const getEmployeeListCelebration = async () => {
     try {
       const res = await getBirthdayEmployeeAPI();
-
       setEmployeeList(res.data);
     } catch (error) {
       if (error.response) {
@@ -18,26 +19,24 @@ export default function DashBoardCelebration() {
       }
     }
   };
+
   useEffect(() => {
-    if (!employeeeList.length) {
+    if (!employeeList.length) {
       getEmployeeListCelebration();
     }
   }, []);
+
   return (
     <>
-      {error && <p style={{ color: '#FF3F3F' }}></p>}
-      <div className="onleveContainer">
-        {employeeeList.map((employee) => (
-          <div className="employeetab">
+      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
+      <div className="onleaveContainer">
+        {employeeList.map((employee) => (
+          <div className="employeeTab" key={employee.id}>
             <span>
-              <Initials name={employee.fullName} />
+              {/* <Initials name={employee.fullName} /> */}
             </span>
-            <div className="nametab">
+            <div className="nameTab">
               <span>{employee.fullName}</span>
-
-              <span>
-                {employee.designation} , {employee.department}
-              </span>
             </div>
           </div>
         ))}
