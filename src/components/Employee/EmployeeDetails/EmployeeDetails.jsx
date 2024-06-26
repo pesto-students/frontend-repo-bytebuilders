@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './EmployeeDetails.css';
-
 import { format, parseISO } from 'date-fns';
 import EmployeePermissionButton from '../EmployeePermisionButton/EmployeePermissionButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { employeeDeactivateAPI } from '../../../api/userAPI';
 import { useSelector } from 'react-redux';
 import { resetPasswordAPI } from '../../../api/forgetpasswordAPI';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function EmployeeDetails({
   user,
@@ -24,6 +25,11 @@ export default function EmployeeDetails({
   const [managerFlag, setManagerFlag] = useState(true);
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
 
   const handleToggle = (e) => {
     let { name } = e.target;
@@ -37,37 +43,47 @@ export default function EmployeeDetails({
   const deactivateEmployee = async () => {
     try {
       const res = await employeeDeactivateAPI(user._id);
-      setMessageStatus({
-        status: 'OK',
-        message: 'Employee deactivated.........',
+      setSnackbar({
+        open: true,
+        message: 'Employee deactivated successfully.',
+        severity: 'success',
       });
       setResponseStatus();
       navigate('/organisation');
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      setSnackbar({
+        open: true,
+        message: error.response ? error.response.message : error.message,
+        severity: 'error',
+      });
     }
   };
 
   const resetPassword = async (id) => {
     try {
       await resetPasswordAPI(id);
-      setMessageStatus({
-        status: 'OK',
-        message: 'Password send successfully on employee mail....',
+      setSnackbar({
+        open: true,
+        message: 'Password sent successfully to employee\'s email.',
+        severity: 'success',
       });
       setResponseStatus();
     } catch (error) {
-      if (error.response) {
-        setError(error.response.message);
-      } else {
-        setError(error.message);
-      }
+      setSnackbar({
+        open: true,
+        message: error.response ? error.response.message : error.message,
+        severity: 'error',
+      });
     }
   };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   useEffect(() => {
     storeUser._id === user._id
       ? setUserFlag(false)
@@ -390,6 +406,19 @@ export default function EmployeeDetails({
           </>
         )}
       </div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
