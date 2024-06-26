@@ -6,24 +6,28 @@ import { getAlldesignations } from '../../../api/designationapi';
 import { getAllDepartments } from '../../../api/departmentapi';
 import { employeeListAPI } from '../../../api/userAPI';
 import { useSelector } from 'react-redux';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 export default function AddEmployeeForm({
   handleSumbmit,
   formData,
   handleChange,
+  loading,
 }) {
   const navigate = useNavigate();
   const [departments, setDepartment] = useState([]);
   const [designation, setDesignation] = useState([]);
   const [reportinManagerList, setReportingManagerList] = useState([]);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
 
   const user = useSelector((state) => state.user);
   const setDepartmentList = async () => {
     try {
       const { data } = await getAllDepartments();
       const deptList = data
-        .filter(
-          (obj) => obj.organisationName === user.organisationName
-        )
+        .filter((obj) => obj.organisationName === user.organisationName)
         .map((department) => department.name);
 
       setDepartment(deptList);
@@ -33,9 +37,7 @@ export default function AddEmployeeForm({
     try {
       const { data } = await getAlldesignations();
       const desgList = data
-        .filter(
-          (obj) => obj.organisationName === user.organisationName
-        )
+        .filter((obj) => obj.organisationName === user.organisationName)
         .map((designation) => designation.name);
 
       setDesignation(desgList);
@@ -44,7 +46,6 @@ export default function AddEmployeeForm({
   const setReportingManager = async () => {
     try {
       const { data } = await employeeListAPI();
-
       const list = data
         .filter((employee) => employee.isReportingManager)
         .map((employee) => employee.fullName);
@@ -52,6 +53,14 @@ export default function AddEmployeeForm({
       setReportingManagerList(list);
     } catch (error) {}
   };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   useEffect(() => {
     if (!departments.length) {
       setDepartmentList();
@@ -63,8 +72,9 @@ export default function AddEmployeeForm({
       setReportingManager();
     }
   }, []);
+
   return (
-    <form onSubmit={handleSumbmit}>
+    <form onSubmit={(e) => handleSumbmit(e, setSnackbar)}>
       <div className="addinputarea">
         <div className="EmployeeDetails">
           <h3>Employee Details</h3>
@@ -131,7 +141,6 @@ export default function AddEmployeeForm({
 
           <div className="addemployeeinput">
             <label>Department</label>
-
             <Dropdown
               name="department"
               options={departments}
@@ -141,7 +150,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>Designation</label>
-
             <Dropdown
               name="designation"
               options={designation}
@@ -151,7 +159,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>Reporting Manager</label>
-
             <Dropdown
               name="reportingManager"
               options={reportinManagerList}
@@ -190,7 +197,6 @@ export default function AddEmployeeForm({
           <h3>Leave Details</h3>
           <div className="addemployeeinput">
             <label>Medical Leave</label>
-
             <input
               type="number"
               name="medicalLeaveDays"
@@ -216,7 +222,6 @@ export default function AddEmployeeForm({
           <h3>Salary Details</h3>
           <div className="addemployeeinput">
             <label>salary</label>
-
             <input
               type="number"
               name="salary"
@@ -226,7 +231,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>Basic Salary</label>
-
             <input
               type="number"
               name="basicSalary"
@@ -236,7 +240,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>HRA</label>
-
             <input
               type="number"
               name="hra"
@@ -246,7 +249,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>PF</label>
-
             <input
               type="number"
               name="pf"
@@ -256,7 +258,6 @@ export default function AddEmployeeForm({
           </div>
           <div className="addemployeeinput">
             <label>Special Allownace</label>
-
             <input
               type="number"
               name="specialAllowances"
@@ -268,16 +269,26 @@ export default function AddEmployeeForm({
       </div>
 
       <div className="addbuttonContainer">
-        <button type="submit" className="addbutton">
-          Add Employee
+        <button type="submit" className="addbutton" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Add Employee'}
         </button>
         <button
           onClick={() => navigate('/organisation')}
           className="addbutton"
+          disabled={loading}
         >
           Back
         </button>
       </div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </form>
   );
 }
