@@ -33,15 +33,15 @@ export default function OnLeaveEmployee() {
             <span>On Leave : {employeeeList.length}</span>
             {employeeeList.map((employee) => (
               <div className="employeetab">
-                <span>
+                {/* <span>
                   <Initials name={employee.fullName} />
-                </span>
+                </span> */}
                 <div className="nametab">
                   <span>{employee.fullName}</span>
 
-                  <span>
+                  {/* <span>
                     {employee.designation} , {employee.department}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             ))}
