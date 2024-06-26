@@ -184,7 +184,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="registerinput">
-              <label>Joining Date</label>
+              <label>Joining Date in Company/ Organisation</label>
               <input
                 type="date"
                 name="joiningDate"
