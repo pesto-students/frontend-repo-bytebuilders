@@ -203,7 +203,7 @@ export default function AddEmployeeForm({
               value={formData.medicalLeaveDays}
               onChange={handleChange}
               min={0}
-              max={12}
+              max={100}
             />
           </div>
           <div className="addemployeeinput">
@@ -214,7 +214,7 @@ export default function AddEmployeeForm({
               value={formData.casualLeaveDays}
               onChange={handleChange}
               min={0}
-              max={12}
+              max={100}
             />
           </div>
         </div>
