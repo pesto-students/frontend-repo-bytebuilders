@@ -5,9 +5,11 @@ import { months } from '../../Data/Permission';
 import { getPaySlipAPI } from '../../api/payrollapi';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/Loading/Loading';
-import { classNames } from '@react-pdf-viewer/core';
 import { disableLoading, enableLoading } from '../../Redux/userSlice';
 import { store } from '../../Redux/store';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 export default function PaySlips() {
   const user = useSelector((state) => state.user);
   const loading = useSelector((store) => store.isLoading);
@@ -15,8 +17,11 @@ export default function PaySlips() {
   const [monthList, setMonthList] = useState([]);
   const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
   const [paySlipURL, setPaySlipURL] = useState('');
-  const [error, setError] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const dispatch = useDispatch();
+
   const getYear = () => {
     store.dispatch(enableLoading());
     const startYear = new Date(user.joiningDate).getFullYear();
@@ -44,6 +49,7 @@ export default function PaySlips() {
       store.dispatch(disableLoading());
     }, 2000);
   };
+
   const handlePaySlip = async () => {
     try {
       store.dispatch(enableLoading());
@@ -51,24 +57,25 @@ export default function PaySlips() {
         year: yearMonth.year,
         month: months.indexOf(yearMonth.month) + 1,
       });
-      console.log(res);
 
       setPaySlipURL(res.data.payslipUrl);
-      setError('');
+      setSnackbarMessage('Pay Slip URL fetched successfully!');
+      setSnackbarSeverity('success');
     } catch (error) {
-      if (error.response) {
-        if (error.response.data) {
-          setError(error.response.data.error);
-        }
+      if (error.response && error.response.data) {
+        setSnackbarMessage(error.response.data.error);
       } else {
-        setError(error.message);
+        setSnackbarMessage(error.message);
       }
+      setSnackbarSeverity('error');
     } finally {
+      setOpenSnackbar(true);
       setTimeout(() => {
         store.dispatch(disableLoading());
       }, 2000);
     }
   };
+
   const getMonths = () => {
     store.dispatch(enableLoading());
     const startYear = new Date(user.joiningDate).getFullYear();
@@ -78,10 +85,7 @@ export default function PaySlips() {
     if (endYear === startYear) {
       const list = months.slice(startYearMonth, endYearMonth + 1);
       setMonthList(list);
-    } else if (
-      yearMonth.year > startYear &&
-      yearMonth.year < endYear
-    ) {
+    } else if (yearMonth.year > startYear && yearMonth.year < endYear) {
       setMonthList(months);
     } else if (yearMonth.year === endYear) {
       const list = months.slice(0, endYearMonth + 1);
@@ -100,11 +104,16 @@ export default function PaySlips() {
     window.open(paySlipURL, '_blank', 'noopener,noreferrer');
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   useEffect(() => {
     if (years.length === 0) {
       getYear();
     }
   }, []);
+
   return (
     <>
       {loading ? (
@@ -114,13 +123,12 @@ export default function PaySlips() {
           className={
             user.isAdmin || user.isPayrollExecutive
               ? 'payslipContainer'
-              : ' payslipContainer employeePayslip'
+              : 'payslipContainer employeePayslip'
           }
         >
           {!(user.isAdmin || user.isPayrollExecutive) && (
             <h1>PaySlips</h1>
           )}
-          {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
           <div className="payslipSelector">
             <span>
               Year :
@@ -155,6 +163,19 @@ export default function PaySlips() {
           )}
         </div>
       )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
