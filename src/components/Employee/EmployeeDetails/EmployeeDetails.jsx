@@ -283,7 +283,7 @@ export default function EmployeeDetails({
                     disabled={!editflag}
                     onChange={handleChange}
                     min={0}
-                    max={12}
+                    max={100}
                   />
                 </div>
                 <div className="employeeLeaveBox">
@@ -296,7 +296,7 @@ export default function EmployeeDetails({
                     value={user.lopLeaveDays}
                     onChange={handleChange}
                     min={0}
-                    max={12}
+                    max={100}
                   />
                 </div>
                 <div className="employeeLeaveBox">
@@ -308,7 +308,7 @@ export default function EmployeeDetails({
                     value={user.casualLeaveDays}
                     onChange={handleChange}
                     min={0}
-                    max={12}
+                    max={100}
                   />
                 </div>
               </div>
