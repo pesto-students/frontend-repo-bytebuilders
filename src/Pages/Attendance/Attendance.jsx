@@ -85,6 +85,28 @@ export default function Attendance() {
     }
   };
 
+  const calculateTotalGross = (punchTimes) => {
+    if (punchTimes.length < 2) return '00:00:00';
+    const firstPunchIn = parseTime(punchTimes[0]);
+    const lastPunchOut = parseTime(punchTimes[punchTimes.length - 1]);
+    const totalGrossSeconds = lastPunchOut - firstPunchIn;
+    return formatTime(totalGrossSeconds);
+  };
+
+  const parseTime = (timeString) => {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   const handleMouseOut = () => {
     setHoverInfo({ ...hoverInfo, visible: false });
   };
@@ -220,7 +242,8 @@ export default function Attendance() {
                 <th> Status</th>
                 <th> Check In</th>
                 <th>Check out</th>
-                <th>Worked</th>
+                <th>Total Worked</th>
+                <th>Total Gross</th>
               </tr>
             </thead>
             <tbody>
@@ -247,6 +270,7 @@ export default function Attendance() {
                   >
                     {attendance.netHourInOffice}
                   </td>
+                  <td>{calculateTotalGross(attendance.punchTimes)}</td>
                 </tr>
               ))}
             </tbody>
