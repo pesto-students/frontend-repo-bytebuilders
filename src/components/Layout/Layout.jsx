@@ -56,7 +56,8 @@ export function RequireAuth() {
   );
   const user = useSelector((state) => state.user);
   const verifyAuthenticate = () => {
-    if (!isAuthenticated) {
+    console.log('isAuthenticated', isAuthenticated);
+    if (isAuthenticated === false) {
       navigate('/login');
     }
   };

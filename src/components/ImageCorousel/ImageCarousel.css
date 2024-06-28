@@ -1,0 +1,43 @@
+.custom-carousel
+  .carousel
+  .custom-carousel
+  .carousel
+  .control-next
+  .custom-carousel
+  .carousel
+  .control-prev {
+  background: rgba(0, 0, 0, 0.5); /* Darken the arrows */
+  color: white; /* Arrow color */
+}
+
+.custom-carousel .carousel .control-dots .dot {
+  background: rgba(0, 0, 0, 0.5); /* Darken the dots */
+  box-shadow: none; /* Remove box shadow */
+}
+
+.custom-carousel .carousel .control-dots .dot.selected {
+  background: white; /* Highlight the selected dot */
+}
+
+.custom-carousel .carousel .slide img {
+  border-radius: 10px; /* Round the corners of the images */
+}
+
+.custom-carousel .carousel .legend {
+  background: rgba(0, 0, 0, 0.7); /* Dark background for the legend */
+  color: white; /* Legend text color */
+  border-radius: 5px; /* Round the corners of the legend */
+  padding: 10px; /* Padding for the legend */
+  font-size: 1rem; /* Font size for the legend */
+  bottom: 20px; /* Move the legend up a bit */
+}
+
+.carousel-slide {
+  display: flex;
+  flex-direction: row;
+}
+.carousel-slide > img {
+  background-size: cover;
+  height: 80vh;
+  width: 50vw;
+}

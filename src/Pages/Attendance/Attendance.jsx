@@ -9,7 +9,7 @@ import HoverBox from '../../components/Attendance/HoverBox/HoverBox';
 import ClockComponent from '../../components/ClockComponent/ClockComponent';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import Loading from '../../Pages/Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 export default function Attendance() {
   const [leaveStatus, setLeaveStatus] = useState(false);
   const [checkIn, setCheckIn] = useState(true);

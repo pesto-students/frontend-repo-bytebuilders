@@ -11,8 +11,14 @@ import Alert from '@mui/material/Alert';
 
 export default function RegisterPage() {
   const [errors, setErrors] = useState({});
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'error',
+  });
+  const isAuthenticated = useSelector(
+    (state) => state.isAuthenticated
+  );
   const navigate = useNavigate();
 
   const handleSnackbarClose = (event, reason) => {
@@ -22,9 +28,11 @@ export default function RegisterPage() {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  const validateFullName = (fullName) => /^[A-Za-z\s]+$/.test(fullName);
+  const validateFullName = (fullName) =>
+    /^[A-Za-z\s]+$/.test(fullName);
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const validatePassword = (password) => password.length >= 6;
 
@@ -32,7 +40,9 @@ export default function RegisterPage() {
 
   const isValidDate = (dateString) => {
     const date = new Date(dateString);
-    return !isNaN(date.getTime()) && dateString.split('-').length === 3;
+    return (
+      !isNaN(date.getTime()) && dateString.split('-').length === 3
+    );
   };
 
   const validateDateOfBirth = (dateOfBirth) => {
@@ -42,7 +52,11 @@ export default function RegisterPage() {
     const maxDate = new Date(currentYear - 18, 11, 31); // December 31 of currentYear - 18
     const birthDate = new Date(dateOfBirth);
     const today = new Date();
-    return birthDate >= minDate && birthDate <= maxDate && birthDate <= today;
+    return (
+      birthDate >= minDate &&
+      birthDate <= maxDate &&
+      birthDate <= today
+    );
   };
 
   const validateJoiningDate = (joiningDate) => {
@@ -57,28 +71,44 @@ export default function RegisterPage() {
 
     switch (field) {
       case 'fullName':
-        tempErrors.fullName = validateFullName(value) ? '' : 'Full Name must contain only alphabets';
+        tempErrors.fullName = validateFullName(value)
+          ? ''
+          : 'Full Name must contain only alphabets';
         break;
       case 'email':
-        tempErrors.email = validateEmail(value) ? '' : 'Email is not valid';
+        tempErrors.email = validateEmail(value)
+          ? ''
+          : 'Email is not valid';
         break;
       case 'password':
-        tempErrors.password = validatePassword(value) ? '' : 'Password must be at least 6 characters long';
+        tempErrors.password = validatePassword(value)
+          ? ''
+          : 'Password must be at least 6 characters long';
         break;
       case 'phone':
-        tempErrors.phone = validatePhone(value) ? '' : 'Phone number is not valid';
+        tempErrors.phone = validatePhone(value)
+          ? ''
+          : 'Phone number is not valid';
         break;
       case 'employeeIdentificationCode':
-        tempErrors.employeeIdentificationCode = value ? '' : 'Employee Identification Code is required';
+        tempErrors.employeeIdentificationCode = value
+          ? ''
+          : 'Employee Identification Code is required';
         break;
       case 'joiningDate':
-        tempErrors.joiningDate = validateJoiningDate(value) ? '' : 'Joining Date must not be in the future or invalid';
+        tempErrors.joiningDate = validateJoiningDate(value)
+          ? ''
+          : 'Joining Date must not be in the future or invalid';
         break;
       case 'organisationName':
-        tempErrors.organisationName = value ? '' : 'Organisation Name is required';
+        tempErrors.organisationName = value
+          ? ''
+          : 'Organisation Name is required';
         break;
       case 'dateOfBirth':
-        tempErrors.dateOfBirth = validateDateOfBirth(value) ? '' : 'Age should be between 18 to 60 or invalid date';
+        tempErrors.dateOfBirth = validateDateOfBirth(value)
+          ? ''
+          : 'Age should be between 18 to 60 or invalid date';
         break;
       default:
         break;
@@ -88,7 +118,11 @@ export default function RegisterPage() {
 
     // Show Snackbar if there are errors
     if (tempErrors[field] && value.trim() !== '') {
-      setSnackbar({ open: true, message: tempErrors[field], severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: tempErrors[field],
+        severity: 'error',
+      });
     } else {
       setSnackbar({ ...snackbar, open: false });
     }
@@ -103,10 +137,12 @@ export default function RegisterPage() {
       email: formData.get('email'),
       password: formData.get('password'),
       phone: formData.get('phone'),
-      employeeIdentificationCode: formData.get('employeeIdentificationCode'),
+      employeeIdentificationCode: formData.get(
+        'employeeIdentificationCode'
+      ),
       joiningDate: formData.get('joiningDate'),
       organisationName: formData.get('organisationName'),
-      dateOfBirth: formData.get('dateOfBirth')
+      dateOfBirth: formData.get('dateOfBirth'),
     };
 
     const formValid = Object.values(errors).every((x) => x === '');
@@ -116,13 +152,25 @@ export default function RegisterPage() {
         const response = { ...data, ...adminPermission };
 
         await registerUserAPI(response);
-        setSnackbar({ open: true, message: 'Registration successful', severity: 'success' });
+        setSnackbar({
+          open: true,
+          message: 'Registration successful',
+          severity: 'success',
+        });
         navigate('/login');
       } catch (error) {
-        setSnackbar({ open: true, message: 'User is not registered, please try again', severity: 'error' });
+        setSnackbar({
+          open: true,
+          message: 'User is not registered, please try again',
+          severity: 'error',
+        });
       }
     } else {
-      setSnackbar({ open: true, message: 'Please fix the errors in the form.', severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: 'Please fix the errors in the form.',
+        severity: 'error',
+      });
     }
   };
 
@@ -153,7 +201,9 @@ export default function RegisterPage() {
                 type="date"
                 name="dateOfBirth"
                 max={getMaxDateOfBirth()}
-                onBlur={(e) => handleBlur('dateOfBirth', e.target.value)}
+                onBlur={(e) =>
+                  handleBlur('dateOfBirth', e.target.value)
+                }
               />
             </div>
             <div className="registerinput">
@@ -180,16 +230,23 @@ export default function RegisterPage() {
                 type="text"
                 name="employeeIdentificationCode"
                 placeholder="Enter your employee ID"
-                onBlur={(e) => handleBlur('employeeIdentificationCode', e.target.value)}
+                onBlur={(e) =>
+                  handleBlur(
+                    'employeeIdentificationCode',
+                    e.target.value
+                  )
+                }
               />
             </div>
             <div className="registerinput">
-              <label>Joining Date in Company/ Organisation</label>
+              <label>Joining Date in Company</label>
               <input
                 type="date"
                 name="joiningDate"
                 max={getTodayDate()}
-                onBlur={(e) => handleBlur('joiningDate', e.target.value)}
+                onBlur={(e) =>
+                  handleBlur('joiningDate', e.target.value)
+                }
               />
             </div>
             <div className="registerinput">
@@ -198,7 +255,9 @@ export default function RegisterPage() {
                 type="text"
                 name="organisationName"
                 placeholder="Enter your organisation name"
-                onBlur={(e) => handleBlur('organisationName', e.target.value)}
+                onBlur={(e) =>
+                  handleBlur('organisationName', e.target.value)
+                }
               />
             </div>
             <div className="registerinput">
@@ -229,7 +288,11 @@ export default function RegisterPage() {
         autoHideDuration={4000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

@@ -3,7 +3,7 @@ import './Dashboard.css';
 import { useSelector } from 'react-redux';
 import ClockComponent from '../../components/ClockComponent/ClockComponent';
 import Dashboardcontent from '../../components/DashboardContent/Dashboardcontent';
-import Loading from '../Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 
 export default function Dashboard() {
   const user = useSelector((state) => state.user);

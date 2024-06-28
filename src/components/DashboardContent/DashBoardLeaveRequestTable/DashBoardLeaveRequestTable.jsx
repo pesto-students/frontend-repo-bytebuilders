@@ -44,9 +44,11 @@ export default function DashBoardLeaveRequestTable() {
     }
   };
   useEffect(() => {
-    if (!leaveList.length) {
-      getLeave();
-    }
+    setTimeout(() => {
+      if (!leaveList.length) {
+        getLeave();
+      }
+    });
   }, []);
   return (
     <>

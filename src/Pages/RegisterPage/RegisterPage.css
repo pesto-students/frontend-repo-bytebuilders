@@ -2,7 +2,7 @@
   display: flex;
   background-color: #e3edff;
   overflow-y: scroll;
-  height: calc(130vh - 100px);
+  height: 100%;
 }
 
 .registerleft {
@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  width: 100%;
   gap: 24px;
   background-color: #ffffff;
   border-radius: 0px 20px 20px 0px;
@@ -48,7 +48,7 @@
   display: flex;
   justify-content: center;
   gap: 36px;
-  width: 100vh;
+  width: 100%;
 }
 
 .registerbuttonContainer > button {
@@ -78,6 +78,15 @@
 @media screen and (max-width: 1024px) {
   .registerPage {
     background-color: #ffff;
+  }
+  .inputArea {
+    flex-direction: column;
+  }
+  .registerinput {
+    width: 100%;
+  }
+  .registerinput > input {
+    width: 100%;
   }
 }
 @media screen and (max-width: 738px) {

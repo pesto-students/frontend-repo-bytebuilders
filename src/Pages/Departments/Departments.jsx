@@ -3,27 +3,43 @@ import './Departments.css';
 import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom';
-import { addDepartments, getAllDepartments } from '../../api/departmentapi';
+import {
+  addDepartments,
+  getAllDepartments,
+} from '../../api/departmentapi';
 import DepartmentDesignationTable from '../../components/DepartmentDesignation Table/DepartmentDesignationTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { disableLoading, enableLoading } from '../../Redux/userSlice';
+import Loading from '../../components/Loading/Loading';
 
 export default function Departments() {
   const [departmentList, setDepartmentList] = useState([]);
   const [department, setDepartment] = useState('');
   const [addStatus, setAddStatus] = useState(false);
   const [error, setError] = useState('');
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
-
+  const loading = useSelector((state) => state.isLoading);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'error',
+  });
+  const dispatch = useDispatch();
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
   const departments = async () => {
     try {
+      dispatch(enableLoading());
       const depart = await getAllDepartments();
       setDepartmentList(depart.data);
       setError('');
     } catch (error) {
       handleApiError(error);
+    } finally {
+      setTimeout(() => {
+        dispatch(disableLoading());
+      }, 1000);
     }
   };
 
@@ -32,38 +48,56 @@ export default function Departments() {
       if (e) {
         e.preventDefault();
       }
-  
+
       if (!department) {
-        setSnackbar({ open: true, message: 'Please enter a Department Name', severity: 'error' });
+        setSnackbar({
+          open: true,
+          message: 'Please enter a Department Name',
+          severity: 'error',
+        });
         return;
       }
-  
+      dispatch(enableLoading());
       const res = await addDepartments(department);
       const depart = await getAllDepartments();
       setDepartmentList(depart.data);
-      setDepartment(''); 
-      setAddStatus(false); 
-      setSnackbar({ open: true, message: res.message, severity: 'success' }); 
+      setDepartment('');
+      setAddStatus(false);
+      setSnackbar({
+        open: true,
+        message: res.message,
+        severity: 'success',
+      });
     } catch (error) {
-      let errorMessage = 'Failed to add department. Please try again.';
+      let errorMessage =
+        'Failed to add department. Please try again.';
       if (error.response) {
         if (error.response.status === 400) {
-          
           errorMessage = error.response.data.message;
         } else if (error.response.status === 404) {
-          errorMessage = 'Resource not found. Please contact support.';
+          errorMessage =
+            'Resource not found. Please contact support.';
         } else {
           errorMessage = `Server Error: ${error.response.status}. Please try again later.`;
         }
       } else if (error.request) {
-        errorMessage = 'Network error. Please check your internet connection.';
+        errorMessage =
+          'Network error. Please check your internet connection.';
       } else {
-        errorMessage = 'An unexpected error occurred. Please try again later.';
+        errorMessage =
+          'An unexpected error occurred. Please try again later.';
       }
-      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      });
+    } finally {
+      setTimeout(() => {
+        dispatch(disableLoading());
+      }, 1000);
     }
   };
-  
 
   const handleApiError = (error) => {
     if (error.response) {
@@ -80,27 +114,37 @@ export default function Departments() {
   }, []);
 
   return (
-    <div className="departments">
-      <h1>Departments</h1>
-      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
-      <DepartmentDesignationTable
-        name={'Department'}
-        List={departmentList}
-        setValue={setDepartment}
-        addValue={departmentadd}
-        setAddStatus={setAddStatus}
-        addStatus={addStatus}
-        inValue={department}
-      />
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </div>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="departments">
+          <h1>Departments</h1>
+          {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
+          <DepartmentDesignationTable
+            name={'Department'}
+            List={departmentList}
+            setValue={setDepartment}
+            addValue={departmentadd}
+            setAddStatus={setAddStatus}
+            addStatus={addStatus}
+            inValue={department}
+          />
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity={snackbar.severity}
+              sx={{ width: '100%' }}
+            >
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
+        </div>
+      )}
+    </>
   );
 }

@@ -1,30 +1,48 @@
 .homepageContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  height: cal(100vh - 100px);
+  padding-top: 36px;
+  height: 100%;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.homepageTextcontainer {
+  display: flex;
+  align-items: center;
+}
+
+.carouselConatiner {
+  width: 70%;
+  height: 25%;
 }
 
 .homepageText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: #f5f5f5;
-
   border-radius: 10px;
-  padding: 24px;
+  padding: 28px;
+  height: 50%;
 }
 
 .homepagetitelText {
   font-family: 'Poiret One';
   font-style: normal;
   font-weight: 300;
-  font-size: 48px;
+  font-size: 28px;
   line-height: 150%;
   color: #000000;
 }
 
 .homepagetitlemiddle {
-  font-family: 'Work Sans';
+  font-family: sans-serif;
   font-style: normal;
-  font-weight: 100;
-  font-size: 48px;
+  font-weight: bold;
+  font-size: 44px;
+
   line-height: 150%;
   color: #4982eb;
 }
@@ -39,6 +57,26 @@
   color: #000000;
 }
 
+.homapageDetails {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+
+  padding: 0px 50px;
+}
+.homeimage {
+  width: 50%;
+}
+
+.homeimage > img {
+  height: 300px;
+  width: 500px;
+  background-size: cover;
+}
+.homeText {
+  width: 50%;
+}
 @media screen and (max-width: 1024px) {
   .homepageContainer {
     flex-direction: column-reverse;
