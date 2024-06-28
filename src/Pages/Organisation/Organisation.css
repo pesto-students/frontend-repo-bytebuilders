@@ -5,6 +5,10 @@
   gap: 36px;
   width: 80%;
 }
+.organisation > h1 {
+  font-size: 24px;
+  font-weight: 300;
+}
 
 .organisationList {
   display: inherit;

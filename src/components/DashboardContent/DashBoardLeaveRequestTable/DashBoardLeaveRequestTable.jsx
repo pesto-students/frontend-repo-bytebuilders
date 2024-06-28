@@ -5,12 +5,17 @@ import { getLeaveHistoryAPI } from '../../../api/leaveapi';
 import LeaveStatus from '../../LeaveDetails/LeaveStatus/LeaveStatus';
 import { differenceInDays, format, parseISO } from 'date-fns';
 import { useDispatch } from 'react-redux';
+import {
+  disableLoading,
+  enableLoading,
+} from '../../../Redux/userSlice';
 export default function DashBoardLeaveRequestTable() {
   const [leaveList, setLeaveList] = useState([]);
-
+  const dispatch = useDispatch();
   const [error, setError] = useState('');
   const getLeave = async () => {
     try {
+      dispatch(enableLoading());
       const res = await getLeaveHistoryAPI();
 
       const updatedList = res.map((obj) => ({
@@ -32,6 +37,10 @@ export default function DashBoardLeaveRequestTable() {
       } else {
         setError(error.message);
       }
+    } finally {
+      setTimeout(() => {
+        dispatch(disableLoading());
+      }, 3000);
     }
   };
   useEffect(() => {

@@ -33,7 +33,11 @@ export default function Leaves() {
         start_date: format(parseISO(obj.start_date), 'yyyy-MM-dd'),
         end_date: format(parseISO(obj.end_date), 'yyyy-MM-dd'),
         apply_date: format(parseISO(obj.apply_date), 'yyyy-MM-dd'),
-        days: differenceInDays(parseISO(obj.end_date), parseISO(obj.start_date)) + 1,
+        days:
+          differenceInDays(
+            parseISO(obj.end_date),
+            parseISO(obj.start_date)
+          ) + 1,
       }));
 
       // Sort by apply_date based on sortOrder
@@ -74,7 +78,10 @@ export default function Leaves() {
   // Handle pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = leaveList.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = leaveList.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -174,7 +181,9 @@ export default function Leaves() {
                         <li
                           key={index + 1}
                           onClick={() => paginate(index + 1)}
-                          className={currentPage === index + 1 ? 'active' : ''}
+                          className={
+                            currentPage === index + 1 ? 'active' : ''
+                          }
                         >
                           {index + 1}
                         </li>

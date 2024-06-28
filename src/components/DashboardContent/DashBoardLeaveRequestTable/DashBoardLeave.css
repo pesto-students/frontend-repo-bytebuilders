@@ -7,6 +7,11 @@
   overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
 }
 
+.leverequestTableDashBoard h3 {
+  font-weight: 200;
+  font-size: 12px;
+}
+
 .leverequestTableDashBoard table {
   width: 100%;
   border-collapse: collapse;
@@ -21,7 +26,7 @@
 
 .leverequestTableDashBoard th {
   background-color: #f0f0f0;
-  font-weight: 600;
+  font-weight: 200;
 }
 
 .leverequestTableDashBoard tbody tr:hover {

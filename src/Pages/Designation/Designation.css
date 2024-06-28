@@ -6,6 +6,12 @@
   width: 80%;
 }
 
+.designations > h1 {
+  font-family: sans-serif;
+  font-size: 24px;
+  font-weight: 200;
+}
+
 .designations > table {
   border: black solid 1px;
   border-radius: 5px;

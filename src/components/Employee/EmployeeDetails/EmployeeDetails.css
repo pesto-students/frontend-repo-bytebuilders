@@ -15,11 +15,10 @@
 }
 
 .employeenamedesig > span:nth-child(1) {
-  font-family: 'Prompt';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 150%;
+  font-family: sans-serif;
+
+  font-weight: 300;
+  font-size: 16px;
 
   color: #000000;
 }
@@ -37,11 +36,13 @@
 .employeeDetails {
   display: flex;
   justify-content: space-between;
+  gap: 24px;
 }
 .employeeDetailsBoxes {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 }
 /* .personalDetails,
 .employmentDetails {
@@ -55,15 +56,20 @@
   flex-direction: column;
   background-color: #ebf2ff;
   padding: 8px 12px;
-
+  font-size: 14px;
+  font-weight: 200;
+  font-family: sans-serif;
   gap: 4px;
   border-radius: 12px;
-  width: 40vh;
+  width: 100%;
 }
 
 .inputdetails > input {
   background-color: #ebf2ff;
   border: none;
+  font-size: 12px;
+  font-weight: 200;
+  font-family: sans-serif;
 }
 
 .bottomContainer {
@@ -99,6 +105,8 @@
 }
 
 .employeeDetailstitles {
+  font-size: 18px;
+  font-family: sans-serif;
   font-weight: 300;
 }
 
@@ -107,11 +115,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 14px;
+  font-weight: 200;
+  font-family: sans-serif;
 }
 .employeeLeaveBox > input,
 .employePayrollBox > input {
   text-align: center;
   padding: 12px;
+  font-size: 12px;
+  font-weight: 200;
+  font-family: sans-serif;
 }
 
 @media screen and (max-width: 1024px) {

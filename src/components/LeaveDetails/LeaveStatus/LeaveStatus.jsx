@@ -8,16 +8,16 @@ export default function LeaveStatus({ status }) {
         status === 'new'
           ? {
               background: '#2EC9FE40',
-              color: '#2EC9FE',
+              // color: '#2EC9FE',
             }
           : status === 'rejected' || status === 'cancelled'
           ? {
               background: '#EE404C40',
-              color: '#EE404C',
+              // color: '#EE404C',
             }
           : {
               background: '#30d14340',
-              color: '#30D143',
+              // color: '#30D143',
             }
       }
     >

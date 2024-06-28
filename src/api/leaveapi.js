@@ -1,8 +1,12 @@
 import apiRequest from './apiRequest';
 
 export const getLeaveHistoryAPI = async () => {
-  const res = await apiRequest.get('get-leave-history');
-  return res.data;
+  try {
+    const res = await apiRequest.get('get-leave-history');
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const addleave = async (data) => {
@@ -13,7 +17,6 @@ export const addleave = async (data) => {
     throw error.response.data;
   }
 };
-
 
 export const processLeaveAPI = async (data) => {
   try {

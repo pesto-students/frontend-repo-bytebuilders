@@ -13,23 +13,23 @@ export default function Dashboard() {
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Loading />
-      ) : (
-        <div className="dashboard">
-          <div className="dashtitle">
-            <div className="dashwelcome">
-              <h1>{user.organisationName}</h1>
-              <br></br>
-              <i>Hello, {user.fullName}...</i>
-            </div>
-            <div className="dashtimedatestatus">
-              <ClockComponent />
-            </div>
+      ) : ( */}
+      <div className="dashboard">
+        <div className="dashtitle">
+          <div className="dashwelcome">
+            <h1>{user.organisationName}</h1>
+            <br></br>
+            <i>Hello, {user.fullName}...</i>
           </div>
-          <Dashboardcontent />
+          <div className="dashtimedatestatus">
+            <ClockComponent />
+          </div>
         </div>
-      )}
+        <Dashboardcontent />
+      </div>
+      {/* )} */}
     </>
   );
 }

@@ -6,6 +6,12 @@
   width: 80%;
 }
 
+.departments > h1 {
+  font-family: sans-serif;
+  font-size: 24px;
+  font-weight: 200;
+}
+
 .departments > table {
   border: black solid 1px;
   border-radius: 5px;

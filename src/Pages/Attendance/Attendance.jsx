@@ -9,7 +9,7 @@ import HoverBox from '../../components/Attendance/HoverBox/HoverBox';
 import ClockComponent from '../../components/ClockComponent/ClockComponent';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-
+import Loading from '../../Pages/Loading/Loading';
 export default function Attendance() {
   const [leaveStatus, setLeaveStatus] = useState(false);
   const [checkIn, setCheckIn] = useState(true);
@@ -30,16 +30,20 @@ export default function Attendance() {
 
   const getAttendance = async () => {
     try {
+      setLoading(true);
+      console.log('Loading', loading);
       const list = await getPunchDataAPI();
+
       setAttendanceList(list);
 
       if (list.length) {
-        const today = list[list.length - 1];
+        const today = list[0];
 
         const checkstatus = Math.floor(today.punchTimes.length % 2)
           ? setCheckIn(false)
           : setCheckIn(true);
 
+        console.log('Today', today);
         if (today.isHoliday || today.isWeekend || today.isOnLeave) {
           setLeaveStatus(true);
         }
@@ -93,11 +97,12 @@ export default function Attendance() {
     try {
       await punchInAPI();
       await getAttendance();
+      setCheckIn(false);
       setSnackbarMessage('Punched In successfully.');
       setSnackbarSeverity('success');
     } catch (error) {
       handleError(error);
-      setSnackbarMessage("please punch out before punch in")
+      setSnackbarMessage('please punch out before punch in');
     }
   };
 
@@ -105,11 +110,12 @@ export default function Attendance() {
     try {
       await punchOutAPI();
       await getAttendance();
+      setCheckIn(true);
       setSnackbarMessage('Punched Out successfully.');
       setSnackbarSeverity('success');
     } catch (error) {
       handleError(error);
-      setSnackbarMessage("please punch in before punch out")
+      setSnackbarMessage('please punch in before punch out');
     }
   };
 
@@ -133,147 +139,168 @@ export default function Attendance() {
   // Pagination calculations
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = attendanceList.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = attendanceList.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="attendanceContainer">
-      <Snackbar
-        open={!!snackbarMessage}
-        autoHideDuration={2500}
-        onClose={() => setSnackbarMessage('')}
-      >
-        <SnackbarContent
-          message={snackbarMessage}
-          style={{
-            backgroundColor: snackbarSeverity === 'success' ? '#43A047' : '#D32F2F',
-          }}
-        />
-      </Snackbar>
-      <div className="attendancetopbox">
-        <ClockComponent />
-        <div className="attendancecheckbox">
-          <div className="attendacestatus">
-            <span>Status</span>
-            <div className="line"></div>
-            <div className="attendanvcecheck">
-              <div
-                className="checkbullet"
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="attendanceContainer">
+            <Snackbar
+              open={!!snackbarMessage}
+              autoHideDuration={2500}
+              onClose={() => setSnackbarMessage('')}
+            >
+              <SnackbarContent
+                message={snackbarMessage}
                 style={{
-                  color: '#30D143',
-                  background: leaveStatus ? '' : '#30d14340',
+                  backgroundColor:
+                    snackbarSeverity === 'success'
+                      ? '#43A047'
+                      : '#D32F2F',
                 }}
-              >
-                In Office
-              </div>
-              <div
-                className="checkbullet"
-                style={{
-                  color: '#FF3F3F',
-                  background: leaveStatus ? '#FF3F3F40' : '',
-                }}
-              >
-                On Leave
+              />
+            </Snackbar>
+            <div className="attendancetopbox">
+              <ClockComponent />
+              <div className="attendancecheckbox">
+                <div className="attendacestatus">
+                  <div className="attendanvcecheck">
+                    <div
+                      className="checkbullet"
+                      style={{
+                        color: '#30D143',
+                        background: leaveStatus ? '' : '#30d14340',
+                      }}
+                    >
+                      In Office
+                    </div>
+                    <div
+                      className="checkbullet"
+                      style={{
+                        color: '#FF3F3F',
+                        background: leaveStatus ? '#FF3F3F40' : '',
+                      }}
+                    >
+                      On Leave
+                    </div>
+                  </div>
+                </div>
+                <div className="attendancecheckbutton">
+                  <button
+                    disabled={!checkIn}
+                    onClick={handleCheckIn}
+                    style={
+                      checkIn
+                        ? {
+                            color: '#30D143',
+                            background: '#30d14340',
+                          }
+                        : { color: '#A6A6A6', background: '#D8D8D8' }
+                    }
+                  >
+                    Punch In
+                  </button>
+                  <button
+                    disabled={checkIn}
+                    onClick={handleCheckOut}
+                    style={
+                      checkIn
+                        ? { color: '#A6A6A6', background: '#D8D8D8' }
+                        : {
+                            color: '#FF3F3F',
+                            background: '#FF3F3F40',
+                          }
+                    }
+                  >
+                    Punch Out
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="attendancecheckbutton">
-            <button
-              disabled={isButtonDisabled}
-              onClick={handleCheckIn}
-              style={
-                checkIn
-                  ? { color: '#30D143', background: '#30d14340' }
-                  : { color: '#A6A6A6', background: '#D8D8D8' }
-              }
-            >
-              Punch In
-            </button>
-            <button
-              disabled={isButtonDisabled}
-              onClick={handleCheckOut}
-              style={
-                checkIn
-                  ? { color: '#A6A6A6', background: '#D8D8D8' }
-                  : { color: '#FF3F3F', background: '#FF3F3F40' }
-              }
-            >
-              Punch Out
-            </button>
-          </div>
-        </div>
-      </div>
-      <b>My Attendance</b>
-      {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
-      {loading ? (
-        <div className="loader">
-          <div></div>
-        </div>
-      ) : (
-        <div className="attendanceList">
-          <table className="attendancetable">
-            <thead>
-              <tr>
-                <th> Date</th>
-                <th> Status</th>
-                <th> Check In</th>
-                <th>Check out</th>
-                <th>Total Worked</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((attendance) => (
-                <tr
-                  key={attendance.date}
-                  style={
-                    attendance.isHoliday || attendance.isWeekend
-                      ? { background: '#2EC9FE40' }
-                      : {}
-                  }
-                >
-                  <td>{attendance.date}</td>
-                  <td>
-                    <div>{statusOffice(attendance)}</div>
-                  </td>
-                  <td>{attendance.punchTimes[0]}</td>
-                  <td>{punchOutTime(attendance.punchTimes)}</td>
-                  <td
-                    onMouseEnter={(e) =>
-                      handleMouseIn(e, attendance.punchTimes)
-                    }
-                    onMouseLeave={handleMouseOut}
+            <b>My Attendance</b>
+            {error && <p style={{ color: '#FF3F3F' }}>{error}</p>}
+            {loading ? (
+              <div className="loader">
+                <div></div>
+              </div>
+            ) : (
+              <div className="attendanceList">
+                <table className="attendancetable">
+                  <thead>
+                    <tr>
+                      <th> Date</th>
+                      <th> Status</th>
+                      <th> Check In</th>
+                      <th>Check out</th>
+                      <th>Total Worked</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentItems.map((attendance) => (
+                      <tr
+                        key={attendance.date}
+                        style={
+                          attendance.isHoliday || attendance.isWeekend
+                            ? { background: '#2EC9FE40' }
+                            : {}
+                        }
+                      >
+                        <td>{attendance.date}</td>
+                        <td>
+                          <div>{statusOffice(attendance)}</div>
+                        </td>
+                        <td>{attendance.punchTimes[0]}</td>
+                        <td>{punchOutTime(attendance.punchTimes)}</td>
+                        <td
+                          onMouseEnter={(e) =>
+                            handleMouseIn(e, attendance.punchTimes)
+                          }
+                          onMouseLeave={handleMouseOut}
+                        >
+                          {attendance.netHourInOffice}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="pagination">
+                  <button
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
                   >
-                    {attendance.netHourInOffice}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="pagination">
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={indexOfLastItem >= attendanceList.length}
-            >
-              Next
-            </button>
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={
+                      indexOfLastItem >= attendanceList.length
+                    }
+                  >
+                    Next
+                  </button>
+                </div>
+                {hoverInfo.visible && (
+                  <HoverBox
+                    key={hoverInfo.content}
+                    top={hoverInfo.y}
+                    left={hoverInfo.x}
+                    content={hoverInfo.content}
+                  />
+                )}
+              </div>
+            )}
           </div>
-          {hoverInfo.visible && (
-            <HoverBox
-              top={hoverInfo.y}
-              left={hoverInfo.x}
-              content={hoverInfo.content}
-            />
-          )}
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 }

@@ -89,7 +89,10 @@ export default function PaySlips() {
     if (endYear === startYear) {
       const list = months.slice(startYearMonth, endYearMonth + 1);
       setMonthList(list);
-    } else if (yearMonth.year > startYear && yearMonth.year < endYear) {
+    } else if (
+      yearMonth.year > startYear &&
+      yearMonth.year < endYear
+    ) {
       setMonthList(months);
     } else if (yearMonth.year === endYear) {
       const list = months.slice(0, endYearMonth + 1);
@@ -107,7 +110,10 @@ export default function PaySlips() {
     event.preventDefault();
     const link = document.createElement('a');
     link.href = paySlipURL;
-    link.setAttribute('download', `PaySlip-${yearMonth.year}-${yearMonth.month}.pdf`);
+    link.setAttribute(
+      'download',
+      `PaySlip-${yearMonth.year}-${yearMonth.month}.pdf`
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -140,7 +146,7 @@ export default function PaySlips() {
           )}
           <div className="payslipSelector">
             <span>
-              Year :
+              Year :{' '}
               <Dropdown
                 options={years}
                 name={'year'}
@@ -158,12 +164,25 @@ export default function PaySlips() {
               />
             </span>
             <span>
-              <button onClick={handlePaySlip} style={{ cursor: 'pointer' }}>Get Pay Slip</button>
+              <button
+                onClick={handlePaySlip}
+                style={{ cursor: 'pointer' }}
+              >
+                Get Pay Slip
+              </button>
             </span>
             {paySlipURL && (
               <span>
-                <button onClick={handleClick} style={{ cursor: 'pointer' }} disabled={isDownloading}>
-                  {isDownloading ? <CircularProgress size={24} /> : 'Download Pay Slip'}
+                <button
+                  onClick={handleClick}
+                  style={{ cursor: 'pointer' }}
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    'Download Pay Slip'
+                  )}
                 </button>
               </span>
             )}

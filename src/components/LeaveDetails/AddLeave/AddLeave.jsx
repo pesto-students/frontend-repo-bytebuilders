@@ -3,13 +3,17 @@ import './AddLeave.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../../Dropdown/Dropdown';
 import { addleave } from '../../../api/leaveapi';
+import { getUserdataAPI } from '../../../api/userAPI';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../../Redux/userSlice';
+
 export default function AddLeave({
   setAddLeaveStatus,
   getLeaveHistory,
 }) {
   const [selectedOption, setSelectedOptions] = useState('');
   const [error, setError] = useState('');
-
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     leave_type: '',
     start_date: '',
@@ -51,10 +55,14 @@ export default function AddLeave({
     try {
       if (validate()) {
         await addleave(formData);
+        const user = await getUserdataAPI();
+        dispatch(setUser(user));
         getLeaveHistory();
         setAddLeaveStatus(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      setError('Something went Wrong...');
+    }
   };
   const options = ['casual', 'medical', 'lop'];
 

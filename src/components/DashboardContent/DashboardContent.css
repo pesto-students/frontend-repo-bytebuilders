@@ -29,7 +29,8 @@
 
 .leavetabletitledash h3,
 .dashteamleaveTitle h3 {
-  font-size: 1.4rem; /* Increased font size for headings */
+  font-size: 16px; /* Increased font size for headings */
+  font-weight: 200;
   margin-bottom: 0;
   color: #333; /* Darker text color */
 }
@@ -43,7 +44,8 @@
 .dashteamleaveTitle span {
   color: #007bff;
   cursor: pointer;
-  font-weight: bold; /* Bold text for clickable spans */
+  font-weight: 200; /* Bold text for clickable spans */
+  font-size: 12px;
 }
 
 @media (min-width: 768px) {

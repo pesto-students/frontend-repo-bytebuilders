@@ -9,12 +9,30 @@
   border: 2px solid #000;
 }
 
+.topLeaveDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .leavetitlecontainer {
   display: flex;
   justify-content: space-between;
-  padding: 36px;
 }
 
+.leavetitlecontainer > a {
+  margin-top: 0px;
+  margin-right: 0px;
+}
+.leaveDetailsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.leaveDetailsContent > input {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #000;
+}
 .leavetitlestatus {
   display: flex;
   flex-direction: row;
@@ -41,10 +59,13 @@
   padding: 0px 36px;
 }
 
+.leaveDetailsContent > b {
+  font-size: 16px;
+  font-weight: 200;
+}
 .leavedetailsdate {
   display: flex;
   gap: 24px;
-  padding-left: 72px;
 }
 
 .leavedetailsdate > span {

@@ -6,7 +6,9 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 import { processLeaveAPI } from '../../api/leaveapi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserdataAPI } from '../../api/userAPI';
+import { setUser } from '../../Redux/userSlice';
 
 export default function LeaveDetails({
   setLeaveDetailsStatus,
@@ -25,7 +27,7 @@ export default function LeaveDetails({
     days: 0,
     leaveId: '',
   });
-
+  const dispatch = useDispatch();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState('success');
@@ -37,14 +39,23 @@ export default function LeaveDetails({
       const data = { leave_id: leave.leaveId, action: status };
 
       const res = await processLeaveAPI(data);
+      const user = await getUserdataAPI();
+      dispatch(setUser(user));
       getList();
       setLeaveDetailsStatus(false);
 
       // Show success snackbar
-      handleSnackbar('success', `Leave has been ${status}ed successfully.`);
+      handleSnackbar(
+        'success',
+        `Leave has been ${status}ed successfully.`
+      );
     } catch (error) {
       // Show error snackbar if necessary
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         handleSnackbar('error', error.response.data.message);
       } else {
         handleSnackbar('error', 'Failed to process leave request.');
@@ -83,52 +94,67 @@ export default function LeaveDetails({
           <b>Your Request Includes</b>
           <div className="leavedetailsdate">
             <span>Start Date - </span>
-            <span style={{ color: '#4982eb' }}>{leave.start_date}</span>
+            <span>{leave.start_date}</span>
           </div>
           <div className="leavedetailsdate">
             <span>End Date - </span>
-            <span style={{ color: '#4982eb' }}>{leave.end_date}</span>
+            <span>{leave.end_date}</span>
           </div>
           <div className="leavedetailsdate">
             <span>No Of Days - </span>
-            <span style={{ color: '#4982eb' }}>{leave.days}</span>
+            <span>{leave.days}</span>
           </div>
           <b>Reason</b>
           <input
             type="text"
-            value={role === 'Manager' ? leave.leaveReason : leave.reason}
+            value={
+              role === 'Manager' ? leave.leaveReason : leave.reason
+            }
             readOnly
           />
           <div className="bottomLeaveDetailsContainer">
             <span>Applied on {leave.apply_date}</span>
             {leave.leaveStatus === 'new' && role === 'Employee' && (
-              <button onClick={() => processLeave('cancel')}>Cancel</button>
+              <button onClick={() => processLeave('cancel')}>
+                Cancel
+              </button>
             )}
           </div>
         </div>
-        {role === 'Manager' && user.canAcceptOrRejectLeaves && leave.leaveStatus === 'new' && (
-          <div className="actioncontainer">
-            <button
-              onClick={() => processLeave('reject')}
-              className="actionbutton"
-              style={{ background: '#FD5252' }}
-            >
-              Reject
-            </button>
-            <button
-              onClick={() => processLeave('approve')}
-              className="actionbutton"
-              style={{ background: '#6399FD' }}
-            >
-              Approve
-            </button>
-          </div>
-        )}
+        {role === 'Manager' &&
+          user.canAcceptOrRejectLeaves &&
+          leave.leaveStatus === 'new' && (
+            <div className="actioncontainer">
+              <button
+                onClick={() => processLeave('reject')}
+                className="actionbutton"
+                style={{ background: '#FD5252' }}
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => processLeave('approve')}
+                className="actionbutton"
+                style={{ background: '#6399FD' }}
+              >
+                Approve
+              </button>
+            </div>
+          )}
       </div>
 
       {/* Snackbar for displaying status messages */}
-      <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={() => setSnackbarOpen(false)}>
-        <MuiAlert elevation={6} variant="filled" onClose={() => setSnackbarOpen(false)} severity={snackbarType}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarType}
+        >
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>

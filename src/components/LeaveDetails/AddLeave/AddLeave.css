@@ -16,6 +16,15 @@
   justify-content: space-between;
 }
 
+.topcontaineraddleave > b {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.addleaveinputbox > label {
+  font-size: 12px;
+  font-weight: 200;
+}
 .addleavecontent {
   display: flex;
   justify-content: space-between;
@@ -39,7 +48,10 @@
 .addleaveinputbox > input {
   width: 40vh;
   height: 5vh;
+  font-size: 12px;
+  font-weight: 200;
   border-radius: 5px;
+  border: 1px solid #000;
   padding: 0px 10px;
 }
 
@@ -63,12 +75,27 @@
   padding: 12px;
 }
 
+.addleavedays > b {
+  font-size: 16px;
+  font-weight: 300;
+  font-family: sans-serif;
+}
+
 .addleavedaysstat {
   display: flex;
   justify-content: space-between;
 }
 .addleavedaysstat > span {
-  color: #6399fd;
+  color: #000;
+  font-size: 14px;
+  font-weight: 200;
+  font-family: sans-serif;
+}
+.addleavedaysstat > b {
+  color: #000;
+  font-size: 14px;
+  font-weight: 200;
+  font-family: sans-serif;
 }
 
 .addleavebuttons > button {

@@ -4,9 +4,22 @@
   padding: 36px;
   gap: 36px;
   width: 80%;
+  height: calc(100vh - 100px);
+}
+
+.payrollContainer > h1 {
+  font-size: 24px;
+  font-weight: 300;
+  font-family: sans-serif;
 }
 
 .payrollSelector {
   display: flex;
   gap: 24px;
+}
+
+.payrollSelector > span {
+  font-size: 16px;
+  font-weight: 300;
+  font-family: sans-serif;
 }

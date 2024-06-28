@@ -26,7 +26,7 @@ export default function EmployeeList({
     const startYear = new Date(employee.joiningDate).getFullYear();
     const endYear = new Date().getFullYear();
     const yearsArray = [];
-    
+
     for (let year = startYear; year <= endYear; year++) {
       yearsArray.push(year);
     }
@@ -73,7 +73,12 @@ export default function EmployeeList({
             >
               Generate PaySlip
             </button>
-            {loading && <CircularProgress size={20} style={{ marginLeft: 10 }} />}
+            {loading && (
+              <CircularProgress
+                size={20}
+                style={{ marginLeft: 10 }}
+              />
+            )}
           </span>
         )}
         <span onClick={() => setIsExpanded(!isExpanded)}>

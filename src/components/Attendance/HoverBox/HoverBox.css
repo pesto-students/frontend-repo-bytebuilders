@@ -18,3 +18,9 @@
   gap: 8px;
   justify-content: space-between;
 }
+
+.punchcontainer > span {
+  font-size: 12px;
+  font-weight: 200;
+  font-family: sans-serif;
+}

@@ -33,6 +33,11 @@
   gap: 12px;
   align-items: center;
 }
+
+.managercontainer > b {
+  font-size: 16px;
+  font-weight: 300;
+}
 .teambuttonconatiner {
   display: flex;
   gap: 12px;
