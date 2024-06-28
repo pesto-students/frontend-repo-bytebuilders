@@ -11,6 +11,7 @@
 .listtitle > input {
   background-color: #00b2da;
   border: none;
+  font-weight: 600;
 }
 
 .listtitle:hover {

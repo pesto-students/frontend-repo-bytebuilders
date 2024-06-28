@@ -57,7 +57,6 @@ export function RequireAuth() {
   const user = useSelector((state) => state.user);
   const verifyAuthenticate = () => {
     if (!isAuthenticated) {
-      console.log(isAuthenticated);
       navigate('/login');
     }
   };
@@ -74,7 +73,7 @@ export function RequireAuth() {
             </div>
             <div className="content">
               <SideBar />
-              {/* {loading ? <Loading /> : <Outlet />} */}
+
               <Outlet />
             </div>
           </div>

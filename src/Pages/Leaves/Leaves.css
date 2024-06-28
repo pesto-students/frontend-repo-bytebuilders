@@ -7,6 +7,10 @@
   gap: 36px;
 }
 
+.leavecontainer > p {
+  padding: 36px;
+}
+
 .leaveoutercontainer {
   position: relative;
 }
@@ -81,7 +85,8 @@ table {
   overflow: hidden;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -89,6 +94,9 @@ th, td {
 
 th {
   background-color: #f2f2f2;
+}
+th > button {
+  padding: 8px 12px;
 }
 
 .pagination {

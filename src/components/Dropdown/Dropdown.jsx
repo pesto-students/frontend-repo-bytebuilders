@@ -8,11 +8,18 @@ export default function Dropdown({
 }) {
   useEffect(() => {
     console.log('In DropDown', options);
+    console.log(
+      `{value ? value : 'Select an Option'}`,
+      value ? value : 'Select an Option'
+    );
+    console.log('value', value);
   }, []);
   return (
     <>
       <select name={name} value={value} onChange={handleChange}>
-        <option value="">Select an Option</option>
+        <option value={value}>
+          {value ? value : 'Select an Option'}
+        </option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}

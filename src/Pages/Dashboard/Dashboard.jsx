@@ -9,9 +9,7 @@ export default function Dashboard() {
   const user = useSelector((state) => state.user);
   const isLoading = useSelector((state) => state.isLoading);
 
-  useEffect(() => {
-    console.log('In Dashboard', user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <>

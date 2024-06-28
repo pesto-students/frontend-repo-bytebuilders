@@ -35,7 +35,7 @@ export default function Dashboardcontent() {
       </div>
       <div className="dashteamleave">
         <div className="dashteamleaveTitle">
-          <h3>Who was born today  🍰 </h3>
+          <h3>Birthdays 🍰 </h3>
         </div>
         <div className="line"></div>
         <DashBoardCelebration />

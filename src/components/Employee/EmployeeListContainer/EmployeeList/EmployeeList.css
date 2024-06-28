@@ -1,8 +1,11 @@
 /* Container to make the employee list scrollable */
 .employeeListContainer {
+  display: flex;
+  flex-direction: column;
   max-height: 80vh; /* Adjust the height as needed */
   overflow-y: auto; /* Enable vertical scrolling */
-  padding: 10px; /* Add some padding for better appearance */
+  padding: 0px; /* Add some padding for better appearance */
+  gap: 10px;
 }
 
 /* Employee list styles */
@@ -43,7 +46,7 @@
 .employeelistdetails {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
   width: 40vh;
   background-color: #ebf2ff;
   padding: 8px 12px;

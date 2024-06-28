@@ -3,10 +3,10 @@
   flex-direction: column;
   gap: 12px;
   padding: 24px;
-  background: #f4f5f7;
+
   border: 0.5px solid #000000;
   box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px 0px;
+  border-radius: 15px;
   box-sizing: border-box;
   min-height: 20vh;
   min-width: 20vh;

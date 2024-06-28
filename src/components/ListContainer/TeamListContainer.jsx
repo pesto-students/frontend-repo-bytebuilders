@@ -47,12 +47,16 @@ export default function ListContainer({ team, getTeams }) {
     try {
       if (value === 'save') {
         const response = await updateTeamName(teamName, team.teamId);
-        setSnackbarMessage(response.data.message || 'Team name updated successfully!');
+        setSnackbarMessage(
+          response.data.message || 'Team name updated successfully!'
+        );
         setSnackbarSeverity('success');
         getTeams();
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to update team name.';
+      const message =
+        error.response?.data?.message ||
+        'Failed to update team name.';
       setSnackbarMessage(message);
       setSnackbarSeverity('error');
     } finally {
@@ -63,18 +67,24 @@ export default function ListContainer({ team, getTeams }) {
   const handleAddMember = async () => {
     try {
       if (selectedEmployeeIds.length) {
-        const response = await addMemberToTeamAPI(selectedEmployeeIds, team.teamId);
+        const response = await addMemberToTeamAPI(
+          selectedEmployeeIds,
+          team.teamId
+        );
         const { data } = await getParticularTeam(team.teamId);
         setTeamDetails(data);
         setSelectedEmployeeIds([]);
-        setSnackbarMessage(response.data.message || 'Member(s) added successfully!');
+        setSnackbarMessage(
+          response.data.message || 'Member(s) added successfully!'
+        );
         setSnackbarSeverity('success');
       } else {
         setSnackbarMessage('No members selected.');
         setSnackbarSeverity('warning');
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to add member(s).';
+      const message =
+        error.response?.data?.message || 'Failed to add member(s).';
       setSnackbarMessage(message);
       setSnackbarSeverity('error');
     } finally {
@@ -91,18 +101,25 @@ export default function ListContainer({ team, getTeams }) {
   const handleRemoveMember = async () => {
     try {
       if (selectedEmployeeIds.length) {
-        const response = await removeMemberFromTeamAPI(selectedEmployeeIds, team.teamId);
+        const response = await removeMemberFromTeamAPI(
+          selectedEmployeeIds,
+          team.teamId
+        );
         const { data } = await getParticularTeam(team.teamId);
         setTeamDetails(data);
         setSelectedEmployeeIds([]);
-        setSnackbarMessage(response.data.message || 'Member(s) removed successfully!');
+        setSnackbarMessage(
+          response.data.message || 'Member(s) removed successfully!'
+        );
         setSnackbarSeverity('success');
       } else {
         setSnackbarMessage('No members selected.');
         setSnackbarSeverity('warning');
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to remove member(s).';
+      const message =
+        error.response?.data?.message ||
+        'Failed to remove member(s).';
       setSnackbarMessage(message);
       setSnackbarSeverity('error');
     } finally {
@@ -119,11 +136,14 @@ export default function ListContainer({ team, getTeams }) {
   const handleDeleteButton = async (id) => {
     try {
       const response = await deleteTeamAPI(id);
-      setSnackbarMessage(response.data.message || 'Team deleted successfully!');
+      setSnackbarMessage(
+        response.data.message || 'Team deleted successfully!'
+      );
       setSnackbarSeverity('success');
       getTeams();
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to delete team.';
+      const message =
+        error.response?.data?.message || 'Failed to delete team.';
       setSnackbarMessage(message);
       setSnackbarSeverity('error');
     } finally {
@@ -156,7 +176,7 @@ export default function ListContainer({ team, getTeams }) {
       </div>
       {isExpanded && (
         <div className="teamdetails">
-          {(user.isAdmin || user.isReportingManager) && (
+          {user.isAdmin && (
             <div className="teambuttonconatiner">
               {buttonFlag.editButtonFlag && (
                 <button

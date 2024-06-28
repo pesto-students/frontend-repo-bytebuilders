@@ -33,7 +33,7 @@ export default function ClockComponent() {
     const options = {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
+
       hour12: !is24HourFormat,
     };
     return time.toLocaleTimeString(undefined, options);
