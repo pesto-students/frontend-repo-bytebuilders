@@ -40,7 +40,7 @@ export default function HomePage() {
       {/* <div className="carouselConatiner">
         <ImageCarousel />
       </div> */}
-      <div className="homapageDetails">
+      <div className="homapageDetails homapageDetailsmobile1">
         <div className="homeimage">
           <img src="./caro1.jpg" alt="" />
         </div>
@@ -51,7 +51,7 @@ export default function HomePage() {
           </p>
         </div>
       </div>
-      <div className="homapageDetails">
+      <div className="homapageDetails homapageDetailsmobile2">
         <div className="homeText">
           <p>
             Our system empower organizations of all sizes to optimize
@@ -63,7 +63,7 @@ export default function HomePage() {
           <img src="./caro2.jpg" alt="" />
         </div>
       </div>
-      <div className="homapageDetails">
+      <div className="homapageDetails homapageDetailsmobile1">
         <div className="homeimage">
           <img src="./caro3.jpg" alt="" />
         </div>

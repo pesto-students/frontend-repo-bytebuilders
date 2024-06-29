@@ -7,3 +7,9 @@
   height: calc(100vh - 100px);
   width: 60%;
 }
+
+.addemployeeContainer > h1 {
+  font-family: sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+}
