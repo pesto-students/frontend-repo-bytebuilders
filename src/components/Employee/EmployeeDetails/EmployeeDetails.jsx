@@ -101,6 +101,7 @@ export default function EmployeeDetails({
   };
   const getDesignationList = async () => {
     dispatch(enableLoading());
+    setManagerFlag(storeUser.isReportingManage);
     const { data } = await getAlldesignations();
 
     const desgList = data
@@ -471,15 +472,17 @@ export default function EmployeeDetails({
                     {editflag ? 'Save' : 'Edit'} Info
                   </button>
 
-                  <button
-                    onClick={deactivateEmployee}
-                    style={{
-                      background: '#EE404C40',
-                      color: '#EE404C',
-                    }}
-                  >
-                    Deactivate
-                  </button>
+                  {storeUser.isReportingManage && (
+                    <button
+                      onClick={deactivateEmployee}
+                      style={{
+                        background: '#EE404C40',
+                        color: '#EE404C',
+                      }}
+                    >
+                      Deactivate
+                    </button>
+                  )}
                   {storedUser.isAdmin && (
                     <button onClick={() => resetPassword(user._id)}>
                       Reset Password
